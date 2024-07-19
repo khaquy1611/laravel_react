@@ -1,15 +1,17 @@
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { login } from '@/services/AuthServices'
 import { useNavigate } from 'react-router-dom'
-import { useToast } from '@/contexts/ToastContext'
+import { setToast } from '@/redux/slice/toastSlice'
+import { useDispatch } from 'react-redux'
 type Inputs = {
   email: string
   password: string
 }
 
 const Login = () => {
-  const { setMessage } = useToast();
+  // const { setMessage } = useToast()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
@@ -17,9 +19,14 @@ const Login = () => {
   } = useForm<Inputs>()
   const loginHanlder: SubmitHandler<Inputs> = async payload => {
     const logged = await login(payload)
-    setMessage("Đăng nhập vào hệ thống thành công", "warning")
+    dispatch(
+      setToast({
+        message: 'Đăng nhập vào hệ thống thành công',
+        type: 'success',
+      })
+    )
+    // setMessage("Đăng nhập vào hệ thống thành công", "success")
     logged && navigate('/dashboard')
-    
   }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
