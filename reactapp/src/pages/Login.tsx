@@ -6,6 +6,7 @@ import { setToast } from '@/redux/slice/toastSlice'
 import { useDispatch } from 'react-redux'
 import { Button } from '@/components/ui/button'
 import { ReloadIcon } from '@radix-ui/react-icons'
+import { setAuthLogin } from '@/redux/slice/authSlice'
 
 type Inputs = {
   email: string
@@ -13,7 +14,6 @@ type Inputs = {
 }
 
 const Login = () => {
-  // const { setMessage } = useToast()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const {
@@ -25,14 +25,15 @@ const Login = () => {
   const loginHanlder: SubmitHandler<Inputs> = async payload => {
     setLoading(true)
     try {
-      const logged = await login(payload)
+      const auth = await login(payload)
       dispatch(
         setToast({
           message: 'Đăng nhập vào hệ thống thành công',
           type: 'success',
         })
       )
-      logged && navigate('/dashboard')
+      dispatch(setAuthLogin(auth))
+      auth && navigate('/dashboard')
     } catch (err) {
       /* empty */
     } finally {

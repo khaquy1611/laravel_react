@@ -1,22 +1,17 @@
 import axios from "axios"
 
-const axiosIntance = axios.create({
-    baseURL: 'https://laravelreact/api/v1',
-    headers: {
-        'Content-Type' : 'application/json'
-    }
-})
-
-axiosIntance.interceptors.response.use(
+axios.interceptors.response.use(
     response => {
-        return response.data ? response.data : response
+        return response
     },
     error => {
-        const { response } = error
-        if (response.status === 401) {
-            // refresh token ở đây
-        }
         return Promise.reject(error)
     }
 )
-export default axiosIntance
+
+axios.defaults.withCredentials  = true
+axios.defaults.baseURL = 'https://laravelreact/api/v1'
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.headers.common['Accept'] = 'application/json';
+
+export default axios
