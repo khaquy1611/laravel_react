@@ -24,7 +24,7 @@ const login = async (payload: LoginPayload): Promise<User | null> => {
 const fetchUser = async () : Promise<User | null> => {
   try { 
     const response = await axios.get("/auth/me")
-    console.log(response)
+    return response.data.user
   }catch(error) {
     handleAxiosError(error)
     return null;

@@ -50,8 +50,8 @@ class AuthController extends Controller
         ]);
     }
     public function me() {
-        return response()->json(
-            new UserResource(auth()->user())
-        );
+        return response()->json([
+         'user' => new UserResource(auth()->user())
+        ]);
     }
 }

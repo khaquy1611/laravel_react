@@ -1,19 +1,32 @@
 import { PropsWithChildren, useEffect } from 'react'
-import { RootState } from '@/redux/store'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchUser } from '@/services/AuthServices'
+import { setAuthLogin, setAuthLogout } from '@/redux/slice/authSlice'
 import { useNavigate } from 'react-router-dom'
+import { RootState } from '@/redux/store'
 type ProtectedRouteProps = PropsWithChildren
 
 const AuthMiddleware = ({ children }: ProtectedRouteProps) => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { isAuthenticated, user } = useSelector(
     (state: RootState) => state.auth
   )
-  const navigate = useNavigate()
   useEffect(() => {
-    if (!isAuthenticated || user === null) {
-      navigate('/admin')
+    const checkAuthenticate = async () => {
+      if (isAuthenticated || user === null) {
+        const userData = await fetchUser()
+        if (userData) {
+          dispatch(setAuthLogin(userData))
+        } else {
+          dispatch(setAuthLogout())
+          navigate('/admin')
+        }
+      }
     }
-  }, [isAuthenticated, navigate, user])
+    checkAuthenticate()
+  }, [dispatch, isAuthenticated, navigate, user])
+
   return isAuthenticated && user ? children : null
 }
 
