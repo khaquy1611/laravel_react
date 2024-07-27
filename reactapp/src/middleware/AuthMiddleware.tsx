@@ -14,7 +14,7 @@ const AuthMiddleware = ({ children }: ProtectedRouteProps) => {
   )
   useEffect(() => {
     const checkAuthenticate = async () => {
-      if (isAuthenticated || user === null) {
+      if (!isAuthenticated || user === null) {
         const userData = await fetchUser()
         if (userData) {
           dispatch(setAuthLogin(userData))

@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\Jwt;
+use App\Http\Middleware\TokenIdentifierMiddleware;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -14,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
-            'jwt' => Jwt::class
+            'jwt' => Jwt::class,
+            'prevent-logged' => TokenIdentifierMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
