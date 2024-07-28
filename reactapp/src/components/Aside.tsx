@@ -29,7 +29,7 @@ const Aside = () => {
   const defaultValue = getOpenAccordionValue()
 
   return (
-    <aside className="app-aside w-60 bg-[#111c43] h-full fixed">
+    <aside className="app-aside w-60 bg-[#111c43] h-full fixed top-0">
       <div className="main-sidebar-header w-60 p-0.5 fixed z-10 h-14 text-center border-solid border-b rounded-lg border-menu-border">
         <a href="" className="inline-block sidebar-logo">
           <Logo />

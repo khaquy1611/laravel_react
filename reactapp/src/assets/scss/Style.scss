@@ -1,4 +1,11 @@
+body {
+  background: rgb(240, 240, 247, 1);
+}
 .main-content {
-    margin-left: 240px;
-    padding: 0 10px;
+  margin-left: 240px;
+  padding: 0 10px;
+  margin-block-start: 3.5rem;
+}
+.app-header {
+  padding-left: 240px;
 }

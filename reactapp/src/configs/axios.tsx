@@ -2,7 +2,6 @@ import axios, {
   AxiosError,
   AxiosInstance,
   AxiosRequestConfig,
-  AxiosResponse,
 } from 'axios'
 
 export const baseURL = `https://laravelreact/api/v1/`
