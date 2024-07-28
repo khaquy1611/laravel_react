@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 use Closure;
-use DB;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -24,19 +24,12 @@ class Jwt
         if ($request->hasCookie('access_token')) {
             $token = trim($request->cookie('access_token'));
             $request->headers->set('Authorization', 'Bearer ' . $token);
-
-           
-            // $userToken = DB::table('user_sessions')->where('user_id', $credentials ->id)->value('token');
-         
-            // if ($userToken !== $token) {
-            //   return response()->json(['error' => 'Unauthorized'], Response::HTTP_UNAUTHORIZED);
-            // }
-            // $user = User::find($credentials ->id);
-            // $request->auth = $user;
         }
+        $refreshToken = $request->header('Refresh-Token');
+        
         // kiểm tra token và xác thực người dùng
-        $credentials  = JWTAuth::parseToken()->authenticate();
-       
+        $user  = JWTAuth::parseToken()->authenticate();
+        
        }catch(TokenExpiredException $e) {
         // Token hết hạn
         return response()->json(['message' => 'Token đã hết hạn'], Response::HTTP_UNAUTHORIZED);

@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Cookie;
 use App\Http\Resources\UserResource;
 use App\Models\User;
-use DB;
+use Carbon\Carbon;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -31,19 +31,16 @@ class AuthController extends Controller
             return response()->json(['error' => 'Tài khoản hoặc mật khẩu không chính xác'], Response::HTTP_UNAUTHORIZED);
         }
         $user = auth()->user();
-        $currentDevice = $request->header('User-Agent');
-        if ($user->token_identifier && $user->token_identifier !== $currentDevice) {
-            return response()->json(['message' => 'Already logged in on another device'], 403);
-        }
         $refreshTokenData = $this->refreshTokenData($user);
         $refresh_token = JWTAuth::getJWTProvider()->encode($refreshTokenData);
+
+        $user->refresh_token = $refresh_token;
+        $user->refresh_token_expiry = $refreshTokenData['expires_in'];
+        $user->save();
+
         $cookie = $this->setTokenAndRefreshTokenCookie($token, $refresh_token);
         $tokenCookie = $cookie['tokenCookie'];
         $refreshTokenCookie = $cookie['refreshTokenCookie'];
-        // DB::table('user_sessions')->updateOrInsert(
-        //     ['user_id' => $user->id],
-        //     ['token' => $token, 'updated_at' => now()]
-        // );
         return $this->respondWithToken(trim($token), $refresh_token , $user)->withCookie($tokenCookie)->withCookie($refreshTokenCookie);
     }
 
@@ -60,16 +57,9 @@ class AuthController extends Controller
 
     public function logout()
     {
-        
-        if ($request->hasCookie('access_token')) {
-            $token = trim($request->cookie('access_token'));
-        }
+        auth()->logout();
 
-        DB::table('user_sessions')->where('token', $token)->delete();
-
-        return response()->json(['message' => 'Logout thành công'])->cookie(
-            Cookie::forget('jwt')
-        );
+        return response()->json(['message' => 'Successfully logged out']);
     }
 
     /**
@@ -100,6 +90,7 @@ class AuthController extends Controller
 
             if ($request->hasCookie('refresh_token')) {
 
+               
                 if (!$request->cookie('refresh_token')) {
                     return response()->json(['message' => 'Token đã hết hạn'], Response::HTTP_UNAUTHORIZED);
                 }

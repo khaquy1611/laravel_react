@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_sessions', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('token');
-            $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        Schema::table('users', function (Blueprint $table) {
+            $table->longText('refresh_token')->nullable();
+            $table->timestamp('refresh_token_expiry')->nullable();
         });
     }
 
@@ -25,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_sessions');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('refresh_token');
+            $table->dropColumn('refresh_token_expiry');
+        });
     }
 };

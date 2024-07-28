@@ -50,6 +50,9 @@ export const theme = {
         DEFAULT: "hsl(var(--card))",
         foreground: "hsl(var(--card-foreground))",
       },
+      'menu-border' : 'rgba(255, 255, 255, 0.1)',
+      'menu-color' : '#a3aed1',
+      'menu-active': 'rgba(255, 255, 255, .05)',
     },
     borderRadius: {
       lg: "var(--radius)",
@@ -71,8 +74,15 @@ export const theme = {
       "accordion-up": "accordion-up 0.2s ease-out",
     },
     fontSize: {
-      '14px': '14px'
-    }
+      '10px' : '10px',
+      '11px' : '11px',
+      '12px' : '12px',
+      '13px' : '13px',
+      '14px': '14px',
+      '15px': '15px',
+      '16px': '16px',
+    },
+
   },
 };
 // eslint-disable-next-line no-undef
