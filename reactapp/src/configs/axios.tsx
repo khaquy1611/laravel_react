@@ -12,17 +12,17 @@ const apiCall: AxiosInstance = axios.create({
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
-   'Accept': 'application/json',
+    Accept: 'application/json',
   },
 })
 
 const refreshToken = async () => {
-    try {
-        const response = await apiCall.post('auth/refresh')
-        console.log(response)
-    }catch (error) {
-        throw new Error('Không thể khởi tạo lại access token')
-    }
+  try {
+    const response = await apiCall.post('auth/refresh')
+    return response
+  } catch (error) {
+    throw new Error('Không thể khởi tạo lại access token')
+  }
 }
 
 axios.interceptors.response.use(
