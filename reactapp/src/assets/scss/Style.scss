@@ -1,5 +1,5 @@
 body {
-  background: rgb(240, 240, 247, 1);
+  background: rgb(240, 240, 247, 1) !important;
 }
 .main-content {
   margin-left: 240px;
@@ -8,4 +8,20 @@ body {
 }
 .app-header {
   padding-left: 240px;
+  .header-right-content {
+    .header-link {
+      padding: 1rem 0.65rem;
+      .header-link-icon {
+        width: 17px;
+        height: 17px;
+        font-size: 20px;
+        color: #534685;
+      }
+    }
+  }
+}
+.profile {
+  button {
+    outline: none !important;
+  }
 }
