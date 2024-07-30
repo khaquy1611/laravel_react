@@ -5,10 +5,15 @@ body {
   button {
     outline: none !important;
   }
+  
 }
 .main-content {
   margin-block-start: 3.5rem;
   height: calc(100vh - 50px);
+  .container {
+    min-width: 1668px;
+    padding: 0 10px;
+  }
 }
 .app-header {
   padding-left: 240px;
