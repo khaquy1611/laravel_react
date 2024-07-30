@@ -21,8 +21,31 @@ export const MenuConfig = [
         icon: <FaUser className="text-sm mr-2" />,
         label: 'Quản lí thành viên',
         active: ['user'],
-        links: [{ title: 'Quản lí thành viên', to: '/user' }],
+        links: [
+          { title: 'Quản lí nhóm thành viên', to: '/user/catalogue/index' },
+          { title: 'Quản lí thành viên', to: '/user/index' },
+        ],
       },
     ],
   },
 ]
+
+export const breadcrumb = [
+  {
+    title: 'Dashboard',
+    route: '/dashboard',
+    active: ['dashboard'],
+  },
+  {
+    title: 'Quản lí thành viên',
+    route: '/user/index',
+    active: ['user'],
+  },
+]
+
+export const breadcrumbLabelMap = {
+  dashboard: 'Dashboard',
+  user: 'Quản lí thành viên',
+} as {
+  [key: string]: string
+}

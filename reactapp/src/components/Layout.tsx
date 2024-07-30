@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { showToast } from '@/helpers/myHelper'
 import { RootState } from '@/redux/store'
@@ -10,6 +10,10 @@ import '@/assets/scss/Style.scss'
 
 const Layout: React.FC = () => {
   const { message, type } = useSelector((state: RootState) => state.toast)
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
   const dispatch = useDispatch()
   useEffect(() => {
     showToast(message, type)
@@ -18,9 +22,9 @@ const Layout: React.FC = () => {
 
   return (
     <div className="page">
-      <Header />
-      <Aside />
-      <div className="main-content">
+      <Header isOpen={isOpen} toggleMenu={toggleMenu} />
+      <Aside isOpen={isOpen} />
+      <div className="main-content transition-transform duration-300" style={isOpen ? { marginLeft: '0' } : { marginLeft: '240px' }}>
             <Outlet />
       </div>
     </div>

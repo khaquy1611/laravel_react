@@ -1,11 +1,12 @@
 import PageHeading from '@/components/Heading'
-const Dashboard = () => {
+
+const User = () => {
   return (
     <>
       <PageHeading />
-      Đây là trang Dashboard
+      Đây là trang User
     </>
   )
 }
 
-export default Dashboard
+export default User

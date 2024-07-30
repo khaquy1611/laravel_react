@@ -7,11 +7,15 @@ import {
 } from '@/components/ui/accordion'
 import Logo from './Logo'
 import { Link } from 'react-router-dom'
-import { MenuConfig } from '@/constants/Sidebar'
+import { MenuConfig } from '@/constants'
 import '@/assets/scss/Accordion.scss'
 import '@/assets/scss/Aside.scss'
 
-const Aside = () => {
+type ToggleMenu = {
+  isOpen: boolean
+  
+}
+const Aside : React.FC<ToggleMenu> = ({ isOpen }) => {
   const localtion = useLocation()
   const segment = localtion.pathname.split('/')[1]
 
@@ -29,7 +33,7 @@ const Aside = () => {
   const defaultValue = getOpenAccordionValue()
 
   return (
-    <aside className="app-aside w-60 bg-[#111c43] h-full fixed top-0">
+    <aside className={`app-aside w-60 bg-[#111c43] h-full fixed top-0  transition-transform duration-300 ${isOpen ? 'transform translate-x-[-100%]' : 'transform translate-x-0' }`}>
       <div className="main-sidebar-header w-60 p-0.5 fixed z-10 h-14 text-center border-solid border-b rounded-lg border-menu-border">
         <a href="" className="inline-block sidebar-logo">
           <Logo />

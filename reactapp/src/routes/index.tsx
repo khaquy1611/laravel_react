@@ -2,7 +2,7 @@ import AuthMiddleware from '@/middleware/AuthMiddleware'
 import LoginMiddleware from '@/middleware/LoginMiddleware'
 import { createBrowserRouter } from 'react-router-dom'
 import Login from '@/pages/Login'
-import User from '@/pages/user/User'
+import User from '@/pages/user/user/User'
 import Dashboard from '@/pages/Dashboard'
 import Layout from '@/components/Layout'
 
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
         element: <Dashboard />,
       },
       {
-        path: '/user',
+        path: '/user/index',
         element: <User />,
       },
     ],

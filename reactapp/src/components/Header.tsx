@@ -1,5 +1,5 @@
 import { HiOutlineBars3CenterLeft, HiOutlineCog6Tooth } from 'react-icons/hi2'
-import { IoIosSearch } from 'react-icons/io'
+import { IoIosSearch, IoMdClose } from 'react-icons/io'
 import { FiShoppingCart } from 'react-icons/fi'
 import { GoBell } from 'react-icons/go'
 import { BsFullscreenExit } from 'react-icons/bs'
@@ -17,11 +17,22 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
-const Header = () => {
+type ToggleMenu = {
+  isOpen: boolean
+  toggleMenu: () => void
+}
+
+const Header: React.FC<ToggleMenu> = ({ isOpen, toggleMenu }) => {
   return (
-    <header className="app-header h-14 fixed w-full content-center items-center top-0 bg-white">
+    <header className="app-header h-14 fixed w-full content-center items-center top-0 bg-white border-b border-[#e7eaec]">
       <div className="main-header mx-auto px-15px h-full flex justify-between items-center">
-        <HiOutlineBars3CenterLeft className="text-30px cursor-pointer" />
+        <div className="toggle-menu" onClick={() => toggleMenu()}>
+          {isOpen ? (
+            <IoMdClose className="text-30px cursor-pointer" />
+          ) : (
+            <HiOutlineBars3CenterLeft className="text-30px cursor-pointer" />
+          )}
+        </div>
         <div className="header-right-content flex justify-between items-center">
           <div className="header-search">
             <Link to="/" className="header-link flex relative">

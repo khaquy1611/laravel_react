@@ -105,6 +105,9 @@ export const theme = {
       '10px': '10px',
       '15px': '15px',
       '20px': '20px',
+    },
+    translate: {
+      '-100%': '-100%',
     }
   },
 }
