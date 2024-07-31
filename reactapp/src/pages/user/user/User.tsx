@@ -73,14 +73,17 @@ const User = () => {
                   </TableRow>
                 ) : isError ? (
                   <TableRow>
-                    <TableCell colSpan={9} className="text-center text-[12px] text-[#f00000]">
+                    <TableCell
+                      colSpan={9}
+                      className="text-center text-[12px] text-[#f00000]"
+                    >
                       Có vấn đè trong quá trình xảy ra khi truy xuất dữ liệu.
                       Hãy thử lại sau
                     </TableCell>
                   </TableRow>
                 ) : (
-                  data &&
-                  data.map((user: UserType, index: number) => (
+                  data.users.data &&
+                  data.users.data.map((user: UserType, index: number) => (
                     <TableRow key={index}>
                       <TableCell className="font-medium text-center">
                         <Checkbox className="text-white" />

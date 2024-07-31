@@ -3,7 +3,7 @@ import axios from '@/configs/axios'
 
 const pagination = async () => {
     const response = await axios.get('/auth/users')
-    return response.data.users
+    return response.data
 }
 
 export { pagination }
