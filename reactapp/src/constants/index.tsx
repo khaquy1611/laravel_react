@@ -32,11 +32,13 @@ export const MenuConfig = [
 
 export const breadcrumb = [
   {
+    id: 'dashboard',
     title: 'Dashboard',
     route: '/dashboard',
     active: ['dashboard'],
   },
   {
+    id: 'user',
     title: 'Quản lí thành viên',
     route: '/user/index',
     active: ['user'],

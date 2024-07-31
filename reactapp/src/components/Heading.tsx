@@ -21,26 +21,23 @@ const PageHeading = () => {
           <Breadcrumb>
             <BreadcrumbList>
               {breadcrumb &&
-                breadcrumb.map((item, index) => (
-                  <>
-                    {item.active.includes(segment) ? (
-                      <>
-                      
-                        <BreadcrumbPage>
-                          <Link to={item.route}>{item.title}</Link>
-                        </BreadcrumbPage>
-                        <BreadcrumbSeparator /> 
-                      </>
-                    ) : (
-                      <>
-                  
-                        <BreadcrumbItem key={index}>
-                          <Link to={item.route}>{item.title}</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbSeparator /> 
-                      </>
-                    )}
-                  </>
+                breadcrumb.map(item => (
+                  <div
+                    key={item.id}
+                    className="flex items-center justify-center"
+                  >
+                    <BreadcrumbItem>
+                      <Link to={item.route}>
+                        {item.active.includes(segment) ? (
+                          <BreadcrumbPage>{item.title}</BreadcrumbPage>
+                        ) : (
+                          `${item.title}`
+                        )}
+                      </Link>
+                    </BreadcrumbItem>
+                   
+                    {!item.active.includes(segment) && <BreadcrumbSeparator />}
+                  </div>
                 ))}
             </BreadcrumbList>
           </Breadcrumb>

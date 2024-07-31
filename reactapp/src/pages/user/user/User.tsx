@@ -26,9 +26,11 @@ import { Button } from '@/components/ui/button'
 import { FaRegEdit } from 'react-icons/fa'
 import { pagination } from '@/services/UserServices'
 import { useQuery } from 'react-query'
+import { LoadingSpinner } from '@/components/ui/loading'
 
 const User = () => {
-  const { data } = useQuery('users', pagination)
+  const { isLoading, data, isError } = useQuery('users', pagination)
+
   return (
     <>
       <PageHeading />
@@ -62,7 +64,22 @@ const User = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {data &&
+                {isLoading ? (
+                  <TableRow>
+                    <TableCell colSpan={9} className="text-center items-center">
+                      <LoadingSpinner className="inline-block mr-[5px]" />
+                      ...Loading
+                    </TableCell>
+                  </TableRow>
+                ) : isError ? (
+                  <TableRow>
+                    <TableCell colSpan={9} className="text-center text-[12px] text-[#f00000]">
+                      Có vấn đè trong quá trình xảy ra khi truy xuất dữ liệu.
+                      Hãy thử lại sau
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  data &&
                   data.map((user: UserType, index: number) => (
                     <TableRow key={index}>
                       <TableCell className="font-medium text-center">
@@ -81,7 +98,7 @@ const User = () => {
                       </TableCell>
                       <TableCell className="text-center">Admin</TableCell>
                       <TableCell className="text-center">
-                        <Switch checked={false} />
+                        <Switch checked={true} />
                       </TableCell>
                       <TableCell className="text-center flex justify-center items-center">
                         <Button className="bg-[#5d78d1] flex mr-[5px]">
@@ -101,7 +118,8 @@ const User = () => {
                         </Button>
                       </TableCell>
                     </TableRow>
-                  ))}
+                  ))
+                )}
               </TableBody>
             </Table>
           </CardContent>

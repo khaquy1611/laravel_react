@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { store } from '@/redux/store'
 import { Provider } from 'react-redux'
 import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 const queryClient = new QueryClient()
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         <App />
         <ToastContainer />
       </ToastProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </Provider>
   </QueryClientProvider>
 )
