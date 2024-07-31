@@ -16,12 +16,15 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Nguyễn Khả Qúy',
-            'email' => 'khaquy1611@gmail.com',
-            'password' => Hash::make('123456789'),
-            'address' => 'Cầu Giấy, Mai Dịch , Hà Nội',
-            'phone' => '0969608090'
+        // User::factory()->create([
+        //     'name' => 'Nguyễn Khả Qúy',
+        //     'email' => 'khaquy1611@gmail.com',
+        //     'password' => Hash::make('123456789'),
+        //     'address' => 'Cầu Giấy, Mai Dịch , Hà Nội',
+        //     'phone' => '0969608090'
+        // ]);
+        $this->call([
+            UserSeeder::class
         ]);
     }
 }

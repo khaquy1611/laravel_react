@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { UserType } from '@/types/User'
 import {
   Table,
   TableBody,
@@ -23,8 +24,11 @@ import { MdLockReset } from 'react-icons/md'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { FaRegEdit } from 'react-icons/fa'
+import { pagination } from '@/services/UserServices'
+import { useQuery } from 'react-query'
 
 const User = () => {
+  const { data } = useQuery('users', pagination)
   return (
     <>
       <PageHeading />
@@ -58,39 +62,46 @@ const User = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
-                  <TableCell className="font-medium text-center">
-                    <Checkbox className="text-white" />
-                  </TableCell>
-                  <TableCell className="text-center">01</TableCell>
-                  <TableCell className="text-center">Nguyễn Khả Qúy</TableCell>
-                  <TableCell className="text-center">0969608090</TableCell>
-                  <TableCell className="text-center">
-                    khaquy1611@gmail.com
-                  </TableCell>
-                  <TableCell className="text-center">Hà Nội</TableCell>
-                  <TableCell className="text-center">Admin</TableCell>
-                  <TableCell className="text-center">
-                    <Switch />
-                  </TableCell>
-                  <TableCell className="text-center flex justify-center items-center">
-                    <Button className="bg-[#5d78d1] flex mr-[5px]">
-                      <Link to="/user/update">
-                        <FaRegEdit className="text-white" />
-                      </Link>
-                    </Button>
-                    <Button className="bg-[#ec4728] flex mr-[5px]">
-                      <Link to="/user/delete">
-                        <RiDeleteBinLine className="text-white" />
-                      </Link>
-                    </Button>
-                    <Button className="bg-[#f8ac59]">
-                      <Link to="/user/delete">
-                        <MdLockReset className="text-white" />
-                      </Link>
-                    </Button>
-                  </TableCell>
-                </TableRow>
+                {data &&
+                  data.map((user: UserType, index: number) => (
+                    <TableRow key={index}>
+                      <TableCell className="font-medium text-center">
+                        <Checkbox className="text-white" />
+                      </TableCell>
+                      <TableCell className="text-center">{user.id}</TableCell>
+                      <TableCell className="text-center">{user.name}</TableCell>
+                      <TableCell className="text-center">
+                        {user.phone}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {user.email}
+                      </TableCell>
+                      <TableCell className="text-center">
+                        {user.address ?? '-'}
+                      </TableCell>
+                      <TableCell className="text-center">Admin</TableCell>
+                      <TableCell className="text-center">
+                        <Switch checked={false} />
+                      </TableCell>
+                      <TableCell className="text-center flex justify-center items-center">
+                        <Button className="bg-[#5d78d1] flex mr-[5px]">
+                          <Link to="/user/update">
+                            <FaRegEdit className="text-white" />
+                          </Link>
+                        </Button>
+                        <Button className="bg-[#ec4728] flex mr-[5px]">
+                          <Link to="/user/delete">
+                            <RiDeleteBinLine className="text-white" />
+                          </Link>
+                        </Button>
+                        <Button className="bg-[#f8ac59]">
+                          <Link to="/user/delete">
+                            <MdLockReset className="text-white" />
+                          </Link>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </CardContent>

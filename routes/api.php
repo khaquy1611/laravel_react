@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\UserController;
 
 
 Route::group([
@@ -11,6 +12,9 @@ Route::group([
 ], function ($router) {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::get('me', [AuthController::class, 'me']);
+
+  /* User */
+  Route::get('users', [UserController::class, 'index'])->name('user.index');
 });
 
 Route::post('v1/auth/login', [AuthController::class, 'login']);

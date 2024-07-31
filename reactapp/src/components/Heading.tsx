@@ -25,17 +25,19 @@ const PageHeading = () => {
                   <>
                     {item.active.includes(segment) ? (
                       <>
+                      
                         <BreadcrumbPage>
                           <Link to={item.route}>{item.title}</Link>
                         </BreadcrumbPage>
-                        <BreadcrumbSeparator />
+                        <BreadcrumbSeparator /> 
                       </>
                     ) : (
                       <>
+                  
                         <BreadcrumbItem key={index}>
                           <Link to={item.route}>{item.title}</Link>
                         </BreadcrumbItem>
-                        <BreadcrumbSeparator />
+                        <BreadcrumbSeparator /> 
                       </>
                     )}
                   </>

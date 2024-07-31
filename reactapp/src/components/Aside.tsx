@@ -13,9 +13,8 @@ import '@/assets/scss/Aside.scss'
 
 type ToggleMenu = {
   isOpen: boolean
-  
 }
-const Aside : React.FC<ToggleMenu> = ({ isOpen }) => {
+const Aside: React.FC<ToggleMenu> = ({ isOpen }) => {
   const localtion = useLocation()
   const segment = localtion.pathname.split('/')[1]
 
@@ -33,7 +32,11 @@ const Aside : React.FC<ToggleMenu> = ({ isOpen }) => {
   const defaultValue = getOpenAccordionValue()
 
   return (
-    <aside className={`app-aside w-60 bg-[#111c43] h-full fixed top-0  transition-transform duration-300 ${isOpen ? 'transform translate-x-[-100%]' : 'transform translate-x-0' }`}>
+    <aside
+      className={`app-aside w-60 bg-[#111c43] h-full fixed top-0  transition-transform duration-300 z-40 ${
+        isOpen ? 'transform translate-x-0' : 'transform translate-x-[-100%]'
+      }`}
+    >
       <div className="main-sidebar-header w-60 p-0.5 fixed z-10 h-14 text-center border-solid border-b rounded-lg border-menu-border">
         <a href="" className="inline-block sidebar-logo">
           <Logo />

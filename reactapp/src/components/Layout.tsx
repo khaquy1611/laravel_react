@@ -10,10 +10,10 @@ import '@/assets/scss/Style.scss'
 
 const Layout: React.FC = () => {
   const { message, type } = useSelector((state: RootState) => state.toast)
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true)
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+    setIsOpen(!isOpen)
+  }
   const dispatch = useDispatch()
   useEffect(() => {
     showToast(message, type)
@@ -24,8 +24,11 @@ const Layout: React.FC = () => {
     <div className="page">
       <Header isOpen={isOpen} toggleMenu={toggleMenu} />
       <Aside isOpen={isOpen} />
-      <div className="main-content transition-transform duration-300" style={isOpen ? { marginLeft: '0' } : { marginLeft: '240px' }}>
-            <Outlet />
+      <div
+        className="main-content transition-transform duration-300"
+        style={isOpen ? { marginLeft: '240px' } : { marginLeft: '0' }}
+      >
+        <Outlet />
       </div>
     </div>
   )
