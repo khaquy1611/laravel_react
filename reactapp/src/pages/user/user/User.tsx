@@ -29,6 +29,7 @@ import { pagination } from '@/services/UserServices'
 import { useQuery } from 'react-query'
 import { LoadingSpinner } from '@/components/ui/loading'
 import Paginate from '@/components/Paginate'
+import useColumnState from '@/hooks/useColumn'
 
 const User = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -36,19 +37,24 @@ const User = () => {
     ? parseInt(searchParams.get('page')!)
     : 1
   const [page, setPage] = useState<number | null>(currentPage)
-  const [checked, setChecked] = useState(false)
   const navigate = useNavigate()
 
   const { isLoading, data, isError, refetch } = useQuery(['users', page], () =>
     pagination(page)
   )
-  const totalItems = data ? data.total : 0;
-  const totalPages = Math.ceil(totalItems / 20);
- 
+  const { columnState, handleChecked } = useColumnState(
+    data?.user,
+    'publish',
+    isLoading
+  )
+  const totalItems = data ? data.total : 0
+  const totalPages = Math.ceil(totalItems / 20)
+
   const handlePageChange = (page: number | null) => {
     setPage(page)
     navigate(`?page=${page}`)
   }
+
   useEffect(() => {
     setSearchParams({ page: currentPage.toString() })
     refetch()
@@ -123,7 +129,13 @@ const User = () => {
                       </TableCell>
                       <TableCell className="text-center">Admin</TableCell>
                       <TableCell className="text-center">
-                        <Switch checked={true} onCheckedChange={() => setChecked(!checked)} />
+                        <Switch
+                          value={user.id}
+                          checked={columnState[user.id]?.publish}
+                          onCheckedChange={() =>
+                            handleChecked(user.id, 'publish')
+                          }
+                        />
                       </TableCell>
                       <TableCell className="text-center flex justify-center items-center">
                         <Button className="bg-[#5d78d1] flex mr-[5px]">
@@ -150,7 +162,11 @@ const User = () => {
           </CardContent>
           <CardFooter>
             {!isLoading && data.links.length ? (
-              <Paginate totalPages={totalPages} links={data.links} pageChange={handlePageChange} />
+              <Paginate
+                totalPages={totalPages}
+                links={data.links}
+                pageChange={handlePageChange}
+              />
             ) : null}
           </CardFooter>
         </Card>
