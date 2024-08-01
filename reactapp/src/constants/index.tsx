@@ -46,7 +46,7 @@ export const breadcrumb = [
 ]
 
 export const breadcrumbLabelMap = {
-  dashboard: 'Dashboard',
+  dashboard: 'Thống kê chung',
   user: 'Quản lí thành viên',
 } as {
   [key: string]: string

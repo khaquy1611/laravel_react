@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import PageHeading from '@/components/Heading'
 import {
   Card,
@@ -27,14 +28,22 @@ import { FaRegEdit } from 'react-icons/fa'
 import { pagination } from '@/services/UserServices'
 import { useQuery } from 'react-query'
 import { LoadingSpinner } from '@/components/ui/loading'
+import Paginate from '@/components/Paginate'
+
 
 const User = () => {
-  const { isLoading, data, isError } = useQuery('users', pagination)
-
+  const [page, setPage] = useState<number | null>(1)
+  const { isLoading, data, isError, refetch } = useQuery(['users', page], () => pagination(page))
+  const handlePageChange  = (page: number | null) => {
+    setPage(page)
+  }
+  useEffect(() => {
+    refetch()
+  }, [page, refetch])
   return (
     <>
       <PageHeading />
-      <div className="container">
+      <div className="container-fluid px-4">
         <Card className="rounded-[5px] mt-[15px]">
           <CardHeader className="border-b border-solid border-[#f3f3f3] p-[20px]">
             <CardTitle className="uppercase">
@@ -82,8 +91,8 @@ const User = () => {
                     </TableCell>
                   </TableRow>
                 ) : (
-                  data.users.data &&
-                  data.users.data.map((user: UserType, index: number) => (
+                  data.users &&
+                  data.users.map((user: UserType, index: number) => (
                     <TableRow key={index}>
                       <TableCell className="font-medium text-center">
                         <Checkbox className="text-white" />
@@ -127,7 +136,7 @@ const User = () => {
             </Table>
           </CardContent>
           <CardFooter>
-            <p>Card Footer</p>
+            { !isLoading && data.links.length ? (<Paginate links={data.links} pageChange={handlePageChange} />) : null}
           </CardFooter>
         </Card>
       </div>

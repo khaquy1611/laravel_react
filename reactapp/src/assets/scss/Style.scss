@@ -1,7 +1,6 @@
 body {
   background: rgb(240, 240, 247, 1) !important;
   font-family: 'Roboto Flex', sans-serif;
-  overflow-x: hidden !important;
   button {
     outline: none !important;
   }
@@ -10,10 +9,7 @@ body {
 .main-content {
   margin-block-start: 3.5rem;
   height: calc(100vh - 50px);
-  .container {
-    min-width: 1668px;
-    padding: 0 10px;
-  }
+  
 }
 .app-header {
   padding-left: 240px;
@@ -28,4 +24,14 @@ body {
       }
     }
   }
+}
+.active {
+  border-radius: calc(0.5rem - 2px);
+}
+
+.hover\:bg-accent:hover, .active {
+  background-color: rgba(132, 90, 223, 1)!important;
+  color: #fff;
+  cursor: pointer;
+  
 }

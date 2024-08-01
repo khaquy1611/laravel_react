@@ -9,7 +9,7 @@ class UserService extends BaseService {
         $this->userRepository = $userRepository;
     }
 
-    public function paginate() {
+    public function paginate($request) {
         $users = $this->userRepository->pagination();
         return $users;
     }

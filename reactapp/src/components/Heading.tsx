@@ -15,28 +15,27 @@ const PageHeading = () => {
   const label = breadcrumbLabelMap[segment]
   return (
     <>
-      <div className="page-heading py-[20px] bg-white border-b border-[#e7eaec]">
+      <div className="page-heading w-[100%] py-[20px] relative bg-white border-b border-[#e7eaec]">
         <div className="px-[10px]">
           <h2 className="text-[24px] mb-[5px]">{label}</h2>
           <Breadcrumb>
             <BreadcrumbList>
               {breadcrumb &&
-                breadcrumb.map(item => (
+                breadcrumb.map((item, index) => (
                   <div
                     key={item.id}
                     className="flex items-center justify-center"
                   >
+                    {index > 0 && <BreadcrumbSeparator />}
                     <BreadcrumbItem>
                       <Link to={item.route}>
                         {item.active.includes(segment) ? (
                           <BreadcrumbPage>{item.title}</BreadcrumbPage>
                         ) : (
-                          `${item.title}`
+                          <>{item.title}</>
                         )}
                       </Link>
                     </BreadcrumbItem>
-                   
-                    {!item.active.includes(segment) && <BreadcrumbSeparator />}
                   </div>
                 ))}
             </BreadcrumbList>

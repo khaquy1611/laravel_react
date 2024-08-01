@@ -18,9 +18,12 @@ class UserController extends Controller
     }
 
     public function index(Request $request) {
-        $user = $this->userServices->paginate();
+        $users = $this->userServices->paginate($request);
         return response()->json([
-            'users' => $user
+            'users' => $users->items(),
+            'links' => $users->linkCollection(),
+            'current_page' => $users->currentPage(),
+            'last_page' =>  $users->lastPage()
         ]);
     }
 }
