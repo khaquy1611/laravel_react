@@ -17,9 +17,14 @@ interface PaginationLink {
 type PaginationProps = {
   links: PaginationLink[]
   pageChange: (page: number | null) => void
+  totalPages: number
 }
 
-const Paginate: React.FC<PaginationProps> = ({ links, pageChange }) => {
+const Paginate: React.FC<PaginationProps> = ({
+  links,
+  pageChange,
+  totalPages,
+}) => {
   const activeLinkIndex = links.findIndex(link => link.active)
   const filterLinks = links.filter(
     (link, index) =>
@@ -63,7 +68,7 @@ const Paginate: React.FC<PaginationProps> = ({ links, pageChange }) => {
             </PaginationItem>
           ))}
 
-        {activeLinkIndex < links.length - 1 && (
+        {activeLinkIndex <= links.length - 1 && (
           <PaginationItem>
             <PaginationNext
               href="#"
@@ -71,7 +76,9 @@ const Paginate: React.FC<PaginationProps> = ({ links, pageChange }) => {
                 e.preventDefault()
                 handlePageChange(parseInt(links[activeLinkIndex + 1].label))
               }}
-              className="cursor-pointer"
+              className={`cursor-pointer ${
+                activeLinkIndex === totalPages ? 'hidden' : 'visible'
+              }`}
             />
           </PaginationItem>
         )}

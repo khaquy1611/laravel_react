@@ -22,7 +22,7 @@ import { Checkbox } from '@/components/ui/checkbox'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { Switch } from '@/components/ui/switch'
 import { MdLockReset } from 'react-icons/md'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { FaRegEdit } from 'react-icons/fa'
 import { pagination } from '@/services/UserServices'
@@ -30,16 +30,29 @@ import { useQuery } from 'react-query'
 import { LoadingSpinner } from '@/components/ui/loading'
 import Paginate from '@/components/Paginate'
 
-
 const User = () => {
-  const [page, setPage] = useState<number | null>(1)
-  const { isLoading, data, isError, refetch } = useQuery(['users', page], () => pagination(page))
-  const handlePageChange  = (page: number | null) => {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const currentPage = searchParams.get('page')
+    ? parseInt(searchParams.get('page')!)
+    : 1
+  const [page, setPage] = useState<number | null>(currentPage)
+  const [checked, setChecked] = useState(false)
+  const navigate = useNavigate()
+
+  const { isLoading, data, isError, refetch } = useQuery(['users', page], () =>
+    pagination(page)
+  )
+  const totalItems = data ? data.total : 0;
+  const totalPages = Math.ceil(totalItems / 20);
+ 
+  const handlePageChange = (page: number | null) => {
     setPage(page)
+    navigate(`?page=${page}`)
   }
   useEffect(() => {
+    setSearchParams({ page: currentPage.toString() })
     refetch()
-  }, [page, refetch])
+  }, [currentPage, page, refetch, setSearchParams])
   return (
     <>
       <PageHeading />
@@ -110,7 +123,7 @@ const User = () => {
                       </TableCell>
                       <TableCell className="text-center">Admin</TableCell>
                       <TableCell className="text-center">
-                        <Switch checked={true} />
+                        <Switch checked={true} onCheckedChange={() => setChecked(!checked)} />
                       </TableCell>
                       <TableCell className="text-center flex justify-center items-center">
                         <Button className="bg-[#5d78d1] flex mr-[5px]">
@@ -136,7 +149,9 @@ const User = () => {
             </Table>
           </CardContent>
           <CardFooter>
-            { !isLoading && data.links.length ? (<Paginate links={data.links} pageChange={handlePageChange} />) : null}
+            {!isLoading && data.links.length ? (
+              <Paginate totalPages={totalPages} links={data.links} pageChange={handlePageChange} />
+            ) : null}
           </CardFooter>
         </Card>
       </div>

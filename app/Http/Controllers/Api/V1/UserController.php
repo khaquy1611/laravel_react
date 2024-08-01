@@ -23,7 +23,8 @@ class UserController extends Controller
             'users' => $users->items(),
             'links' => $users->linkCollection(),
             'current_page' => $users->currentPage(),
-            'last_page' =>  $users->lastPage()
+            'last_page' =>  $users->lastPage(),
+            'total' => $users->total(),
         ]);
     }
 }
