@@ -30,6 +30,7 @@ import { useQuery } from 'react-query'
 import { LoadingSpinner } from '@/components/ui/loading'
 import Paginate from '@/components/Paginate'
 import useColumnState from '@/hooks/useColumn'
+import { model } from '@/constants'
 
 const User = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -42,11 +43,13 @@ const User = () => {
   const { isLoading, data, isError, refetch } = useQuery(['users', page], () =>
     pagination(page)
   )
+
   const { columnState, handleChecked } = useColumnState(
-    data?.user,
+    data?.users,
     'publish',
     isLoading
   )
+
   const totalItems = data ? data.total : 0
   const totalPages = Math.ceil(totalItems / 20)
 
@@ -59,6 +62,7 @@ const User = () => {
     setSearchParams({ page: currentPage.toString() })
     refetch()
   }, [currentPage, page, refetch, setSearchParams])
+
   return (
     <>
       <PageHeading />
@@ -133,7 +137,7 @@ const User = () => {
                           value={user.id}
                           checked={columnState[user.id]?.publish}
                           onCheckedChange={() =>
-                            handleChecked(user.id, 'publish')
+                            handleChecked(user.id, 'publish', model['users'])
                           }
                         />
                       </TableCell>

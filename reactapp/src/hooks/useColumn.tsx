@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { UpdateStatusByField } from '@/services/BaseServices'
 import { UserType } from '@/types/User'
 import { useEffect, useState } from 'react'
 
@@ -10,7 +11,7 @@ interface UserState {
 
 interface useColumnStateReturn {
   columnState: UserState
-  handleChecked: (userId: number, columnName: string) => void
+  handleChecked: (userId: number, columnName: string, model: string) => void
 }
 
 const useColumnState = (
@@ -19,7 +20,15 @@ const useColumnState = (
   isLoading: boolean
 ): useColumnStateReturn => {
   const [columnState, setColumnState] = useState<UserState>({})
-  const handleChecked = (userId: number, columnName: string) => {
+
+  const handleChecked = (userId: number, columnName: string, model: string) => {
+    const params = {
+      id: userId,
+      value: !columnState[userId]?.[columnName],
+      column: 'publish',
+      model: model,
+    }
+    UpdateStatusByField(params)
     setColumnState(prevState => ({
       ...prevState,
       [userId]: {
@@ -28,20 +37,18 @@ const useColumnState = (
       },
     }))
   }
-  const setInitialColumnState = (users: UserType[], columnName: string) => {
-    const newState = users.reduce((acc: any, user: any) => {
-      acc[user.id] = {
-        [columnName]: user[columnName] === 2,
-      }
-      return acc
-    }, {})
+
+  useEffect(() => {
+    const newState =
+      !isLoading &&
+      users.reduce((acc: any, user: any) => {
+        acc[user.id] = {
+          [columnName]: user[columnName] === 2,
+        }
+        return acc
+      }, {})
 
     setColumnState(newState)
-  }
-  useEffect(() => {
-    if (!isLoading && users) {
-      setInitialColumnState(users, columnName)
-    }
   }, [users, isLoading, columnName])
 
   return { columnState, handleChecked }

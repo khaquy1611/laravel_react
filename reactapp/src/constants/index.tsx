@@ -51,3 +51,8 @@ export const breadcrumbLabelMap = {
 } as {
   [key: string]: string
 }
+
+
+export const model = {
+  users: 'users'
+}

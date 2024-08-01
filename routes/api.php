@@ -15,6 +15,7 @@ Route::group([
 
   /* User */
   Route::get('users', [UserController::class, 'index'])->name('user.index');
+  Route::put('users/{id}/status', [UserController::class, 'updateStatusByField'])->name('user.update');
 });
 
 Route::post('v1/auth/login', [AuthController::class, 'login']);

@@ -8,6 +8,7 @@ export interface UserType {
   description?: string | null
   address: string | null
   publish?: number | null
+  created_at?: string | null
 }
 interface UserLinks {
   url?: string | number | null
