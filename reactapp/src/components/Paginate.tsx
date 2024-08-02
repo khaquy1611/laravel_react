@@ -20,11 +20,7 @@ type PaginationProps = {
   totalPages: number
 }
 
-const Paginate: React.FC<PaginationProps> = ({
-  links,
-  pageChange,
-  totalPages,
-}) => {
+const Paginate = ({ links, pageChange, totalPages }: PaginationProps) => {
   const activeLinkIndex = links.findIndex(link => link.active)
   const filterLinks = links.filter(
     (link, index) =>

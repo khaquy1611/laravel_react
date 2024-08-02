@@ -22,7 +22,7 @@ type ToggleMenu = {
   toggleMenu: () => void
 }
 
-const Header: React.FC<ToggleMenu> = ({ isOpen, toggleMenu }) => {
+const Header = ({ isOpen, toggleMenu }: ToggleMenu) => {
   return (
     <header className="app-header h-14 fixed w-full content-center items-center top-0 bg-white border-b border-[#e7eaec] z-20">
       <div className="main-header mx-auto px-15px h-full flex justify-between items-center">

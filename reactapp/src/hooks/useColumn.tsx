@@ -1,13 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UpdateStatusByField } from '@/services/BaseServices'
-import { UserType } from '@/types/User'
+import { UserState, UserType } from '@/types/User'
 import { useEffect, useState } from 'react'
-
-interface UserState {
-  [userId: string]: {
-    [columnName: string]: boolean
-  }
-}
 
 interface useColumnStateReturn {
   columnState: UserState

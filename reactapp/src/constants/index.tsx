@@ -1,4 +1,9 @@
-import { FaHome, FaUser } from 'react-icons/fa'
+import { UserType } from '@/types/User'
+import { FaHome, FaRegEdit, FaUser } from 'react-icons/fa'
+import { tableColumnType } from '@/types/Base'
+import { RiDeleteBinLine } from 'react-icons/ri'
+import { MdLockReset } from 'react-icons/md'
+
 export const MenuConfig = [
   {
     label: 'MAIN',
@@ -52,7 +57,55 @@ export const breadcrumbLabelMap = {
   [key: string]: string
 }
 
-
 export const model = {
-  users: 'users'
+  users: `users`,
+}
+
+export const tableColumn: tableColumnType = {
+  users: [
+    {
+      name: `ID`,
+      render: (item: UserType) => <span>{item.id}</span>,
+    },
+    {
+      name: `Họ tên`,
+      render: (item: UserType) => <span>{item.name}</span>,
+    },
+    {
+      name: `Số điện thoại`,
+      render: (item: UserType) => <span>{item.phone}</span>,
+    },
+    {
+      name: `Email`,
+      render: (item: UserType) => <span>{item.email}</span>,
+    },
+    {
+      name: `Địa Chỉ`,
+      render: (item: UserType) => <span>{item.address}</span>,
+    },
+    {
+      name: `Nhóm`,
+      render: () => <span>{'-'}</span>,
+    },
+  ],
+}
+
+export const buttonActions = {
+  users: [
+    {
+      path: '/user/update',
+      icon: <FaRegEdit className="text-white" />,
+      className: 'bg-[#5d78d1] flex mr-[5px]',
+    },
+    {
+      path: '/user/delete',
+      icon: <RiDeleteBinLine className="text-white" />,
+      className: 'bg-[#ec4728] flex mr-[5px]',
+    },
+    {
+      path: '/user/reset',
+      icon: <MdLockReset className="text-white" />,
+      className: 'bg-[#f8ac59]',
+    },
+  ],
 }

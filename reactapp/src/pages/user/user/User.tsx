@@ -8,29 +8,16 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { UserType } from '@/types/User'
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import { Checkbox } from '@/components/ui/checkbox'
-import { RiDeleteBinLine } from 'react-icons/ri'
-import { Switch } from '@/components/ui/switch'
-import { MdLockReset } from 'react-icons/md'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { Button } from '@/components/ui/button'
-import { FaRegEdit } from 'react-icons/fa'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+
 import { pagination } from '@/services/UserServices'
 import { useQuery } from 'react-query'
-import { LoadingSpinner } from '@/components/ui/loading'
+
 import Paginate from '@/components/Paginate'
-import useColumnState from '@/hooks/useColumn'
+
 import { model } from '@/constants'
+import CustomTable from '@/components/CustomTable'
+import { tableColumn } from '@/constants'
 
 const User = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -42,12 +29,6 @@ const User = () => {
 
   const { isLoading, data, isError, refetch } = useQuery(['users', page], () =>
     pagination(page)
-  )
-
-  const { columnState, handleChecked } = useColumnState(
-    data?.users,
-    'publish',
-    isLoading
   )
 
   const totalItems = data ? data.total : 0
@@ -78,7 +59,7 @@ const User = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-[15px]">
-            <Table className="border border-solid border-[#ebebeb]">
+            {/* <Table className="border border-solid border-[#ebebeb]">
               <TableCaption>Danh sách thành viên.</TableCaption>
               <TableHeader>
                 <TableRow>
@@ -162,10 +143,17 @@ const User = () => {
                   ))
                 )}
               </TableBody>
-            </Table>
+            </Table> */}
+            <CustomTable
+              data={data}
+              isLoading={isLoading}
+              isError={isError}
+              model={model['users']}
+              tableColumn={tableColumn}
+            />
           </CardContent>
           <CardFooter>
-            {!isLoading && data.links.length ? (
+            {!isLoading && data[model['users']] && data.links.length ? (
               <Paginate
                 totalPages={totalPages}
                 links={data.links}

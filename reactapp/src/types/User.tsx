@@ -10,6 +10,14 @@ export interface UserType {
   publish?: number | null
   created_at?: string | null
 }
+
+export interface UserState {
+  [userId: string]: {
+    [columnName: string]: boolean
+  }
+}
+
+
 interface UserLinks {
   url?: string | number | null
   label?: string | number | null

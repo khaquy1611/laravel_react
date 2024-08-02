@@ -26,12 +26,10 @@ body {
   }
 }
 .active {
-  border-radius: calc(0.5rem - 2px);
-}
-
-.hover\:bg-accent:hover, .active {
+  outline: none!important;
   background-color: rgba(132, 90, 223, 1)!important;
   color: #fff;
   cursor: pointer;
-  
+  border-radius: calc(0.5rem - 2px);
 }
+
