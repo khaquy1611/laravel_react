@@ -24,7 +24,7 @@ type ToggleMenu = {
 
 const Header = ({ isOpen, toggleMenu }: ToggleMenu) => {
   return (
-    <header className="app-header h-14 fixed w-full content-center items-center top-0 bg-white border-b border-[#e7eaec] z-20">
+    <header className="app-header h-14 fixed z-100 w-full content-center items-center top-0 bg-white border-b border-[#e7eaec] z-20">
       <div className="main-header mx-auto px-15px h-full flex justify-between items-center">
         <div className="toggle-menu" onClick={() => toggleMenu()}>
           {isOpen ? (
@@ -43,7 +43,7 @@ const Header = ({ isOpen, toggleMenu }: ToggleMenu) => {
           <div className="cart-dropdown">
             <Link to="/" className="header-link flex relative">
               <FiShoppingCart className="cursor-pointer  header-link-icon" />
-              <span className="bage absolute top-[2px] right-[2px] text-xs w-[14px] h-[15px] text-[10px] text-white font-semibold text-center rounded-full bg-primary-rgb">
+              <span className="bage absolute top-[2px] right-[2px] text-xs w-[14px] h-[15px] text-[10px] text-white font-semibold text-center rounded-full bg-primary-bg">
                 5
               </span>
             </Link>

@@ -95,7 +95,7 @@ export const buttonActions = {
     {
       path: '/user/update',
       icon: <FaRegEdit className="text-white" />,
-      className: 'bg-[#5d78d1] flex mr-[5px]',
+      className: 'bg-primary-bg flex mr-[5px]',
     },
     {
       path: '/user/delete',
@@ -109,3 +109,13 @@ export const buttonActions = {
     },
   ],
 }
+
+export const perPage = [
+  "10 bản ghi",
+  "20 bản ghi",
+  "50 bản ghi",
+  "100 bản ghi",
+  "200 bản ghi",
+  "400 bản ghi",
+  "600 bản ghi"
+]
