@@ -13,38 +13,41 @@ import { Input } from '@/components/ui/input'
 import { Button } from './ui/button'
 import { Link } from 'react-router-dom'
 import { FaPlus } from 'react-icons/fa'
+import { FilterProps } from '@/types/Base'
 
-const Filter = () => {
+const Filter = ({ isAnyChecked }: FilterProps) => {
   return (
     <>
       <div className="mb-[15px]">
         <div className="flex justify-between items-center">
           <div className="flex items-center">
             <div className="mr-[10px]">
-              <Select>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Chọn Thao Tác" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem className="cursor:pointer" value="deleteAll">
-                    <div className="flex items-center">
-                      <FaXmark className="mr-[5px] " />
-                    </div>
-                  </SelectItem>
-                  <SelectItem className="cursor:pointer" value="publish|2">
-                    <div className="flex">
-                      <IoCheckmarkOutline className="mr-[5px] " />
-                      Xuất bản
-                    </div>
-                  </SelectItem>
-                  <SelectItem className="cursor:pointer" value="publish|1">
-                    <div className="flex">
-                      <FaRegCircleXmark className="mr-[5px] " />
-                      Ngừng xuất
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
+              {isAnyChecked && (
+                <Select>
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Chọn Thao Tác" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem className="cursor:pointer" value="deleteAll">
+                      <div className="flex items-center">
+                        <FaXmark className="mr-[5px] " />
+                      </div>
+                    </SelectItem>
+                    <SelectItem className="cursor:pointer" value="publish|2">
+                      <div className="flex">
+                        <IoCheckmarkOutline className="mr-[5px] " />
+                        Xuất bản
+                      </div>
+                    </SelectItem>
+                    <SelectItem className="cursor:pointer" value="publish|1">
+                      <div className="flex">
+                        <FaRegCircleXmark className="mr-[5px] " />
+                        Ngừng xuất
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              )}
             </div>
             <div className="mr-[10px]">
               <Select>

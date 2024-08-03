@@ -15,3 +15,7 @@ interface userColumn {
 export interface tableColumnType {
   users : userColumn[]
 }
+
+export interface FilterProps {
+  isAnyChecked : boolean
+}

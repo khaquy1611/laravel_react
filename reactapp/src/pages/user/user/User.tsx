@@ -16,6 +16,7 @@ import { model } from '@/constants'
 import CustomTable from '@/components/CustomTable'
 import { tableColumn } from '@/constants'
 import Filter from '@/components/Filter'
+import useCheckBoxState from '@/hooks/useCheckBoxState'
 
 const User = () => {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -28,10 +29,17 @@ const User = () => {
   const { isLoading, data, isError, refetch } = useQuery(['users', page], () =>
     pagination(page)
   )
+  const {
+    checkedState,
+    checkedAllState,
+    handleCheckedChange,
+    handleChangeAll,
+    isAnyChecked,
+  } = useCheckBoxState(data, model['users'], isLoading)
 
   const totalItems = data ? data.total : 0
   const totalPages = Math.ceil(totalItems / 20)
-
+  const somethingChecked = isAnyChecked()
   const handlePageChange = (page: number | null) => {
     setPage(page)
     navigate(`?page=${page}`)
@@ -57,13 +65,17 @@ const User = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-[15px]">
-            <Filter />
+            <Filter isAnyChecked={somethingChecked} />
             <CustomTable
               data={data}
               isLoading={isLoading}
               isError={isError}
               model={model['users']}
               tableColumn={tableColumn}
+              checkedState={checkedState}
+              checkedAllState={checkedAllState}
+              handleCheckedChange={handleCheckedChange}
+              handleChangeAll={handleChangeAll}
             />
           </CardContent>
           <CardFooter>

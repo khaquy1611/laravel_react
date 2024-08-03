@@ -26,6 +26,10 @@ type CustomTableProps = {
   isError: boolean
   model: string
   tableColumn: tableColumnType
+  checkedState: { [key: number]: boolean }
+  checkedAllState: boolean
+  handleCheckedChange: (id: number) => void
+  handleChangeAll: () => void
 }
 
 const CustomTable = ({
@@ -34,20 +38,27 @@ const CustomTable = ({
   isError,
   model,
   tableColumn,
+  checkedState,
+  checkedAllState,
+  handleCheckedChange,
+  handleChangeAll,
 }: CustomTableProps) => {
   const { columnState, handleChecked } = useColumnState(
     data && data[model],
     'publish',
     isLoading
   )
-
   return (
     <Table className="border border-solid border-[#ebebeb]">
       <TableCaption>Danh sách thành viên.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className="text-center">
-            <Checkbox className="text-white" />
+            <Checkbox
+              className="text-white"
+              checked={checkedAllState}
+              onCheckedChange={() => handleChangeAll()}
+            />
           </TableHead>
           {tableColumn?.users &&
             tableColumn.users.map((column, index) => (
@@ -80,9 +91,16 @@ const CustomTable = ({
         ) : (
           data[model] &&
           data[model].map((row: UserType, index: number) => (
-            <TableRow key={index}>
+            <TableRow
+              key={index}
+              className={checkedState[row.id] ? 'bg-[#ffc]' : ''}
+            >
               <TableCell className="font-medium text-center">
-                <Checkbox className="text-white" />
+                <Checkbox
+                  className="text-white"
+                  checked={checkedState[row.id] || false}
+                  onCheckedChange={() => handleCheckedChange(row.id)}
+                />
               </TableCell>
               {tableColumn?.users &&
                 tableColumn?.users.map((column, index) => (
