@@ -65,7 +65,7 @@ const User = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-[15px]">
-            <Filter isAnyChecked={somethingChecked} />
+            <Filter isAnyChecked={somethingChecked} checkedState={checkedState} model={model['users']} refetch={refetch} />
             <CustomTable
               data={data}
               isLoading={isLoading}

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UpdateStatusByField } from '@/services/BaseServices'
+import { updateStatusByField } from '@/services/BaseServices'
 import { UserState, UserType } from '@/types/User'
 import { useEffect, useState } from 'react'
 
@@ -22,7 +22,7 @@ const useColumnState = (
       column: 'publish',
       model: model,
     }
-    UpdateStatusByField(params)
+    updateStatusByField(params)
     setColumnState(prevState => ({
       ...prevState,
       [userId]: {

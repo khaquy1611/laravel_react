@@ -1,4 +1,5 @@
-import { UserType } from "./User"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { UserType } from './User'
 
 export interface UpdateStatusByFieldParam {
   id: string | number
@@ -13,9 +14,23 @@ interface userColumn {
 }
 
 export interface tableColumnType {
-  users : userColumn[]
+  users: userColumn[]
 }
 
-export interface FilterProps {
-  isAnyChecked : boolean
+export interface CheckStateInterface {
+  checkedState: { [key: number]: boolean }
+}
+
+export interface FilterProps extends CheckStateInterface {
+  isAnyChecked: boolean
+  model: string
+  refetch: any
+}
+
+export interface CustomAlertDialogType {
+  isOpen: boolean
+  title: string
+  desciption: string
+  closeAlertDialog: () => void
+  confirmAction: () => void
 }
