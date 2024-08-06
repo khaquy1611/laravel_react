@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/card'
 import { pagination } from '@/services/UserServices'
 import Paginate from '@/components/Paginate'
-import { model } from '@/constants'
+import { breadcrumb, model } from '@/constants'
 import CustomTable from '@/components/CustomTable'
 import { tableColumn } from '@/constants'
 import Filter from '@/components/Filter'
@@ -18,7 +18,7 @@ import useTable from '@/hooks/useTable'
 import { FilterParamsType } from '@/types/Base'
 import { useSearchParams } from 'react-router-dom'
 
-const User = () => {
+const View = () => {
   const {
     isLoading,
     data,
@@ -45,14 +45,14 @@ const User = () => {
 
   return (
     <>
-      <PageHeading />
+      <PageHeading breadcrumb={breadcrumb}/>
       <div className="container-fluid px-4">
         <Card className="rounded-[5px] mt-[15px]">
           <CardHeader className="border-b border-solid border-[#f3f3f3] p-[20px]">
             <CardTitle className="uppercase">
               QUẢN LÝ DANH SÁCH THÀNH VIÊN
             </CardTitle>
-            <CardDescription className="text-xs text-[#f00000]">
+            <CardDescription className="text-xs text-[#0400f0]">
               Hiển thị danh sách thành viên, sử dụng các chức năng bên dưới để
               lọc theo ý muốn
             </CardDescription>
@@ -94,4 +94,4 @@ const User = () => {
   )
 }
 
-export default User
+export default View

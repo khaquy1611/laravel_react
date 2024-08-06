@@ -88,8 +88,7 @@ const CustomTable = ({
               lại sau
             </TableCell>
           </TableRow>
-        ) : (
-          data[model] &&
+        ) : data[model].length ? (
           data[model].map((row: UserType, index: number) => (
             <TableRow
               key={index}
@@ -132,6 +131,15 @@ const CustomTable = ({
               </TableCell>
             </TableRow>
           ))
+        ) : (
+          <TableRow>
+            <TableCell
+              colSpan={9}
+              className="text-center text-[12px] text-[#f00]"
+            >
+              Không có dữ liệu để hiển thị
+            </TableCell>
+          </TableRow>
         )}
       </TableBody>
     </Table>

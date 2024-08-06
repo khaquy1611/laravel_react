@@ -2,9 +2,10 @@ import AuthMiddleware from '@/middleware/AuthMiddleware'
 import LoginMiddleware from '@/middleware/LoginMiddleware'
 import { createBrowserRouter } from 'react-router-dom'
 import Login from '@/pages/Login'
-import User from '@/pages/user/user/User'
+import View from '@/pages/user/user/View'
 import Dashboard from '@/pages/Dashboard'
 import Layout from '@/components/Layout'
+import Store from '@/pages/user/user/Store'
 
 const router = createBrowserRouter([
   {
@@ -29,7 +30,11 @@ const router = createBrowserRouter([
       },
       {
         path: '/user/index',
-        element: <User />,
+        element: <View />,
+      },
+      {
+        path: '/user/create',
+        element: <Store />,
       },
     ],
   },

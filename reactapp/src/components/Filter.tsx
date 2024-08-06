@@ -9,7 +9,7 @@ import {
 import { FaXmark } from 'react-icons/fa6'
 import { IoCheckmarkOutline } from 'react-icons/io5'
 import { FaRegCircleXmark } from 'react-icons/fa6'
-import { perPage, publishs } from '@/constants'
+import { perPage, publishs, sorts } from '@/constants'
 import { Input } from '@/components/ui/input'
 import { Button } from './ui/button'
 import { Link, useSearchParams } from 'react-router-dom'
@@ -35,6 +35,7 @@ const Filter = ({
   const [actionSelectedValue, setActionSelectedValue] = useState(``)
   const [searchParams] = useSearchParams()
   const [filters, setFilters] = useState<FilterParams>({
+    sort: searchParams.get('sort') || '',
     perPage: searchParams.get('perPage') || '10',
     publish: searchParams.get('publish') || '0',
     parent_id: searchParams.get('parent_id') || '0',
@@ -90,8 +91,8 @@ const Filter = ({
         />
         <div className="flex justify-between items-center">
           <div className="flex items-center">
-            <div className="mr-[10px]">
-              {isAnyChecked && (
+            {isAnyChecked && (
+              <div className="mr-[10px]">
                 <Select onValueChange={value => openAlertDialog(value)}>
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Chọn Thao Tác" />
@@ -117,8 +118,8 @@ const Filter = ({
                     </SelectItem>
                   </SelectContent>
                 </Select>
-              )}
-            </div>
+              </div>
+            )}
             <div className="mr-[10px]">
               <Select
                 onValueChange={value => handlerFilter(value, 'perPage')}
@@ -177,7 +178,25 @@ const Filter = ({
                 </SelectContent>
               </Select>
             </div>
-
+            <div className="mr-[10px]">
+              <Select onValueChange={value => handlerFilter(value, 'sort')} defaultValue={filters.sort}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Chọn sắp xếp theo" />
+                </SelectTrigger>
+                <SelectContent>
+                  {sorts &&
+                    sorts.map(sort => (
+                      <SelectItem
+                        key={sort.name}
+                        className="cursor:pointer flex"
+                        value={String(sort.value)}
+                      >
+                        {sort.name}
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
             <div className="mr-[10px]">
               <Input
                 type="email"

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { UserType } from '@/types/User'
 import { FaHome, FaRegEdit, FaUser } from 'react-icons/fa'
 import { tableColumnType } from '@/types/Base'
@@ -35,26 +36,22 @@ export const MenuConfig = [
   },
 ]
 
-export const breadcrumb = [
-  {
+export const breadcrumb: any = {
+  ['dashboard']: {
     id: 'dashboard',
-    title: 'Dashboard',
+    title: 'Thống kê chung',
     route: '/dashboard',
-    active: ['dashboard'],
   },
-  {
+  ['user/index']: {
     id: 'user',
-    title: 'Quản lí thành viên',
+    title: 'Danh sách thành viên',
     route: '/user/index',
-    active: ['user'],
   },
-]
-
-export const breadcrumbLabelMap = {
-  dashboard: 'Thống kê chung',
-  user: 'Quản lí thành viên',
-} as {
-  [key: string]: string
+  ['user/create']: {
+    id: 'userCreate',
+    title: 'Thêm mới thành viên',
+    route: '/user/create',
+  },
 }
 
 export const model = {
@@ -110,15 +107,7 @@ export const buttonActions = {
   ],
 }
 
-export const perPage = [
-  '10',
-  '20',
-  '50',
-  '100',
-  '200',
-  '400',
-  '600',
-]
+export const perPage = ['10', '20', '50', '100', '200', '400', '600']
 
 export const publishs = [
   {
@@ -132,5 +121,24 @@ export const publishs = [
   {
     id: 2,
     name: 'Xuất bản',
+  },
+]
+
+export const sorts = [
+  {
+    value: 'id,desc',
+    name: 'Sắp xếp bản ghi mới - cũ',
+  },
+  {
+    value: 'id,asc',
+    name: 'Sắp xếp bản ghi cũ - mới',
+  },
+  {
+    value: 'id,asc',
+    name: 'Sắp xếp tên từ A - Z',
+  },
+  {
+    value: 'id,desc',
+    name: 'Sắp xếp tên từ Z - A',
   },
 ]

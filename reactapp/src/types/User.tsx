@@ -17,7 +17,6 @@ export interface UserState {
   }
 }
 
-
 interface UserLinks {
   url?: string | number | null
   label?: string | number | null
@@ -36,8 +35,9 @@ export interface PublishState {
 }
 
 export interface FilterParams {
-  keyword?: string | undefined,
-  perPage? : string | undefined,
-  publish? : string | undefined,
+  sort?: string | undefined
+  keyword?: string | undefined
+  perPage?: string | undefined
+  publish?: string | undefined
   parent_id?: string | undefined
 }
