@@ -8,9 +8,24 @@ class UserService extends BaseService {
     public function __construct(UserRepository $userRepository) {
         $this->userRepository = $userRepository;
     }
-
-    public function paginate($request) {
-        $users = $this->userRepository->pagination();
+    private function paginateArgument($request) {
+        return [
+            'perPage' => $request->input('perPage') ?? 20,
+            'keyword' => [
+                'search' => $request->input('keyword') ?? '',
+                'field' => ['name', 'email', 'address', 'phone']
+            ],
+            'condition' => [
+                'publish' => $request->integer('publish'),
+                // 'user_catalogue_id' => $request->integer('user_catalogue_id')
+            ],
+            'select' => ['*'],
+            'orderBy' => $request->input('sort') ? explode(',', $request->input('sort')) : ['id', 'desc'],
+        ];
+    }
+    public function paginate($request) { 
+        $argument = $this->paginateArgument($request);
+        $users = $this->userRepository->pagination([...$argument]);
         return $users;
     }
 }

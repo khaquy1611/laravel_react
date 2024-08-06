@@ -34,3 +34,10 @@ export interface DataUserResponse {
 export interface PublishState {
   [id: string]: boolean
 }
+
+export interface FilterParams {
+  keyword?: string | undefined,
+  perPage? : string | undefined,
+  publish? : string | undefined,
+  parent_id?: string | undefined
+}

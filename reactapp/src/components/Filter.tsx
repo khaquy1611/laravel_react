@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Select,
   SelectContent,
@@ -8,28 +9,41 @@ import {
 import { FaXmark } from 'react-icons/fa6'
 import { IoCheckmarkOutline } from 'react-icons/io5'
 import { FaRegCircleXmark } from 'react-icons/fa6'
-import { perPage } from '@/constants'
+import { perPage, publishs } from '@/constants'
 import { Input } from '@/components/ui/input'
 import { Button } from './ui/button'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { FaPlus } from 'react-icons/fa'
 import { FilterProps } from '@/types/Base'
 import useFilterHooksActions from '@/hooks/useFilterHooksActions'
 import CustomAlertDialog from './CustomAlertDialog'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { showToast } from '@/helpers/myHelper'
 import { clearToast } from '@/redux/slice/toastSlice'
+import { FilterParams } from '@/types/User'
+import useDebounce from '@/hooks/useDebounce'
 
 const Filter = ({
   isAnyChecked,
   checkedState,
   model,
   refetch,
+  handleQueryString,
 }: FilterProps) => {
   const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false)
   const [actionSelectedValue, setActionSelectedValue] = useState(``)
+  const [searchParams] = useSearchParams()
+  const [filters, setFilters] = useState<FilterParams>({
+    perPage: searchParams.get('perPage') || '10',
+    publish: searchParams.get('publish') || '0',
+    parent_id: searchParams.get('parent_id') || '0',
+  })
+  const [keyword, setKeyword] = useState<string>(
+    searchParams.get('keyword') || ''
+  )
   const { actionSwitch } = useFilterHooksActions()
+  const { debounce } = useDebounce()
   const dispatch = useDispatch()
   const openAlertDialog = (value: string) => {
     setAlertDialogOpen(true)
@@ -53,6 +67,17 @@ const Filter = ({
     showToast(response?.message, 'success')
     dispatch(clearToast())
   }
+
+  const handlerFilter = (value: string, field: string) => {
+    setFilters(prevFilters => ({ ...prevFilters, [field]: value }))
+  }
+  const debounceInputSearch = debounce((value: string) => {
+    setKeyword(value)
+  }, 300)
+  useEffect(() => {
+    handleQueryString({ ...filters, keyword })
+  }, [filters, keyword])
+
   return (
     <>
       <div className="mb-[15px]">
@@ -95,19 +120,44 @@ const Filter = ({
               )}
             </div>
             <div className="mr-[10px]">
-              <Select>
+              <Select
+                onValueChange={value => handlerFilter(value, 'perPage')}
+                defaultValue={filters.perPage}
+              >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Chọn số bản ghi" />
                 </SelectTrigger>
                 <SelectContent>
                   {perPage &&
-                    perPage.map((perpage, index) => (
+                    perPage.map((perPage, index) => (
                       <SelectItem
                         key={index}
                         className="cursor:pointer flex"
-                        value={perpage}
+                        value={perPage}
                       >
-                        {perpage} bản ghi
+                        {perPage} bản ghi
+                      </SelectItem>
+                    ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="mr-[10px]">
+              <Select
+                onValueChange={value => handlerFilter(value, 'publish')}
+                defaultValue={filters.publish}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Chọn trạng thái" />
+                </SelectTrigger>
+                <SelectContent>
+                  {publishs &&
+                    publishs.map(publish => (
+                      <SelectItem
+                        key={publish.id}
+                        className="cursor:pointer flex"
+                        value={String(publish.id)}
+                      >
+                        {publish.name}
                       </SelectItem>
                     ))}
                 </SelectContent>
@@ -115,11 +165,16 @@ const Filter = ({
             </div>
 
             <div className="mr-[10px]">
-              <Select>
+              <Select
+                onValueChange={value => handlerFilter(value, 'parent_id')}
+                defaultValue={filters.parent_id}
+              >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Chọn danh mục cha" />
                 </SelectTrigger>
-                <SelectContent></SelectContent>
+                <SelectContent>
+                  <SelectItem value="0">Tất cả danh mục</SelectItem>
+                </SelectContent>
               </Select>
             </div>
 
@@ -128,6 +183,11 @@ const Filter = ({
                 type="email"
                 className="w-[200px]"
                 placeholder="Nhập từ khóa..."
+                onChange={e => {
+                  e.preventDefault()
+                  debounceInputSearch(e.target.value)
+                }}
+                defaultValue={keyword}
               />
             </div>
           </div>

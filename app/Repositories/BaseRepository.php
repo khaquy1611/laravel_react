@@ -8,8 +8,12 @@ class BaseRepository {
        $this->model = $model;
     }
    
-    public function pagination() {
-        return $this->model->paginate(20);
+    public function pagination($params = []) {
+        return $this->model
+        ->select($params['select'])
+        ->condition($params['condition'] ?? [])
+        ->keyword($params['keyword'] ?? '')
+        ->paginate($params['perPage']);
     }
     
     public function update($id, $payload) {

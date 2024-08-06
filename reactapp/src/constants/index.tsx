@@ -111,11 +111,26 @@ export const buttonActions = {
 }
 
 export const perPage = [
-  "10 bản ghi",
-  "20 bản ghi",
-  "50 bản ghi",
-  "100 bản ghi",
-  "200 bản ghi",
-  "400 bản ghi",
-  "600 bản ghi"
+  '10',
+  '20',
+  '50',
+  '100',
+  '200',
+  '400',
+  '600',
+]
+
+export const publishs = [
+  {
+    id: 0,
+    name: 'Tất cả',
+  },
+  {
+    id: 1,
+    name: 'Không xuất bản',
+  },
+  {
+    id: 2,
+    name: 'Xuất bản',
+  },
 ]

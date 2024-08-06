@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UserType } from './User'
-
 export interface UpdateStatusByFieldParam {
   id: string | number
   column: string
@@ -25,6 +24,7 @@ export interface FilterProps extends CheckStateInterface {
   isAnyChecked: boolean
   model: string
   refetch: any
+  handleQueryString: any
 }
 
 export interface CustomAlertDialogType {
@@ -33,4 +33,7 @@ export interface CustomAlertDialogType {
   desciption: string
   closeAlertDialog: () => void
   confirmAction: () => void
+}
+export interface FilterParamsType {
+  [key: string] : string | number
 }

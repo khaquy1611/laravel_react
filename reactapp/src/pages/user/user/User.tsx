@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import PageHeading from '@/components/Heading'
 import {
   Card,
@@ -8,27 +7,26 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { useNavigate, useSearchParams } from 'react-router-dom'
 import { pagination } from '@/services/UserServices'
-import { useQuery } from 'react-query'
 import Paginate from '@/components/Paginate'
 import { model } from '@/constants'
 import CustomTable from '@/components/CustomTable'
 import { tableColumn } from '@/constants'
 import Filter from '@/components/Filter'
 import useCheckBoxState from '@/hooks/useCheckBoxState'
+import useTable from '@/hooks/useTable'
+import { FilterParamsType } from '@/types/Base'
+import { useSearchParams } from 'react-router-dom'
 
 const User = () => {
-  const [searchParams, setSearchParams] = useSearchParams()
-  const currentPage = searchParams.get('page')
-    ? parseInt(searchParams.get('page')!)
-    : 1
-  const [page, setPage] = useState<number | null>(currentPage)
-  const navigate = useNavigate()
-
-  const { isLoading, data, isError, refetch } = useQuery(['users', page], () =>
-    pagination(page)
-  )
+  const {
+    isLoading,
+    data,
+    isError,
+    refetch,
+    handlePageChange,
+    handleQueryString,
+  } = useTable({ model, pagination })
   const {
     checkedState,
     checkedAllState,
@@ -37,18 +35,13 @@ const User = () => {
     isAnyChecked,
   } = useCheckBoxState(data, model['users'], isLoading)
 
+  const [searchParams] = useSearchParams()
+  const perPage = searchParams.get('perPage')
+    ? parseInt(searchParams.get('perPage')!)
+    : 20
   const totalItems = data ? data.total : 0
-  const totalPages = Math.ceil(totalItems / 20)
+  const totalPages = Math.ceil(totalItems / perPage)
   const somethingChecked = isAnyChecked()
-  const handlePageChange = (page: number | null) => {
-    setPage(page)
-    navigate(`?page=${page}`)
-  }
-
-  useEffect(() => {
-    setSearchParams({ page: currentPage.toString() })
-    refetch()
-  }, [currentPage, page, refetch, setSearchParams])
 
   return (
     <>
@@ -65,7 +58,15 @@ const User = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-[15px]">
-            <Filter isAnyChecked={somethingChecked} checkedState={checkedState} model={model['users']} refetch={refetch} />
+            <Filter
+              isAnyChecked={somethingChecked}
+              checkedState={checkedState}
+              model={model['users']}
+              refetch={refetch}
+              handleQueryString={(filters: FilterParamsType) =>
+                handleQueryString(filters)
+              }
+            />
             <CustomTable
               data={data}
               isLoading={isLoading}
