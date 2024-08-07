@@ -12,7 +12,7 @@ import { FaRegCircleXmark } from 'react-icons/fa6'
 import { perPage, publishs, sorts } from '@/constants'
 import { Input } from '@/components/ui/input'
 import { Button } from './ui/button'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { FaPlus } from 'react-icons/fa'
 import { FilterProps } from '@/types/Base'
 import useFilterHooksActions from '@/hooks/useFilterHooksActions'
@@ -30,6 +30,7 @@ const Filter = ({
   model,
   refetch,
   handleQueryString,
+  openSheet,
 }: FilterProps) => {
   const [alertDialogOpen, setAlertDialogOpen] = useState<boolean>(false)
   const [actionSelectedValue, setActionSelectedValue] = useState(``)
@@ -179,7 +180,10 @@ const Filter = ({
               </Select>
             </div>
             <div className="mr-[10px]">
-              <Select onValueChange={value => handlerFilter(value, 'sort')} defaultValue={filters.sort}>
+              <Select
+                onValueChange={value => handlerFilter(value, 'sort')}
+                defaultValue={filters.sort}
+              >
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Chọn sắp xếp theo" />
                 </SelectTrigger>
@@ -211,14 +215,12 @@ const Filter = ({
             </div>
           </div>
           <div>
-            <Button className="p-0 bg-primary-bg">
-              <Link
-                to="/user/create"
-                className="text-white px-[15px] flex justify-between items-center"
-              >
-                <FaPlus className="mr-5" />
-                Thêm mới thành viên
-              </Link>
+            <Button
+              className="p-0 bg-primary-bg text-white px-[15px] flex justify-between items-center text-[12px]"
+              onClick={() => openSheet()}
+            >
+              <FaPlus className="mr-[5px]" />
+              Thêm mới thành viên
             </Button>
           </div>
         </div>

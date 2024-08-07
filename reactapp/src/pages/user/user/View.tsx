@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+
 import { pagination } from '@/services/UserServices'
 import Paginate from '@/components/Paginate'
 import { breadcrumb, model } from '@/constants'
@@ -17,6 +18,9 @@ import useCheckBoxState from '@/hooks/useCheckBoxState'
 import useTable from '@/hooks/useTable'
 import { FilterParamsType } from '@/types/Base'
 import { useSearchParams } from 'react-router-dom'
+import useSheet from '@/hooks/useSheet'
+import CustomSheet from '@/components/CustomSheet'
+import UserStore from './Store'
 
 const View = () => {
   const {
@@ -34,7 +38,7 @@ const View = () => {
     handleChangeAll,
     isAnyChecked,
   } = useCheckBoxState(data, model['users'], isLoading)
-
+  const { isSheetOpen, openSheet, closeSheet } = useSheet()
   const [searchParams] = useSearchParams()
   const perPage = searchParams.get('perPage')
     ? parseInt(searchParams.get('perPage')!)
@@ -45,7 +49,7 @@ const View = () => {
 
   return (
     <>
-      <PageHeading breadcrumb={breadcrumb}/>
+      <PageHeading breadcrumb={breadcrumb} />
       <div className="container-fluid px-4">
         <Card className="rounded-[5px] mt-[15px]">
           <CardHeader className="border-b border-solid border-[#f3f3f3] p-[20px]">
@@ -66,6 +70,7 @@ const View = () => {
               handleQueryString={(filters: FilterParamsType) =>
                 handleQueryString(filters)
               }
+              openSheet={openSheet}
             />
             <CustomTable
               data={data}
@@ -89,6 +94,9 @@ const View = () => {
             ) : null}
           </CardFooter>
         </Card>
+        <CustomSheet className="w-[400px] sm:w-[400px]" title={breadcrumb} isSheetOpen={isSheetOpen} closeSheet={closeSheet} >
+            <UserStore />
+        </CustomSheet>
       </div>
     </>
   )

@@ -25,6 +25,16 @@ export interface FilterProps extends CheckStateInterface {
   model: string
   refetch: any
   handleQueryString: any
+  openSheet: () => void
+}
+
+export interface SheetProps {
+  isSheetOpen?: boolean
+  closeSheet: () => void
+  openSheet?: () => void
+  children: any
+  title: string | undefined | any
+  className:  string | undefined | any
 }
 
 export interface CustomAlertDialogType {
@@ -35,5 +45,5 @@ export interface CustomAlertDialogType {
   confirmAction: () => void
 }
 export interface FilterParamsType {
-  [key: string] : string | number
+  [key: string]: string | number
 }

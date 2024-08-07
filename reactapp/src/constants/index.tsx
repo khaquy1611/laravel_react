@@ -46,11 +46,11 @@ export const breadcrumb: any = {
     id: 'user',
     title: 'Danh sách thành viên',
     route: '/user/index',
-  },
-  ['user/create']: {
-    id: 'userCreate',
-    title: 'Thêm mới thành viên',
-    route: '/user/create',
+    create : {
+      id: 'userCreate',
+      title: 'Thêm mới thành viên',
+      route: '/user/create',
+    },
   },
 }
 
