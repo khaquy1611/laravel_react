@@ -16,7 +16,7 @@ import { tableColumn } from '@/constants'
 import Filter from '@/components/Filter'
 import useCheckBoxState from '@/hooks/useCheckBoxState'
 import useTable from '@/hooks/useTable'
-import { FilterParamsType } from '@/types/Base'
+import { FilterParamsProps } from '@/types/Base'
 import { useSearchParams } from 'react-router-dom'
 import useSheet from '@/hooks/useSheet'
 import CustomSheet from '@/components/CustomSheet'
@@ -67,7 +67,7 @@ const View = () => {
               checkedState={checkedState}
               model={model['users']}
               refetch={refetch}
-              handleQueryString={(filters: FilterParamsType) =>
+              handleQueryString={(filters: FilterParamsProps) =>
                 handleQueryString(filters)
               }
               openSheet={openSheet}
@@ -94,8 +94,14 @@ const View = () => {
             ) : null}
           </CardFooter>
         </Card>
-        <CustomSheet className="w-[400px] sm:w-[400px]" title={breadcrumb} isSheetOpen={isSheetOpen} closeSheet={closeSheet} >
-            <UserStore />
+        <CustomSheet
+          className="w-[500px] sm:w-[500px]"
+          title={breadcrumb}
+          isSheetOpen={isSheetOpen}
+          closeSheet={closeSheet}
+          description="Nhập đầy đủ các thông tin dưới đây , các mục có dấu (*) là bắt buộc"
+        >
+          <UserStore />
         </CustomSheet>
       </div>
     </>

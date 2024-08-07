@@ -8,7 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-import { CustomAlertDialogType } from '@/types/Base'
+import { CustomAlertDialogProps } from '@/types/Base'
 
 const CustomAlertDialog = ({
   isOpen,
@@ -16,7 +16,7 @@ const CustomAlertDialog = ({
   desciption,
   closeAlertDialog,
   confirmAction,
-}: CustomAlertDialogType) => {
+}: CustomAlertDialogProps) => {
   return (
     <AlertDialog open={isOpen}>
       <AlertDialogContent>

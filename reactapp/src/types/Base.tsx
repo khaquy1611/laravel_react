@@ -34,16 +34,23 @@ export interface SheetProps {
   openSheet?: () => void
   children: any
   title: string | undefined | any
-  className:  string | undefined | any
+  className: string | undefined | any
+  description: string | undefined | any
 }
 
-export interface CustomAlertDialogType {
+export interface CustomAlertDialogProps {
   isOpen: boolean
   title: string
   desciption: string
   closeAlertDialog: () => void
   confirmAction: () => void
 }
-export interface FilterParamsType {
+export interface FilterParamsProps {
   [key: string]: string | number
+}
+
+export interface InputProps {
+  label: string | undefined | any
+  id: string
+  type: string | undefined | any
 }
