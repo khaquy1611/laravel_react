@@ -20,7 +20,7 @@ import { FilterParamsProps } from '@/types/Base'
 import { useSearchParams } from 'react-router-dom'
 import useSheet from '@/hooks/useSheet'
 import CustomSheet from '@/components/CustomSheet'
-import UserStore from './Store'
+import UserStore from './include/Store'
 
 const View = () => {
   const {
@@ -94,15 +94,22 @@ const View = () => {
             ) : null}
           </CardFooter>
         </Card>
-        <CustomSheet
-          className="w-[500px] sm:w-[500px]"
-          title={breadcrumb}
-          isSheetOpen={isSheetOpen}
-          closeSheet={closeSheet}
-          description="Nhập đầy đủ các thông tin dưới đây , các mục có dấu (*) là bắt buộc"
-        >
-          <UserStore />
-        </CustomSheet>
+        {isSheetOpen && (
+          <CustomSheet
+            title={breadcrumb}
+            description="Nhập đầy đủ các thông tin dưới đây. Các mục có dấu (*) là bắt buộc"
+            isSheetOpen={isSheetOpen.open}
+            closeSheet={closeSheet}
+            className="w-[500px] sm:w-[500px]"
+          >
+            <UserStore
+              refetch={refetch}
+              closeSheet={closeSheet}
+              id={isSheetOpen.id}
+              action={isSheetOpen.action}
+            />
+          </CustomSheet>
+        )}
       </div>
     </>
   )

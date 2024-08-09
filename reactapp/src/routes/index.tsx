@@ -2,10 +2,10 @@ import AuthMiddleware from '@/middleware/AuthMiddleware'
 import LoginMiddleware from '@/middleware/LoginMiddleware'
 import { createBrowserRouter } from 'react-router-dom'
 import Login from '@/pages/Login'
-import View from '@/pages/user/user/View'
+import View from '@/pages/user/screens/View'
 import Dashboard from '@/pages/Dashboard'
 import Layout from '@/components/Layout'
-import Store from '@/pages/user/user/Store'
+import Store from '@/pages/user/screens/include/Store'
 
 const router = createBrowserRouter([
   {

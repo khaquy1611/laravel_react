@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use App\Traits\QueryTraits;
+
 class User extends Authenticatable implements JWTSubject
 {
     use HasFactory, Notifiable, QueryTraits;
@@ -21,7 +22,14 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        'token_identifier',
+        'phone',
+        'user_catalogue_id',
+        'province_id',
+        'district_id',
+        'address',
+        'birthday',
+        'ward_id',
+        'image',
         'publish'
     ];
 
@@ -48,6 +56,19 @@ class User extends Authenticatable implements JWTSubject
         ];
     }
 
+    public function attributes(){
+        return [
+            'publish' => 1,
+        ];
+    }
+
+    // Rest omitted for brevity
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
     public function getJWTIdentifier()
     {
         return $this->getKey();
@@ -63,8 +84,10 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-    public function refreshToken()
-{
-    return $this->hasOne(RefreshToken::class);
-}
+
+    public function user_catalogues(){
+        return $this->belongsTo(UserCatalogue::class, 'user_catalogue_id', 'id');
+    }
+
+
 }

@@ -38,3 +38,9 @@ export const showToast = (message: string, type: ToastType) => {
         }
     }
 }
+
+export function getInitialName(string: string){
+    const words = string.trim().split(/\s+/)
+    const initial = words.map(word => word.charAt(0).toUpperCase()).join('')
+    return initial
+}

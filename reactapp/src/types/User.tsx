@@ -1,14 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface UserType {
   id: number
   name: string
   email: string
-  image?: string | null
-  birthday?: string | null
+  image: string | null
   phone: string | null
-  description?: string | null
   address: string | null
-  publish?: number | null
-  created_at?: string | null
+  created_at: string | null
+  user_catalogue_id: string
+  province_id: string | null
+  district_id: string | null
+  ward_id: string | null
 }
 
 export interface UserState {
@@ -16,7 +18,6 @@ export interface UserState {
     [columnName: string]: boolean
   }
 }
-
 interface UserLinks {
   url?: string | number | null
   label?: string | number | null
@@ -40,4 +41,28 @@ export interface FilterParams {
   perPage?: string | undefined
   publish?: string | undefined
   parent_id?: string | undefined
+}
+
+export type PayloadInput = {
+  name: string
+  email: string
+  phone: string
+  password?: string | undefined
+  confirmPassword?: string | undefined
+  user_catalogue_id: string
+  // image?:  FileList | string | undefined,
+  image?: any
+  province_id: string
+  district_id: string
+  ward_id: string
+  address?: string
+}
+
+export interface ImageUploadResult {
+  file: File
+  preview: string
+}
+
+export interface PayloadInputType<T> {
+  [key: string]: T
 }

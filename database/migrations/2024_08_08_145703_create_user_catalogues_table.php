@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->longText('refresh_token')->nullable();
-            $table->timestamp('refresh_token_expiry')->nullable();
+        Schema::create('user_catalogues', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 50);
+            $table->text('description');
+            $table->tinyInteger('publish')->default(1);
+            $table->timestamps();
         });
     }
 
@@ -22,9 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('refresh_token');
-            $table->dropColumn('refresh_token_expiry');
-        });
+        Schema::dropIfExists('user_catalogues');
     }
 };

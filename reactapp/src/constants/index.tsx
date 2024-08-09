@@ -46,7 +46,7 @@ export const breadcrumb: any = {
     id: 'user',
     title: 'Danh sách thành viên',
     route: '/user/index',
-    create : {
+    create: {
       id: 'userCreate',
       title: 'Thêm mới thành viên',
       route: '/user/create',
@@ -140,5 +140,60 @@ export const sorts = [
   {
     value: 'id,desc',
     name: 'Sắp xếp tên từ Z - A',
+  },
+]
+
+export const selectBox = [
+  {
+    title: 'Nhóm User',
+    placeholder: 'Chọn Nhóm Thành Viên',
+    options: [{ value: '1', label: 'Super Admin' }],
+  },
+  {
+    title: 'Thành Phố',
+    placeholder: 'Chọn Thành Phố',
+    options: [{ value: '1', label: 'Hà Nội' }],
+  },
+  {
+    title: 'Quận/Huyện',
+    placeholder: 'Chọn Quận/Huyện',
+    options: [{ value: '1', label: 'Hà Nội' }],
+  },
+  {
+    title: 'Phường Xã',
+    placeholder: 'Chọn Phường Xã',
+    options: [{ value: '1', label: 'Hà Nội' }],
+  },
+]
+export const store = [
+  {
+    label: 'Họ tên',
+    id: 'fullName',
+    type: 'text',
+  },
+  {
+    label: 'Email (*)',
+    id: 'email',
+    type: 'email',
+  },
+  {
+    label: 'Điện thoại',
+    id: 'phone',
+    type: 'text',
+  },
+  {
+    label: 'Mật khẩu (*)',
+    id: 'password',
+    type: 'password',
+  },
+  {
+    label: 'Nhập lại mk (*)',
+    id: 'confirmPassword',
+    type: 'password',
+  },
+  {
+    label: 'Ngày sinh',
+    id: 'birthday',
+    type: 'date',
   },
 ]

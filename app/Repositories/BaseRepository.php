@@ -24,8 +24,16 @@ class BaseRepository {
         return $model;
     }
 
-    public function findById($modelId, $column = ["*"], $relation = []) {
-        return $this->model->select($column)->with($relation)->findOrFail($modelId);
+    public function create($payload = []){
+        return $this->model->create($payload);
+    }
+
+    public function findById(
+        $modelId,
+        $column = ['*'],
+        $relation = [],
+    ){
+        return $this->model->select($column)->with($relation)->find($modelId);
     }
 
     public function deleteBatch($ids = []) {
@@ -34,5 +42,14 @@ class BaseRepository {
 
     public function updateBatch($payload = [], $whereIn = [], $condition = []) {
         return $this->model->whereIn($whereIn['whereInField'], $whereIn['whereInValue'])->update($payload);
+    }
+
+    
+    public function all($select = ['*']){
+        return $this->model->all($select);
+    }
+
+    public function findByParentId($parentId, $field, $select){
+        return $this->model->where($field, '=', $parentId)->get($select);
     }
 }

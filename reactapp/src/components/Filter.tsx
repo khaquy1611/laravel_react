@@ -70,6 +70,9 @@ const Filter = ({
     dispatch(clearToast())
   }
 
+  const detectButtonAction = () => {
+    openSheet({ open: true,  action: '', id: null })
+  }
   const handlerFilter = (value: string, field: string) => {
     setFilters(prevFilters => ({ ...prevFilters, [field]: value }))
   }
@@ -217,7 +220,7 @@ const Filter = ({
           <div>
             <Button
               className="p-0 bg-primary-bg text-white px-[15px] flex justify-between items-center text-[12px]"
-              onClick={() => openSheet()}
+              onClick={() => detectButtonAction()}
             >
               <FaPlus className="mr-[5px]" />
               Thêm mới thành viên

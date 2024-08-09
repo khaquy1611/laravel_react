@@ -16,10 +16,17 @@ Route::group([
 
   /* User */
   Route::get('users', [UserController::class, 'index'])->name('user.index');
+  Route::get('users/{id}', [UserController::class, 'show']);
+  Route::post('users', [UserController::class, 'create']);
+
+
   Route::put('users/{id}/status', [UserController::class, 'updateStatusByField'])->name('user.update');
   Route::delete('records/delete/batch', [DashboardController::class, 'deleteBatch'])->name('batch.delete');
   Route::put('records/update/batch', [DashboardController::class, 'updateBatch'])->name('batch.update');
+   /* Location */
+   Route::get('location', [DashboardController::class, 'location']);
 });
 
 Route::post('v1/auth/login', [AuthController::class, 'login']);
 Route::post('v1/auth/refresh',  [AuthController::class, 'refresh']);
+Route::post('v1/auth/logout',  [AuthController::class, 'logout']);

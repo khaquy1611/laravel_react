@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FilterParamsType } from '@/types/Base'
+import { FilterParamsProps } from '@/types/Base'
 import { useCallback, useEffect, useState } from 'react'
 import { useQuery } from 'react-query'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -15,13 +15,13 @@ const useTable = ({ pagination }: UseTableProps) => {
   const currentPage = searchParams.get('page')
     ? parseInt(searchParams.get('page')!)
     : 1
-  const initialParams: FilterParamsType = {}
+  const initialParams: FilterParamsProps = {}
   searchParams.forEach((value, key) => {
     if (key !== 'page') {
       initialParams[key] = value || ''
     }
   })
-  const createQueryString = (initialParams: FilterParamsType) => {
+  const createQueryString = (initialParams: FilterParamsProps) => {
     const query = Object.keys(initialParams)
       .filter(key => {
         const value = initialParams[key]
@@ -46,7 +46,7 @@ const useTable = ({ pagination }: UseTableProps) => {
     }
     return `page=${currentPage}`
   })
-  const [filters, setFilters] = useState<FilterParamsType>({})
+  const [filters, setFilters] = useState<FilterParamsProps>({})
 
   const [page, setPage] = useState<number | null>(currentPage)
   const { isLoading, data, isError, refetch } = useQuery(
@@ -58,7 +58,7 @@ const useTable = ({ pagination }: UseTableProps) => {
     setPage(page)
     navigate(`?${queryString}`)
   }
-  const handleQueryString = useCallback((filters: FilterParamsType) => {
+  const handleQueryString = useCallback((filters: FilterParamsProps) => {
     setFilters(filters)
   }, [])
   useEffect(() => {

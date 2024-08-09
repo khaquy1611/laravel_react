@@ -25,6 +25,9 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('token_identifier')->nullable();
+            $table->unsignedBigInteger('user_catalogue_id')->default(1);
+            $table->foreign('user_catalogue_id')->references('id')->on('user_catalogues')->onDelete('cascade');
+            $table->tinyInteger('publish')->default(1);
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
