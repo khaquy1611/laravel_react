@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UserType } from '@/types/User'
 import { FaHome, FaRegEdit, FaUser } from 'react-icons/fa'
-import { tableColumnType } from '@/types/Base'
 import { RiDeleteBinLine } from 'react-icons/ri'
 import { MdLockReset } from 'react-icons/md'
 
@@ -56,35 +54,6 @@ export const breadcrumb: any = {
 
 export const model = {
   users: `users`,
-}
-
-export const tableColumn: tableColumnType = {
-  users: [
-    {
-      name: `ID`,
-      render: (item: UserType) => <span>{item.id}</span>,
-    },
-    {
-      name: `Họ tên`,
-      render: (item: UserType) => <span>{item.name}</span>,
-    },
-    {
-      name: `Số điện thoại`,
-      render: (item: UserType) => <span>{item.phone}</span>,
-    },
-    {
-      name: `Email`,
-      render: (item: UserType) => <span>{item.email}</span>,
-    },
-    {
-      name: `Địa Chỉ`,
-      render: (item: UserType) => <span>{item.address}</span>,
-    },
-    {
-      name: `Nhóm`,
-      render: () => <span>{'-'}</span>,
-    },
-  ],
 }
 
 export const buttonActions = {

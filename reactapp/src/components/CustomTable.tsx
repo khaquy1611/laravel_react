@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/button'
 import { LoadingSpinner } from '@/components/ui/loading'
 import { UserType } from '@/types/User'
 import useColumnState from '@/hooks/useColumn'
-import { tableColumnType } from '@/types/Base'
+import { tableColumnProps } from '@/types/Base'
 import { buttonActions } from '@/constants'
 
 type CustomTableProps = {
@@ -25,7 +25,7 @@ type CustomTableProps = {
   isLoading: boolean
   isError: boolean
   model: string
-  tableColumn: tableColumnType
+  tableColumn: tableColumnProps[]
   checkedState: { [key: number]: boolean }
   checkedAllState: boolean
   handleCheckedChange: (id: number) => void
@@ -60,8 +60,8 @@ const CustomTable = ({
               onCheckedChange={() => handleChangeAll()}
             />
           </TableHead>
-          {tableColumn?.users &&
-            tableColumn.users.map((column, index) => (
+          {tableColumn &&
+            tableColumn.map((column, index) => (
               <TableHead className="text-center" key={index}>
                 {column.name}
               </TableHead>
@@ -101,8 +101,8 @@ const CustomTable = ({
                   onCheckedChange={() => handleCheckedChange(row.id)}
                 />
               </TableCell>
-              {tableColumn?.users &&
-                tableColumn?.users.map((column, index) => (
+              {tableColumn &&
+                tableColumn.map((column, index) => (
                   <TableCell className="text-center" key={index}>
                     {column.render(row)}
                   </TableCell>

@@ -7,15 +7,10 @@ export interface UpdateStatusByFieldParam {
   model: string | null
 }
 
-interface userColumn {
+export interface tableColumnProps {
   name: string
   render: (item: UserType) => JSX.Element
 }
-
-export interface tableColumnType {
-  users: userColumn[]
-}
-
 export interface CheckStateInterface {
   checkedState: { [key: number]: boolean }
 }

@@ -18,31 +18,12 @@ import {
   ButtonAction,
   ActionParam,
   OpenSheetFunction,
+  tableColumnProps,
 } from '@/types/Base'
 
 /* HOOKS */
 
-export const model = 'users'
-
-export const breadcrumb = {
-  index: {
-    title: 'Quản lý thành viên',
-    route: '/user/index',
-  },
-  create: {
-    title: 'Thêm mới thành viên',
-  },
-  update: {
-    title: 'Cập nhật thông tin',
-  },
-}
-
-interface tableColumn {
-  name: string
-  render: (item: UserType) => JSX.Element
-}
-
-export const tableColumn: tableColumn[] = [
+export const tableColumn: tableColumnProps[] = [
   {
     name: '',
     render: (item: UserType) => (
