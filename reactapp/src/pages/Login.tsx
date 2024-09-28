@@ -21,6 +21,7 @@ const Login = () => {
     setLoading(true)
     try {
       const auth = await login(payload)
+
       dispatch(
         setToast({
           message: 'Đăng nhập vào hệ thống thành công',
@@ -31,6 +32,7 @@ const Login = () => {
       auth && navigate('/dashboard')
     } catch (err) {
       /* empty */
+      return err
     } finally {
       setLoading(false)
     }

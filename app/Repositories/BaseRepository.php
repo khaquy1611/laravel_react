@@ -36,6 +36,10 @@ class BaseRepository {
         return $this->model->select($column)->with($relation)->find($modelId);
     }
 
+    public function delete($id){
+        return $this->findById($id)->delete();
+    }
+    
     public function deleteBatch($ids = []) {
         return $this->model->whereIn('id', $ids)->delete();
     }

@@ -58,4 +58,43 @@ class UserService extends BaseService {
         }
     }
 
+    public function update($request, $id, $auth){
+        DB::beginTransaction();
+        try {
+            $except = ['confirmPassword'];
+            $payload = $this->request($request, $auth, $except);
+
+            $user = $this->userRepository->update($id, $payload);
+            DB::commit();
+            return [
+                'user' => $user,
+                'code' => Status::SUCCESS
+            ];
+        } catch (\Exception $e) {
+            DB::rollback();
+            return [
+                'code' => Status::ERROR,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function delete($id){
+        DB::beginTransaction();
+        try {
+            $this->userRepository->delete($id);
+            DB::commit();
+            return [
+                'code' => Status::SUCCESS
+            ];
+        } catch (\Exception $e) {
+            DB::rollback();
+            return [
+                'code' => Status::ERROR,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+    
+
 }

@@ -1,4 +1,12 @@
+import { useEffect, useState } from 'react'
+/* COMPONENTS */
 import PageHeading from '@/components/Heading'
+import Paginate from '@/components/Paginate'
+import Filter from '@/components/Filter'
+import CustomTable from '@/components/CustomTable'
+import CustomSheet from '@/components/CustomSheet'
+import UserStore from '@/pages/user/screens/include/Store'
+
 import {
   Card,
   CardContent,
@@ -8,21 +16,26 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-import { pagination } from '@/services/UserServices'
-import Paginate from '@/components/Paginate'
-import { breadcrumb, model } from '@/constants'
-import CustomTable from '@/components/CustomTable'
-import { tableColumn } from '@/pages/user/settings/userSettings'
-import Filter from '@/components/Filter'
+/* CONTEXT */
+import { FilterProvider } from '@/contexts/FilterContext'
+
+/* HOOKS */
 import useCheckBoxState from '@/hooks/useCheckBoxState'
 import useTable from '@/hooks/useTable'
-import { FilterParamsProps } from '@/types/Base'
-import { useSearchParams } from 'react-router-dom'
 import useSheet from '@/hooks/useSheet'
-import CustomSheet from '@/components/CustomSheet'
-import UserStore from './include/Store'
+/* SETTINGS */
+import { breadcrumb, model, buttonActions } from '@/constants/index'
+import { tableColumn } from '@/pages/user/settings/userSettings'
+import { filterItems } from '@/settings/globalSettings'
+import { SelectConfig } from '@/components/CustomFilter'
 
-const View = () => {
+/* SERVICE */
+import { pagination, destroy, changePassword } from '@/services/UserServices'
+import { Breadcrumb, FilterParamsProps } from '@/types/Base'
+import { useSearchParams } from 'react-router-dom'
+
+const User = () => {
+  const breadcrumbData: Breadcrumb = breadcrumb.index
   const {
     isLoading,
     data,
@@ -35,57 +48,74 @@ const View = () => {
     checkedState,
     checkedAllState,
     handleCheckedChange,
-    handleChangeAll,
+    handleCheckedAllChange,
     isAnyChecked,
-  } = useCheckBoxState(data, model['users'], isLoading)
+  } = useCheckBoxState(data, model, isLoading)
   const { isSheetOpen, openSheet, closeSheet } = useSheet()
   const [searchParams] = useSearchParams()
   const perPage = searchParams.get('perPage')
     ? parseInt(searchParams.get('perPage')!)
-    : 20
+    : 10
   const totalItems = data ? data.total : 0
   const totalPages = Math.ceil(totalItems / perPage)
   const somethingChecked = isAnyChecked()
 
+  const [customFilter] = useState<SelectConfig[]>([
+    {
+      name: 'user_catalogue_id',
+      placeholder: 'Chọn Nhóm Thành Viên',
+      options: [],
+    },
+  ])
+  useEffect(() => console.log(data) , [data])
   return (
-    <>
-      <PageHeading breadcrumb={breadcrumb} />
-      <div className="container-fluid px-4">
+    <FilterProvider customFilters={customFilter}>
+      <PageHeading breadcrumb={breadcrumbData} />
+
+      <div className="container-fluid mx-[20px]">
         <Card className="rounded-[5px] mt-[15px]">
           <CardHeader className="border-b border-solid border-[#f3f3f3] p-[20px]">
             <CardTitle className="uppercase">
-              QUẢN LÝ DANH SÁCH THÀNH VIÊN
+              Quản lý danh sách thành viên
             </CardTitle>
-            <CardDescription className="text-xs text-[#0400f0]">
+            <CardDescription className="text-xs text-[blue]">
               Hiển thị danh sách thành viên, sử dụng các chức năng bên dưới để
-              lọc theo ý muốn
+              lọc theo mong muốn
             </CardDescription>
           </CardHeader>
           <CardContent className="p-[15px]">
             <Filter
               isAnyChecked={somethingChecked}
               checkedState={checkedState}
-              model={model['users']}
+              model={model}
               refetch={refetch}
               handleQueryString={(filters: FilterParamsProps) =>
                 handleQueryString(filters)
               }
               openSheet={openSheet}
+              items={filterItems}
+              buttonText="Thêm mới thành viên"
             />
+
             <CustomTable
-              data={data}
               isLoading={isLoading}
+              data={data}
               isError={isError}
-              model={model['users']}
+              model={model}
               tableColumn={tableColumn}
               checkedState={checkedState}
               checkedAllState={checkedAllState}
               handleCheckedChange={handleCheckedChange}
-              handleChangeAll={handleChangeAll}
+              handleCheckedAllChange={handleCheckedAllChange}
+              openSheet={openSheet}
+              destroy={destroy}
+              refetch={refetch}
+              buttonActions={buttonActions}
+              changePassword={changePassword}
             />
           </CardContent>
           <CardFooter>
-            {!isLoading && data[model['users']] && data.links.length ? (
+            {!isLoading && data[model] && data.links ? (
               <Paginate
                 totalPages={totalPages}
                 links={data.links}
@@ -96,10 +126,15 @@ const View = () => {
         </Card>
         {isSheetOpen && (
           <CustomSheet
-            title={breadcrumb}
+            title={
+              isSheetOpen.action === 'update'
+                ? breadcrumb.update.title
+                : breadcrumb.create.title
+            }
             description="Nhập đầy đủ các thông tin dưới đây. Các mục có dấu (*) là bắt buộc"
             isSheetOpen={isSheetOpen.open}
             closeSheet={closeSheet}
+            openSheet={openSheet}
             className="w-[500px] sm:w-[500px]"
           >
             <UserStore
@@ -111,8 +146,7 @@ const View = () => {
           </CustomSheet>
         )}
       </div>
-    </>
+    </FilterProvider>
   )
 }
-
-export default View
+export default User

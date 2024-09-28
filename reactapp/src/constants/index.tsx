@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { FaHome, FaRegEdit, FaUser } from 'react-icons/fa'
-import { RiDeleteBinLine } from 'react-icons/ri'
+import { RiDeleteBin5Line } from 'react-icons/ri'
 import { MdLockReset } from 'react-icons/md'
+import { UserType } from '@/types/User'
+import { ActionParam, ButtonAction, OpenSheetFunction } from '@/types/Base'
+import Recovery from '@/pages/user/screens/include/Recovery'
 
 export const MenuConfig = [
   {
@@ -34,49 +38,98 @@ export const MenuConfig = [
   },
 ]
 
-export const breadcrumb: any = {
-  ['dashboard']: {
-    id: 'dashboard',
-    title: 'Thống kê chung',
-    route: '/dashboard',
-  },
-  ['user/index']: {
-    id: 'user',
-    title: 'Danh sách thành viên',
+export const breadcrumb = {
+  index: {
+    title: 'Quản lý thành viên',
     route: '/user/index',
-    create: {
-      id: 'userCreate',
-      title: 'Thêm mới thành viên',
-      route: '/user/create',
-    },
+  },
+  create: {
+    title: 'Thêm mới thành viên',
+  },
+  update: {
+    title: 'Cập nhật thông tin',
   },
 }
 
-export const model = {
-  users: `users`,
-}
+export const model = `users`
 
-export const buttonActions = {
-  users: [
-    {
-      path: '/user/update',
-      icon: <FaRegEdit className="text-white" />,
-      className: 'bg-primary-bg flex mr-[5px]',
+export const buttonActions: ButtonAction<ActionParam[]>[] = [
+  {
+    icon: <FaRegEdit className="text-white" />,
+    className: 'flex mr-[5px]',
+    method: 'update',
+    params: ['id', 'name', 'openSheet:f'],
+    onClick: (id: string, name: string, openSheet: OpenSheetFunction) => {
+      openSheet({ open: true, action: 'update', id: id })
     },
-    {
-      path: '/user/delete',
-      icon: <RiDeleteBinLine className="text-white" />,
-      className: 'bg-[#ec4728] flex mr-[5px]',
+  },
+  {
+    icon: <RiDeleteBin5Line className="text-white" />,
+    className: 'bg-[#ec4758] mr-[5px]',
+    method: 'delete',
+    params: ['id', 'handleAlertDialog:f', 'destroy:f'],
+    onClick: (id: string, handleAlertDialog: any, destroy: any) => {
+      handleAlertDialog(id, destroy)
     },
-    {
-      path: '/user/reset',
-      icon: <MdLockReset className="text-white" />,
-      className: 'bg-[#f8ac59]',
+  },
+  {
+    icon: <MdLockReset className="text-white" />,
+    className: 'bg-[#f8ac59]',
+    method: 'reset',
+    params: ['id', 'changePassword:pf', 'handleDialog:f', 'Recovery:c'],
+    component: Recovery,
+    onClick: (
+      id: string,
+      changePassword: Function,
+      handleDialog: Function,
+      Recovery: React.ComponentType<any>
+    ) => {
+      handleDialog(id, changePassword, Recovery)
     },
-  ],
-}
+  },
+]
 
-export const perPage = ['10', '20', '50', '100', '200', '400', '600']
+export const formField = (action: string, data?: UserType | undefined) => {
+  const showPasswordField = action !== 'update'
+  const baseField = [
+    {
+      label: 'Họ Tên *',
+      name: 'name',
+      type: 'text',
+      defaultValue: data && data.name,
+    },
+    {
+      label: 'Email *',
+      name: 'email',
+      type: 'text',
+      defaultValue: data && data.email,
+    },
+    {
+      label: 'Điện thoại *',
+      name: 'phone',
+      type: 'text',
+      defaultValue: data && data.phone,
+    },
+  ]
+
+  const passwordFields = [
+    {
+      label: 'Mật khẩu (*)',
+      name: 'password',
+      type: 'password',
+      defaultValue: '',
+    },
+    {
+      label: 'Nhập lại mk (*)',
+      name: 'confirmPassword',
+      type: 'password',
+      defaultValue: '',
+    },
+  ]
+
+  return showPasswordField ? [...baseField, ...passwordFields] : baseField
+}
+export const perPages = ['10', '20', '50', '100', '200', '400', '600']
 
 export const publishs = [
   {

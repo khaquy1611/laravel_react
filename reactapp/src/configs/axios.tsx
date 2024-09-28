@@ -1,10 +1,6 @@
-import axios, {
-  AxiosError,
-  AxiosInstance,
-  AxiosRequestConfig,
-} from 'axios'
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios'
 
-export const baseURL = `https://laravelreact/api/v1/`
+export const baseURL = `http://127.0.0.1:8000/api/v1/`
 
 const apiCall: AxiosInstance = axios.create({
   baseURL: baseURL,
@@ -38,10 +34,11 @@ axios.interceptors.response.use(
       try {
         await refreshToken()
         return apiCall(originalRequest)
-      } catch (error) {
-        return Promise.reject(error)
+      } catch (refreshError) {
+        return Promise.reject(refreshError)
       }
     }
+    return Promise.reject(error)
   }
 )
 

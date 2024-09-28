@@ -115,6 +115,16 @@ class AuthController extends Controller
         ]);
     }
 
+    public function logout(Request $request)
+    {
+        try {
+            // Invalidate the token
+            JWTAuth::invalidate(JWTAuth::getToken());
+            return response()->json(['message' => 'Đăng xuất thành công']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Đăng xuất thất bại, vui lòng thử lại'], 500);
+        }
+    }
 
     private function setTokenAndRefreshTokenCookie($token, $refreshToken){
         $cookie = Cookie::make(

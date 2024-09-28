@@ -3,51 +3,48 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Http\Resources\UserResource;
-use App\Services\User\UserService;
-use App\Repositories\User\UserRepository;
+use App\Http\Resources\UserCatalogueResource;
+use App\Services\User\UserCatalogueService;
+use App\Repositories\User\UserCatalogueRepository;
 use App\Http\Requests\UpdateByFieldRequest;
-use App\Http\Requests\User\StoreUserRequest;
-use App\Http\Requests\User\UpdateUserRequest;
-use App\Http\Requests\User\ChangePasswordUserRequest;
+use App\Http\Requests\User\StoreUserCatalogueRequest;
 use App\Enums\Status;
 
-use App\Models\User;
     
-class UserController extends Controller
+class UserCatalogueController extends Controller
 {
 
-    protected $userService;
-    protected $userRepository;
+    protected $userCatalogueService;
+    protected $userCatalogueRepository;
 
     public function __construct(
-        UserService $userService,
-        UserRepository $userRepository,
+        UserCatalogueService $userCatalogueService,
+        UserCatalogueRepository $userRepository,
     ){
-        $this->userService = $userService;
-        $this->userRepository = $userRepository;
+        $this->userCatalogueService = $userCatalogueService;
+        $this->userCatalogueRepository = $userRepository;
     }
-   
+
+    
     public function index(Request $request){
-        $users = $this->userService->paginate($request);
+        $userCatalogues = $this->userCatalogueService->paginate($request);
 
         return response()->json([
-            'users' => method_exists($users, 'items') ? UserResource::collection($users->items()) : $users,
-            'links' => method_exists($users, 'items') ? $users->linkCollection() : null,
-            'current_page' => method_exists($users, 'items') ? $users->currentPage() : null,
-            'last_page' => method_exists($users, 'items') ? $users->lastPage() : null,
+            'user_catalogues' => method_exists($userCatalogues, 'items') ? UserCatalogueResource::collection($userCatalogues->items()) : $userCatalogues,
+            'links' => method_exists($userCatalogues, 'items') ? $userCatalogues->linkCollection() : null,
+            'current_page' => method_exists($userCatalogues, 'items') ? $userCatalogues->currentPage() : null,
+            'last_page' => method_exists($userCatalogues, 'items') ? $userCatalogues->lastPage() : null,
             'total' => method_exists($users, 'items') ? $users->total() : null,
         ], Response::HTTP_OK);
     }
 
-    public function create(StoreUserRequest $request){
+    public function create(Request $request){
 
-        $auth = auth()->user();
-        $data = $this->userService->create($request, $auth);
+        $data = $this->userCatalogueService->create($request);
         if($data['code'] == Status::SUCCESS){
             return response()->json([
                'message' => 'Thêm mới bản ghi thành công',
-               'user' => new UserResource($data['user'])
+               'userCatalogue' => new UserCatalogueResource($data['userCatalogue'])
             ], Response::HTTP_OK);
         }
 
@@ -56,25 +53,16 @@ class UserController extends Controller
          ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
-    private function baseUpdate($request, $id){
-        $auth = auth()->user();
-        $data = $this->userService->update($request, $id, $auth);
+    public function update(StoreUserCatalogueRequest $request, $id){
+        $data = $this->userCatalogueService->update($request, $id);
  
         if($data['code'] == Status::SUCCESS){
          return response()->json([
              'message' => 'Cập nhật bản ghi thành công',
-             'user' => new UserResource($data['user']),
+             'userCatalogue' => new UserCatalogueResource($data['userCatalogue']),
              'code' => Response::HTTP_OK
              ], Response::HTTP_OK);
          }
-    }
-
-    public function update(UpdateUserRequest $request, $id){
-       return $this->baseUpdate($request, $id);
-    }
-
-    public function resetPassword(ChangePasswordUserRequest $request, $id){
-        return $this->baseUpdate($request, $id);
     }
 
 
@@ -84,7 +72,7 @@ class UserController extends Controller
             return  $this->returnIfIdValidataFail();
         }
 
-        $user = $this->userRepository->findById($id);
+        $user = $this->userCatalogueRepository->findById($id);
 
         if(!$user){
             return response()->json([
@@ -93,7 +81,7 @@ class UserController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }else{
             return response()->json(
-                new UserResource($user)
+                new UserCatalogueResource($user)
             );
         }
     }
@@ -105,16 +93,16 @@ class UserController extends Controller
             return $this->returnIfIdValidataFail();
         }
 
-        $user = $this->userRepository->findById($id);
+        $userCatalogue = $this->userCatalogueRepository->findById($id);
 
-        if(!$user){
+        if(!$userCatalogue){
             return response()->json([
                 'message' => 'Không tìm thấy bản ghi cần xóa',
                 'code' => Status::ERROR
              ], Response::HTTP_NOT_FOUND); 
         }
 
-        if($this->userService->delete($id)){
+        if($this->userCatalogueService->delete($id)){
             return response()->json([
                 'message' => 'Xóa bản ghi thành công',
                 'code' => Status::SUCCESS
@@ -128,8 +116,9 @@ class UserController extends Controller
     }
 
     public function updateStatusByField(UpdateByFieldRequest $request, $id){
-        $respository = 'App\Repositories\User\UserRepository';
-        if($this->userService->updateByField($request, $id, $respository)){
+        $respository = 'App\Repositories\User\UserCatalogueRepository';
+
+        if($this->userCatalogueService->updateByField($request, $id, $respository)){
             return response()->json([
                 'message' => 'Cập nhật dữ liệu thành công',
             ], Response::HTTP_OK); 

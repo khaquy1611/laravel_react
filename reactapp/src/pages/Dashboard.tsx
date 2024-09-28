@@ -1,6 +1,9 @@
 import PageHeading from '@/components/Heading'
-import { breadcrumb  } from '@/constants'
 const Dashboard = () => {
+  const breadcrumb = {
+    title: 'Thống kê chung',
+    route: '/dashboard',
+  }
   return (
     <>
       <PageHeading breadcrumb={breadcrumb} />

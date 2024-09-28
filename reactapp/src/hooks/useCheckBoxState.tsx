@@ -15,7 +15,7 @@ const useCheckBoxState = (data: any, model: string, isLoading: boolean) => {
 
   const isAnyChecked = () => Object.values(checkedState).some(value => value)
 
-  const handleChangeAll = () => {
+  const handleCheckedAllChange = () => {
     const newCheckAllState = !checkedAllState
     const updateCheckedState = Object.keys(checkedState).reduce(
       (acc: any, key: string) => {
@@ -41,7 +41,7 @@ const useCheckBoxState = (data: any, model: string, isLoading: boolean) => {
     checkedState,
     checkedAllState,
     handleCheckedChange,
-    handleChangeAll,
+    handleCheckedAllChange,
     isAnyChecked,
   }
 }

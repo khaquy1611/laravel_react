@@ -1,9 +1,13 @@
 import axios from '@/configs/axios'
 import { PayloadInput, UserType } from '@/types/User'
-import { baseSave } from './BaseServices'
+import { baseDestroy, baseSave } from './BaseServices'
+import { handleAxiosError } from '@/helpers/axiosHelper'
 
-const save = async (payload: PayloadInput, updateParams: { action: string, id: string | null }) => {
-  return  baseSave('/auth/users', payload, updateParams)
+const save = async (
+  payload: PayloadInput,
+  updateParams: { action: string; id: string | null }
+) => {
+  return baseSave('/auth/users', payload, updateParams)
 }
 const pagination = async (queryString: string | null) => {
   const response = await axios.get(`/auth/users?${queryString}`)
@@ -11,9 +15,29 @@ const pagination = async (queryString: string | null) => {
 }
 
 const getUserById = async (userId: string | null): Promise<UserType> => {
-  const response = await axios.get(`users/${userId}`)
+  const response = await axios.get(`/auth/users/${userId}`)
   return response.data
 }
 
+const destroy = async (id: string) => {
+  return baseDestroy(id, '/auth/users')
+}
 
-export { pagination, save, getUserById }
+const changePassword = async (
+  id: string,
+  payload: { password: string; confirmPassword: string }
+) => {
+  try {
+    const response = await axios.put(`/auth/users/${id}/reset-password`, {
+      password: payload.password,
+      confirmPassword: payload.confirmPassword,
+    })
+
+    return response.data
+  } catch (error) {
+    handleAxiosError(error)
+    return error
+  }
+}
+
+export { pagination, save, getUserById, destroy, changePassword }

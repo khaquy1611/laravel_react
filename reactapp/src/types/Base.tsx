@@ -15,38 +15,50 @@ export interface CheckStateInterface {
   checkedState: { [key: number]: boolean }
 }
 
-export interface FilterProps extends CheckStateInterface {
+export type CheckState = {
+  [key: number]: boolean
+}
+export interface FilterProps extends CheckStateInterface, SheetProps {
   isAnyChecked: boolean
   model: string
   refetch: any
   handleQueryString: any
-  openSheet: ({
-    open,
-    action,
-    id,
-  }: {
-    open: boolean
-    action: any
-    id: any
-  }) => void
+  items: BaseFilterItem[]
+  buttonText: string
 }
 
 export interface SheetProps {
   isSheetOpen?: boolean
-  closeSheet: () => void
-  openSheet?: () => void
-  children: any
-  title: string | undefined | any
-  className: string | undefined | any
-  description: string | undefined | any
+  closeSheet?: () => void
+  openSheet: ({ action, id }: Sheet) => void
+  children?: any
+  title?: string | undefined | any
+  className?: string | undefined | any
+  description?: string | undefined | any
+}
+export interface CustomTableProps extends SheetProps {
+  data: any
+  isLoading: boolean
+  isError: boolean
+  model: string
+  tableColumn: Array<{ name: string; render: (item: any) => JSX.Element }>
+  checkedState: { [key: number]: boolean }
+  checkedAllState: boolean
+  handleCheckedChange: (id: number) => void
+  handleCheckedAllChange: () => void
+  destroy: (id: string) => void
+  refetch: any
+  buttonActions: ButtonAction<ActionParam[]>[]
+  [key: string]: any
 }
 
 export interface CustomAlertDialogProps {
   isOpen: boolean
   title: string
-  desciption: string
+  description: string
   closeAlertDialog: () => void
-  confirmAction: () => void
+  confirmAction?: () => void
+  isDialogLoading?: boolean
 }
 export interface FilterParamsProps {
   [key: string]: string | number
@@ -150,4 +162,26 @@ export interface ButtonAction<T extends ActionParam[]> {
   path?: string
   method?: string
   component?: React.ComponentType<any>
+}
+
+export interface SelectOption {
+  value: string
+  label: string
+}
+
+export interface Select {
+  placeholder: string
+  id?: string
+  items: SelectOption[]
+}
+
+export interface BaseFilterItem {
+  value: string
+  label: string
+  icon: React.ReactNode
+}
+
+export type Breadcrumb = {
+  title: string
+  route: string
 }

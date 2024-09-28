@@ -113,6 +113,11 @@ const baseSave = async <T,>(
   })
   return response.data
 }
+const baseDestroy = async (id: string, model: string) => {
+  const apiUrl = `${model}/${id}`
+  const response = await axios.delete(apiUrl)
+  return response.data
+}
 
 export {
   updateStatusByField,
@@ -120,4 +125,5 @@ export {
   deleteAll,
   getLocationData,
   baseSave,
+  baseDestroy,
 }

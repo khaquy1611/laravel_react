@@ -13,10 +13,12 @@ export interface UserType {
   ward_id: string | null
 }
 
+interface ColumnState {
+  [columnName: string]: boolean
+}
+
 export interface UserState {
-  [userId: string]: {
-    [columnName: string]: boolean
-  }
+  [userId: string]: ColumnState
 }
 interface UserLinks {
   url?: string | number | null
@@ -65,4 +67,9 @@ export interface ImageUploadResult {
 
 export interface PayloadInputType<T> {
   [key: string]: T
+}
+
+export interface LoginPayload {
+  email: string
+  password: string
 }

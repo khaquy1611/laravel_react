@@ -15,9 +15,16 @@ Route::group([
     Route::get('me', [AuthController::class, 'me']);
 
   /* User */
-  Route::get('users', [UserController::class, 'index'])->name('user.index');
+  Route::get('users', [UserController::class, 'index']);
   Route::get('users/{id}', [UserController::class, 'show']);
+  Route::delete('users/{id}', [UserController::class, 'destroy']);
   Route::post('users', [UserController::class, 'create']);
+  Route::put('users/{id}', [UserController::class, 'update']);
+
+
+  Route::put('users/{id}/reset-password', [UserController::class, 'resetPassword']);
+  Route::put('users/{id}/status', [UserController::class, 'updateStatusByField']);
+  Route::post('check-email', [UserController::class, 'updateStatusByField']);
 
 
   Route::put('users/{id}/status', [UserController::class, 'updateStatusByField'])->name('user.update');

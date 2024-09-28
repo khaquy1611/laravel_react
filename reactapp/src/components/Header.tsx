@@ -6,7 +6,7 @@ import { BsFullscreenExit } from 'react-icons/bs'
 import { IoGridOutline } from 'react-icons/io5'
 import { IoExitOutline } from 'react-icons/io5'
 import { CgProfile } from 'react-icons/cg'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +16,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '@/redux/store'
+import { setAuthLogout } from '@/redux/slice/authSlice'
 
 type ToggleMenu = {
   isOpen: boolean
@@ -23,6 +26,13 @@ type ToggleMenu = {
 }
 
 const Header = ({ isOpen, toggleMenu }: ToggleMenu) => {
+  const dispatch : AppDispatch = useDispatch()
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    dispatch(setAuthLogout())
+    navigate('/admin')
+  };
+
   return (
     <header className="app-header h-14 fixed z-100 w-full content-center items-center top-0 bg-white border-b border-[#e7eaec] z-20">
       <div className="main-header mx-auto px-15px h-full flex justify-between items-center">
@@ -91,7 +101,10 @@ const Header = ({ isOpen, toggleMenu }: ToggleMenu) => {
                   <CgProfile className="mr-2 text-[18px]" />
                   Thay đổi thông tin
                 </DropdownMenuItem>
-                <DropdownMenuItem className="flex items-center text-[#333335] cursor-pointer">
+                <DropdownMenuItem
+                  className="flex items-center text-[#333335] cursor-pointer"
+                  onClick={handleLogout}
+                >
                   <IoExitOutline className="mr-2 text-[18px]" />
                   Đăng xuất
                 </DropdownMenuItem>

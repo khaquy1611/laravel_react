@@ -6,7 +6,7 @@ import { useQuery } from 'react-query'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 type UseTableProps = {
-  model: { [users: string]: string }
+  model: string
   pagination: any
 }
 const useTable = ({ pagination }: UseTableProps) => {
@@ -81,7 +81,7 @@ const useTable = ({ pagination }: UseTableProps) => {
     refetch,
     handlePageChange,
     handleQueryString,
-    initialParams
+    initialParams,
   }
 }
 
