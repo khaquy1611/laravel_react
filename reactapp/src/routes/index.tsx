@@ -5,7 +5,7 @@ import Login from '@/pages/Login'
 import View from '@/pages/user/screens/View'
 import Dashboard from '@/pages/Dashboard'
 import Layout from '@/components/Layout'
-import Store from '@/pages/user/screens/include/Store'
+import UserCataloguesIndex from '@/pages/UserCatalogues/screens/View'
 
 const router = createBrowserRouter([
   {
@@ -33,8 +33,8 @@ const router = createBrowserRouter([
         element: <View />,
       },
       {
-        path: '/user/create',
-        element: <Store />,
+        path: '/user/catalogue/index',
+        element: <UserCataloguesIndex />,
       },
     ],
   },

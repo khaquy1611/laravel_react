@@ -17,7 +17,7 @@ import useSelectBox from '@/hooks/useSelectBox'
 
 import { formField } from '@/pages/user/settings/userSettings'
 
-import { PayloadInput, UserType } from '@/types/User'
+import { UserPayloadInput, UserType } from '@/types/User'
 import { SelectBoxItem, StoreProps } from '@/types/Base'
 import { Option } from '@/types/Base'
 
@@ -69,7 +69,7 @@ const UserStore = ({ id, action, refetch, closeSheet }: StoreProps) => {
     formState: { errors },
     control,
     setValue,
-  } = useForm<PayloadInput>({
+  } = useForm<UserPayloadInput>({
     context: { action },
     resolver: yupResolver(schema),
   })
@@ -107,9 +107,9 @@ const UserStore = ({ id, action, refetch, closeSheet }: StoreProps) => {
       Object.keys(data).forEach(key => {
         const value = data[key as keyof UserType]
         if (typeof value === 'string' || value === undefined) {
-          setValue(key as keyof PayloadInput, value)
+          setValue(key as keyof UserPayloadInput, value)
         } else {
-          setValue(key as keyof PayloadInput, String(value))
+          setValue(key as keyof UserPayloadInput, String(value))
         }
       })
     }
@@ -233,7 +233,7 @@ const UserStore = ({ id, action, refetch, closeSheet }: StoreProps) => {
           ))}
 
         {selectBox &&
-          selectBox.map((item : any, index) => (
+          selectBox.map((item: any, index) => (
             <CustomSelectBox
               key={index}
               {...item}

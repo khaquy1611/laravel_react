@@ -23,7 +23,7 @@ import {
 
 /* HOOKS */
 
-export const tableColumn: tableColumnProps[] = [
+export const tableColumn: tableColumnProps<UserType>[] = [
   {
     name: '',
     render: (item: UserType) => (

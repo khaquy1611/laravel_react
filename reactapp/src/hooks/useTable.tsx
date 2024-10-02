@@ -9,7 +9,7 @@ type UseTableProps = {
   model: string
   pagination: any
 }
-const useTable = ({ pagination }: UseTableProps) => {
+const useTable = ({ model, pagination }: UseTableProps) => {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
   const currentPage = searchParams.get('page')
@@ -50,7 +50,7 @@ const useTable = ({ pagination }: UseTableProps) => {
 
   const [page, setPage] = useState<number | null>(currentPage)
   const { isLoading, data, isError, refetch } = useQuery(
-    ['users', queryString],
+    [model , queryString],
     () => pagination(queryString)
   )
 

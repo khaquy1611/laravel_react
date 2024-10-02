@@ -143,7 +143,7 @@ const CustomTable = ({
                     }
                   />
                 </TableCell>
-                <TableCell className="flex">
+                <TableCell className="flex justify-center">
                   {buttonActions &&
                     buttonActions.map((action, index) => (
                       <Button

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { UserType } from './User'
 export interface UpdateStatusByFieldParam {
   id: string | number
   column: string
@@ -7,9 +6,9 @@ export interface UpdateStatusByFieldParam {
   model: string | null
 }
 
-export interface tableColumnProps {
+export interface tableColumnProps<T> {
   name: string
-  render: (item: UserType) => JSX.Element
+  render: (item: T) => JSX.Element
 }
 export interface CheckStateInterface {
   checkedState: { [key: number]: boolean }

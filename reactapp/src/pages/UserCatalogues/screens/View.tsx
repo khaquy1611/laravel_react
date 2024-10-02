@@ -5,7 +5,7 @@ import Paginate from '@/components/Paginate'
 import Filter from '@/components/Filter'
 import CustomTable from '@/components/CustomTable'
 import CustomSheet from '@/components/CustomSheet'
-import UserStore from '@/pages/user/screens/include/Store'
+import UserCataloguesStore from '@/pages/UserCatalogues/screens/include/Store'
 
 import {
   Card,
@@ -24,19 +24,19 @@ import useCheckBoxState from '@/hooks/useCheckBoxState'
 import useTable from '@/hooks/useTable'
 import useSheet from '@/hooks/useSheet'
 /* SETTINGS */
-import { breadcrumbs, Models, buttonUserActions } from '@/constants/index'
-import { tableColumn } from '@/pages/user/settings/userSettings'
+import { breadcrumbs, Models, buttonUserCataloguesActions } from '@/constants/index'
+import { tableColumn } from '@/pages/UserCatalogues/settings/UserCataloguesSettings'
 import { filterItems } from '@/settings/globalSettings'
 import { SelectConfig } from '@/components/CustomFilter'
 
 /* SERVICE */
-import { pagination, destroy, changePassword } from '@/services/UserServices'
+import { pagination, destroy } from '@/services/UserCataloguesServices'
 import { Breadcrumb, FilterParamsProps } from '@/types/Base'
 import { useSearchParams } from 'react-router-dom'
 
-const User = () => {
-  const breadcrumbData: Breadcrumb = breadcrumbs.users.index
-  const model = Models.users
+const UserCataloguesIndex = () => {
+  const breadcrumbData: Breadcrumb = breadcrumbs.user_catalogues.index
+  const model = Models.user_catalogues;
   const {
     isLoading,
     data,
@@ -61,22 +61,7 @@ const User = () => {
   const totalPages = Math.ceil(totalItems / perPage)
   const somethingChecked = isAnyChecked()
 
-  const [customFilter] = useState<SelectConfig[]>([
-    {
-      name: 'user_catalogue_id',
-      placeholder: 'Chọn Nhóm Thành Viên',
-      options: [
-        { 
-          value: '0', 
-          label: 'Tất cả nhóm thành viên',
-        },
-        {
-          value: '1',
-          label: 'SuperAdmin'
-        }
-      ],
-    },
-  ])
+  const [customFilter] = useState<SelectConfig[]>([])
   return (
     <FilterProvider customFilters={customFilter}>
       <PageHeading breadcrumb={breadcrumbData} />
@@ -85,10 +70,10 @@ const User = () => {
         <Card className="rounded-[5px] mt-[15px]">
           <CardHeader className="border-b border-solid border-[#f3f3f3] p-[20px]">
             <CardTitle className="uppercase">
-              Quản lý danh sách thành viên
+              Quản lý danh sách nhóm thành viên
             </CardTitle>
             <CardDescription className="text-xs text-[blue]">
-              Hiển thị danh sách thành viên, sử dụng các chức năng bên dưới để
+              Hiển thị danh sách nhóm thành viên, sử dụng các chức năng bên dưới để
               lọc theo mong muốn
             </CardDescription>
           </CardHeader>
@@ -103,7 +88,7 @@ const User = () => {
               }
               openSheet={openSheet}
               items={filterItems}
-              buttonText="Thêm mới thành viên"
+              buttonText="Thêm mới nhóm thành viên"
             />
 
             <CustomTable
@@ -119,8 +104,7 @@ const User = () => {
               openSheet={openSheet}
               destroy={destroy}
               refetch={refetch}
-              buttonActions={buttonUserActions}
-              changePassword={changePassword}
+              buttonActions={buttonUserCataloguesActions}
             />
           </CardContent>
           <CardFooter>
@@ -137,8 +121,8 @@ const User = () => {
           <CustomSheet
             title={
               isSheetOpen.action === 'update'
-                ? breadcrumbs.users.update.title
-                : breadcrumbs.users.create.title
+                ? breadcrumbs.user_catalogues.update.title
+                : breadcrumbs.user_catalogues.create.title
             }
             description="Nhập đầy đủ các thông tin dưới đây. Các mục có dấu (*) là bắt buộc"
             isSheetOpen={isSheetOpen.open}
@@ -146,7 +130,7 @@ const User = () => {
             openSheet={openSheet}
             className="w-[500px] sm:w-[500px]"
           >
-            <UserStore
+            <UserCataloguesStore
               refetch={refetch}
               closeSheet={closeSheet}
               id={isSheetOpen.id}
@@ -158,4 +142,4 @@ const User = () => {
     </FilterProvider>
   )
 }
-export default User
+export default UserCataloguesIndex

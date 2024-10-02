@@ -45,7 +45,7 @@ export interface FilterParams {
   parent_id?: string | undefined
 }
 
-export type PayloadInput = {
+export type UserPayloadInput = {
   name: string
   email: string
   phone: string

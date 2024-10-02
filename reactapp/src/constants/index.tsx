@@ -38,22 +38,41 @@ export const MenuConfig = [
   },
 ]
 
-export const breadcrumb = {
-  index: {
-    title: 'Quản lý thành viên',
-    route: '/user/index',
+export const breadcrumbs = {
+  users : {
+    index: {
+      title: 'Quản lý thành viên',
+      route: '/user/index',
+    },
+    create: {
+      title: 'Thêm mới thành viên',
+    },
+    update: {
+      title: 'Cập nhật thông tin',
+    },
   },
-  create: {
-    title: 'Thêm mới thành viên',
-  },
-  update: {
-    title: 'Cập nhật thông tin',
-  },
+  user_catalogues: {
+    index: {
+      title: 'Quản lý nhóm thành viên',
+      route: '/user/catalogue/index',
+    },
+    create: {
+      title: 'Thêm mới nhóm thành viên',
+    },
+    update: {
+      title: 'Cập nhật nhóm thông tin',
+    },
+  }
 }
 
-export const model = `users`
 
-export const buttonActions: ButtonAction<ActionParam[]>[] = [
+export const Models = {
+  users : `users`,
+  user_catalogues : `user_catalogues`
+};
+
+
+export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
   {
     icon: <FaRegEdit className="text-white" />,
     className: 'flex mr-[5px]',
@@ -85,6 +104,29 @@ export const buttonActions: ButtonAction<ActionParam[]>[] = [
       Recovery: React.ComponentType<any>
     ) => {
       handleDialog(id, changePassword, Recovery)
+    },
+  },
+]
+
+export const buttonUserCataloguesActions: ButtonAction<ActionParam[]>[] = [
+  {
+    path: '/user/update',
+    icon: <FaRegEdit className="text-white" />,
+    className: 'flex mr-[5px]',
+    method: 'update',
+    params: ['id', 'name', 'openSheet:f'],
+    onClick: (id: string, name: string, openSheet: OpenSheetFunction) => {
+      openSheet({ open: true, action: 'update', id: id })
+    },
+  },
+  {
+    path: '/user/delete',
+    icon: <RiDeleteBin5Line className="text-white" />,
+    className: 'bg-[#ec4758] mr-[5px]',
+    method: 'delete',
+    params: ['id', 'handleAlertDialog:f', 'destroy:f'],
+    onClick: (id: string, handleAlertDialog: any, destroy: any) => {
+      handleAlertDialog(id, destroy)
     },
   },
 ]

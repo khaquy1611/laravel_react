@@ -35,7 +35,7 @@ class StoreUserRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'name.required' => 'Bạn chưa nhập vào Họ Tên.',
+            'name.required' => 'Bạn chưa nhập vào họ tên người dùng.',
             'email.required' => 'Bạn chưa nhập vào Email.',
             'email.unique' => 'Email đã tồn tại, hãy chọn email khác',
             'email.email' => 'Email chưa đúng định dạng ví dụ: abc@gmail.com',

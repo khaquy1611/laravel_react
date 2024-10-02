@@ -1,22 +1,20 @@
 <?php   
-namespace App\Services\User;
+namespace App\Services\UserCatalogue;
 use App\Services\BaseService;
-use App\Repositories\User\UserRepository;
+use App\Repositories\UserCatalogue\UserCatalogueRepository;
 use Illuminate\Support\Facades\DB;
 use App\Enums\Status;
-use Illuminate\Support\Facades\Hash;
 
 
-class UserService extends BaseService{
+class UserCatalogueService extends BaseService{
 
-    protected $userRepository;
+    protected $userCatalogueRepository;
     protected $fileUploader;
-    protected $files = ['image'];
 
     public function __construct(
-        UserRepository $userRepository,
+        UserCatalogueRepository $userCatalogueRepository,
     ){
-        $this->userRepository = $userRepository;
+        $this->userCatalogueRepository = $userCatalogueRepository;
     }
 
     private function paginateAgrument($request){
@@ -24,56 +22,38 @@ class UserService extends BaseService{
             'perPage' => $request->input('perPage') ?? 10,
             'keyword' => [
                 'search' => $request->input('keyword') ?? '',
-                'field' => ['name', 'email', 'address', 'phone']
+                'field' => ['name', 'description']
             ],
             'condition' => [
                 'publish' => $request->integer('publish'),
-                'user_catalogue_id' => $request->integer('user_catalogue_id'),
             ],
+            'relationCount' => ['users'],
+            // 'relation' => ['users'],
             'select' => ['*'],
             'orderBy' => $request->input('sort') ? explode(',' ,$request->input('sort')) : ['id', 'desc'],
         ];
     }
 
     public function paginate($request){
+
         $agrument = $this->paginateAgrument($request);
-        $users = $this->userRepository->pagination([...$agrument]);
-        return $users;
-    }
 
-    private function imageAgrument(){
-        return [
-          'customFolder' =>   ['avatar'],
-          'imageType' => 'image'
-        ];
+        $userCatalogues = $this->userCatalogueRepository->pagination([...$agrument]);
+        return $userCatalogues;
     }
 
 
-    protected function hasPassword($request){
-        if($request->input('password')){
-            $this->payload['password']  = Hash::make($this->payload['password']);
-        }
-        return $this;
-    }
-
-    private function initilizeRequest($request, $auth, $except){
-        return $this->initializePayload($request, $except)
-        ->processFiles($request, $auth, $this->files, ...$this->imageAgrument())
-        ->hasPassword($request)
-        ->getPayload();
-    }
-
-    public function create($request, $auth){
+    public function create($request){
         DB::beginTransaction();
         try {
-            $except = ['confirmPassword'];
-            $payload = $this->initilizeRequest($request, $auth, $except);
+            $except = [];
+            $payload = $this->initializePayload($request, $except)->getPayload();
 
-            $user = $this->userRepository->create($payload);
+            $userCatalogue = $this->userCatalogueRepository->create($payload);
             DB::commit();
 
             return [
-                'user' => $user,
+                'userCatalogue' => $userCatalogue,
                 'code' => Status::SUCCESS
             ];
         } catch (\Exception $e) {
@@ -86,16 +66,16 @@ class UserService extends BaseService{
         }
     }
 
-    public function update($request, $id, $auth){
+    public function update($request, $id){
         DB::beginTransaction();
         try {
-            $except = ['confirmPassword'];
-            $payload = $this->initilizeRequest($request, $auth, $except);
+            $except = [];
+            $payload = $this->initializePayload($request, $except)->getPayload();
 
-            $user = $this->userRepository->update($id, $payload);
+            $userCatalogue = $this->userCatalogueRepository->update($id, $payload);
             DB::commit();
             return [
-                'user' => $user,
+                'userCatalogue' => $userCatalogue,
                 'code' => Status::SUCCESS
             ];
         } catch (\Exception $e) {
@@ -110,7 +90,7 @@ class UserService extends BaseService{
     public function delete($id){
         DB::beginTransaction();
         try {
-            $this->userRepository->delete($id);
+            $this->userCatalogueRepository->delete($id);
             DB::commit();
             return [
                 'code' => Status::SUCCESS
@@ -123,6 +103,6 @@ class UserService extends BaseService{
             ];
         }
     }
- 
+    
 
 }

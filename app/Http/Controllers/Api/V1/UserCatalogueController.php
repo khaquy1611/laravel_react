@@ -3,12 +3,13 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Http\Resources\UserCatalogueResource;
-use App\Services\User\UserCatalogueService;
-use App\Repositories\User\UserCatalogueRepository;
 use App\Http\Requests\UpdateByFieldRequest;
-use App\Http\Requests\User\StoreUserCatalogueRequest;
+use App\Http\Requests\UserCatalogue\StoreUserCatalogueRequest;
+use App\Http\Resources\UserCatalogueResource;
+use App\Services\UserCatalogue\UserCatalogueService;
+use App\Repositories\UserCatalogue\UserCatalogueRepository;
 use App\Enums\Status;
+
 
     
 class UserCatalogueController extends Controller
@@ -34,7 +35,7 @@ class UserCatalogueController extends Controller
             'links' => method_exists($userCatalogues, 'items') ? $userCatalogues->linkCollection() : null,
             'current_page' => method_exists($userCatalogues, 'items') ? $userCatalogues->currentPage() : null,
             'last_page' => method_exists($userCatalogues, 'items') ? $userCatalogues->lastPage() : null,
-            'total' => method_exists($users, 'items') ? $users->total() : null,
+            'total' => method_exists($userCatalogues, 'items') ? $userCatalogues->total() : null,
         ], Response::HTTP_OK);
     }
 
@@ -116,7 +117,7 @@ class UserCatalogueController extends Controller
     }
 
     public function updateStatusByField(UpdateByFieldRequest $request, $id){
-        $respository = 'App\Repositories\User\UserCatalogueRepository';
+        $respository = 'App\Repositories\UserCatalogue\UserCatalogueRepository';
 
         if($this->userCatalogueService->updateByField($request, $id, $respository)){
             return response()->json([

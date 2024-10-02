@@ -1,10 +1,10 @@
 import axios from '@/configs/axios'
-import { PayloadInput, UserType } from '@/types/User'
+import { UserPayloadInput, UserType } from '@/types/User'
 import { baseDestroy, baseSave } from './BaseServices'
 import { handleAxiosError } from '@/helpers/axiosHelper'
 
 const save = async (
-  payload: PayloadInput,
+  payload: UserPayloadInput,
   updateParams: { action: string; id: string | null }
 ) => {
   return baseSave('/auth/users', payload, updateParams)

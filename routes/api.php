@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\UserController;
 use App\Http\Controllers\Api\V1\DashboardController;
+use App\Http\Controllers\Api\V1\UserCatalogueController;
 
 
 Route::group([
@@ -20,18 +21,25 @@ Route::group([
   Route::delete('users/{id}', [UserController::class, 'destroy']);
   Route::post('users', [UserController::class, 'create']);
   Route::put('users/{id}', [UserController::class, 'update']);
-
-
-  Route::put('users/{id}/reset-password', [UserController::class, 'resetPassword']);
   Route::put('users/{id}/status', [UserController::class, 'updateStatusByField']);
   Route::post('check-email', [UserController::class, 'updateStatusByField']);
-
-
   Route::put('users/{id}/status', [UserController::class, 'updateStatusByField'])->name('user.update');
+
+  /* Users Catalogues */
+  Route::get('user_catalogues', [UserCatalogueController::class, 'index']);
+  Route::get('user_catalogues/{id}', [UserCatalogueController::class, 'show']);
+  Route::delete('user_catalogues/{id}', [UserCatalogueController::class, 'destroy']);
+  Route::post('user_catalogues', [UserCatalogueController::class, 'create']);
+  Route::put('user_catalogues/{id}', [UserCatalogueController::class, 'update']);
+  Route::put('user_catalogues/{id}/status', [UserCatalogueController::class, 'updateStatusByField']);
+  
+  /* Dashboard */
   Route::delete('records/delete/batch', [DashboardController::class, 'deleteBatch'])->name('batch.delete');
   Route::put('records/update/batch', [DashboardController::class, 'updateBatch'])->name('batch.update');
-   /* Location */
-   Route::get('location', [DashboardController::class, 'location']);
+
+  
+  /* Location */
+  Route::get('location', [DashboardController::class, 'location']);
 });
 
 Route::post('v1/auth/login', [AuthController::class, 'login']);

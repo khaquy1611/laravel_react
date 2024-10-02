@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateStatusByFieldRequest extends FormRequest
+class UpdateByFieldRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,14 +23,14 @@ class UpdateStatusByFieldRequest extends FormRequest
     {
         return [
             'value' => 'required',
-            'column' => 'required'
+            'column' => 'required',
         ];
     }
 
-    public function message(): array
+    public function messages(): array
     {
         return [
-            'value.required' => 'Gía trị cập nhập không hợp lệ',
+            'value.required' => 'Giá trị cập nhật không hợp lệ',
             'column.required' => 'Cột dữ liệu cần cập nhật không hợp lệ',
         ];
     }
