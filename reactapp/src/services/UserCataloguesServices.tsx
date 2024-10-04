@@ -1,27 +1,31 @@
 import axios from '@/configs/axios'
-import { UserCataloguePayloadInput, UserCataloguesType } from '@/types/UserCatalogues'
-import { baseDestroy, baseSave } from './BaseServices'
+import { baseSave, baseDestroy } from './BaseServices'
+import {
+  UserCataloguesType,
+  UserCataloguePayloadInput,
+} from '@/types/UserCatalogues'
 
-const save = async (
-  payload: UserCataloguePayloadInput,
-  updateParams: { action: string; id: string | null }
-) => {
-  return baseSave('/auth/user_catalogues', payload, updateParams)
-}
-const pagination = async (queryString: string | null) => {
+const pagination = async (queryString: string) => {
   const response = await axios.get(`/auth/user_catalogues?${queryString}`)
   return response.data
 }
 
-const getUserCatalogueById = async (userId: string | null): Promise<UserCataloguesType> => {
-  const response = await axios.get(`/auth/user_catalogues/${userId}`)
-  return response.data
+const save = async (
+  payload: UserCataloguePayloadInput,
+  updateParams: { action: string; id: string | undefined }
+) => {
+  return baseSave('/auth/user_catalogues', payload, updateParams)
 }
 
 const destroy = async (id: string) => {
   return baseDestroy(id, '/auth/user_catalogues')
 }
 
+const getUserCatalogueById = async (
+  id: string | undefined
+): Promise<UserCataloguesType> => {
+  const response = await axios.get(`/auth/user_catalogues/${id}`)
+  return response.data
+}
 
-
-export { pagination, save, getUserCatalogueById, destroy }
+export { pagination, save, destroy, getUserCatalogueById }

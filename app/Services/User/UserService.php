@@ -30,6 +30,9 @@ class UserService extends BaseService{
                 'publish' => $request->integer('publish'),
                 'user_catalogue_id' => $request->integer('user_catalogue_id'),
             ],
+            'relation' => [
+                'user_catalogues'
+            ],
             'select' => ['*'],
             'orderBy' => $request->input('sort') ? explode(',' ,$request->input('sort')) : ['id', 'desc'],
         ];

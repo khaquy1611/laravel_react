@@ -1,4 +1,5 @@
-import { useState } from 'react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useMemo, useEffect, useCallback } from 'react'
 /* COMPONENTS */
 import PageHeading from '@/components/Heading'
 import Paginate from '@/components/Paginate'
@@ -23,15 +24,20 @@ import { FilterProvider } from '@/contexts/FilterContext'
 import useCheckBoxState from '@/hooks/useCheckBoxState'
 import useTable from '@/hooks/useTable'
 import useSheet from '@/hooks/useSheet'
+import { useQuery } from 'react-query'
+
 /* SETTINGS */
 import { breadcrumbs, Models, buttonUserActions } from '@/constants/index'
 import { tableColumn } from '@/pages/user/settings/userSettings'
+
+import { Breadcrumb } from '@/types/Base'
 import { filterItems } from '@/settings/globalSettings'
 import { SelectConfig } from '@/components/CustomFilter'
+import { UserCataloguesType } from '@/types/UserCatalogues'
 
 /* SERVICE */
 import { pagination, destroy, changePassword } from '@/services/UserServices'
-import { Breadcrumb, FilterParamsProps } from '@/types/Base'
+import { pagination as userCataloguePagination } from '@/services/UserCataloguesServices'
 import { useSearchParams } from 'react-router-dom'
 
 const User = () => {
@@ -61,27 +67,59 @@ const User = () => {
   const totalPages = Math.ceil(totalItems / perPage)
   const somethingChecked = isAnyChecked()
 
-  const [customFilter] = useState<SelectConfig[]>([
+  const { data: dataUserCatalogues, isLoading: isUserCatalogueLoading } =
+    useQuery(['user_catalogues'], () =>
+      userCataloguePagination('?sort=name,asc')
+    )
+
+  const userCatalogues = useMemo(() => {
+    if (!isUserCatalogueLoading && dataUserCatalogues) {
+      return dataUserCatalogues['user_catalogues'].map(
+        (userCatalogueItem: UserCataloguesType) => ({
+          value: String(userCatalogueItem.id),
+          label: String(userCatalogueItem.name),
+        })
+      )
+    }
+
+    return []
+  }, [dataUserCatalogues, isUserCatalogueLoading])
+
+  const [customFilter, setCustomFilter] = useState<SelectConfig[]>([
     {
       name: 'user_catalogue_id',
       placeholder: 'Chọn Nhóm Thành Viên',
-      options: [
-        { 
-          value: '0', 
-          label: 'Tất cả nhóm thành viên',
-        },
-        {
-          value: '1',
-          label: 'SuperAdmin'
-        }
-      ],
+      options: [],
     },
   ])
+
+  const setCustomFilterCallback = useCallback(
+    (prevState: SelectConfig[]) =>
+      prevState.map(item =>
+        item.name === 'user_catalogue_id'
+          ? {
+              ...item,
+              options: [
+                { value: '0', label: 'Tất cả các nhóm' },
+                ...userCatalogues,
+              ],
+            }
+          : item
+      ),
+    [userCatalogues]
+  )
+
+  useEffect(() => {
+    if (userCatalogues.length) {
+      setCustomFilter(prevState => setCustomFilterCallback(prevState))
+    }
+  }, [userCatalogues, setCustomFilterCallback])
+
   return (
     <FilterProvider customFilters={customFilter}>
       <PageHeading breadcrumb={breadcrumbData} />
 
-      <div className="container-fluid mx-[20px]">
+      <div className="container-fluid mx-6">
         <Card className="rounded-[5px] mt-[15px]">
           <CardHeader className="border-b border-solid border-[#f3f3f3] p-[20px]">
             <CardTitle className="uppercase">
@@ -98,9 +136,7 @@ const User = () => {
               checkedState={checkedState}
               model={model}
               refetch={refetch}
-              handleQueryString={(filters: FilterParamsProps) =>
-                handleQueryString(filters)
-              }
+              handleQueryString={(filters: any) => handleQueryString(filters)}
               openSheet={openSheet}
               items={filterItems}
               buttonText="Thêm mới thành viên"
@@ -143,14 +179,14 @@ const User = () => {
             description="Nhập đầy đủ các thông tin dưới đây. Các mục có dấu (*) là bắt buộc"
             isSheetOpen={isSheetOpen.open}
             closeSheet={closeSheet}
-            openSheet={openSheet}
             className="w-[500px] sm:w-[500px]"
           >
             <UserStore
               refetch={refetch}
               closeSheet={closeSheet}
-              id={isSheetOpen.id}
+              id={isSheetOpen.id || undefined}
               action={isSheetOpen.action}
+              userCatalogueData={userCatalogues}
             />
           </CustomSheet>
         )}

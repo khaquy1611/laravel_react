@@ -8,11 +8,9 @@ import { useQuery } from 'react-query'
 import useSetFormValue from '@/hooks/useSetFormValue'
 
 /* SETTINGS */
-import {
-  UserCataloguesType,
-  UserCataloguePayloadInput,
-} from '@/types/UserCatalogues'
+import { UserCataloguesType } from '@/types/UserCatalogues'
 import { StoreProps } from '@/types/Base'
+import { UserCataloguePayloadInput } from '@/types/UserCatalogues'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
@@ -20,7 +18,7 @@ import * as yup from 'yup'
 /* SERVICE */
 import { save, getUserCatalogueById } from '@/services/UserCataloguesServices'
 
-const UserCataloguesStore = ({
+const UserCatalogueStore = ({
   id,
   action,
   refetch,
@@ -46,10 +44,13 @@ const UserCataloguesStore = ({
     setValue,
   } = methods
 
-  const { onSubmitHanler, loading } = useFormSubmit(save, refetch, closeSheet, {
-    action: action,
-    id: id,
-  })
+  const { onSubmitHanler, loading } = useFormSubmit(
+    save,
+    { action: action, id: id },
+    null,
+    refetch,
+    closeSheet
+  )
 
   const { data, isLoading } = useQuery<UserCataloguesType>(
     ['user_catalogue', id],
@@ -90,4 +91,4 @@ const UserCataloguesStore = ({
   )
 }
 
-export default UserCataloguesStore
+export default UserCatalogueStore

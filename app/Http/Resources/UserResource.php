@@ -26,6 +26,7 @@ class UserResource extends JsonResource
             'created_at' => Carbon::parse($this->created_at)->format('d/m/Y H:i'),
             'publish' => $this->publish,
             'user_catalogue_id' => $this->user_catalogue_id,
+            'user_catalogue_name' => $this->user_catalogues ? $this->user_catalogues->name : null,
             'province_id' => $this->province_id,
             'district_id' => $this->district_id,
             'ward_id' => $this->ward_id

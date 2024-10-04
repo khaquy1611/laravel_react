@@ -2,9 +2,8 @@
 import { useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
-import { CheckState, CheckStateInterface } from '@/types/Base'
+import { CheckStateInterface, CheckState } from '@/types/Base'
 import { updateFieldByParams, deleteAll } from '@/services/BaseServices'
-
 import { showToast } from '@/helpers/myHelper'
 
 interface FilterInterface {
@@ -51,9 +50,9 @@ const useFilterAction = (
       case 'publish':
         response = await updateFieldByParams(
           action,
-          selectedValue,
           ids,
           model,
+          selectedValue,
           refetch
         )
         break

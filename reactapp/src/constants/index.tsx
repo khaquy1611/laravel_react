@@ -3,9 +3,9 @@
 import { FaHome, FaRegEdit, FaUser } from 'react-icons/fa'
 import { RiDeleteBin5Line } from 'react-icons/ri'
 import { MdLockReset } from 'react-icons/md'
-import { UserType } from '@/types/User'
-import { ActionParam, ButtonAction, OpenSheetFunction } from '@/types/Base'
 import Recovery from '@/pages/user/screens/include/Recovery'
+import { ActionParam, ButtonAction, OpenSheetFunction } from '@/types/Base'
+import { UserType } from '@/types/User'
 
 export const MenuConfig = [
   {
@@ -39,7 +39,7 @@ export const MenuConfig = [
 ]
 
 export const breadcrumbs = {
-  users : {
+  users: {
     index: {
       title: 'Quản lý thành viên',
       route: '/user/index',
@@ -62,18 +62,17 @@ export const breadcrumbs = {
     update: {
       title: 'Cập nhật nhóm thông tin',
     },
-  }
+  },
 }
 
-
 export const Models = {
-  users : `users`,
-  user_catalogues : `user_catalogues`
-};
-
+  users: `users`,
+  user_catalogues: `user_catalogues`,
+}
 
 export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
   {
+    path: '/user/update',
     icon: <FaRegEdit className="text-white" />,
     className: 'flex mr-[5px]',
     method: 'update',
@@ -83,6 +82,7 @@ export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
     },
   },
   {
+    path: '/user/delete',
     icon: <RiDeleteBin5Line className="text-white" />,
     className: 'bg-[#ec4758] mr-[5px]',
     method: 'delete',
@@ -92,6 +92,7 @@ export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
     },
   },
   {
+    path: '/user/recovery',
     icon: <MdLockReset className="text-white" />,
     className: 'bg-[#f8ac59]',
     method: 'reset',
@@ -99,8 +100,8 @@ export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
     component: Recovery,
     onClick: (
       id: string,
-      changePassword: Function,
-      handleDialog: Function,
+      changePassword: any,
+      handleDialog: any,
       Recovery: React.ComponentType<any>
     ) => {
       handleDialog(id, changePassword, Recovery)
@@ -171,7 +172,7 @@ export const formField = (action: string, data?: UserType | undefined) => {
 
   return showPasswordField ? [...baseField, ...passwordFields] : baseField
 }
-export const perPages = ['10', '20', '50', '100', '200', '400', '600']
+export const perpages = ['10', '20', '50', '100', '200', '400', '600']
 
 export const publishs = [
   {
@@ -188,7 +189,7 @@ export const publishs = [
   },
 ]
 
-export const sorts = [
+export const sort = [
   {
     value: 'id,desc',
     name: 'Sắp xếp bản ghi mới - cũ',
@@ -198,12 +199,12 @@ export const sorts = [
     name: 'Sắp xếp bản ghi cũ - mới',
   },
   {
-    value: 'id,asc',
-    name: 'Sắp xếp tên từ A - Z',
+    value: 'name,asc',
+    name: 'Sắp xếp Tên A - Z',
   },
   {
-    value: 'id,desc',
-    name: 'Sắp xếp tên từ Z - A',
+    value: 'name,desc',
+    name: 'Sắp xếp Tên Z - A',
   },
 ]
 

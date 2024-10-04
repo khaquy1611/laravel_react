@@ -12,7 +12,7 @@ use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 use App\Models\User;
-    
+use Hash;
 class AuthController extends Controller
 {
 
@@ -20,6 +20,10 @@ class AuthController extends Controller
 
     ){
         // $this->middleware('auth:api', ['except' => ['login']]);
+    }
+
+    public function abc(){
+        return Hash::make(123456);
     }
    
     public function login(AuthRequest $request){
@@ -115,16 +119,6 @@ class AuthController extends Controller
         ]);
     }
 
-    public function logout(Request $request)
-    {
-        try {
-            // Invalidate the token
-            JWTAuth::invalidate(JWTAuth::getToken());
-            return response()->json(['message' => 'Đăng xuất thành công']);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Đăng xuất thất bại, vui lòng thử lại'], 500);
-        }
-    }
 
     private function setTokenAndRefreshTokenCookie($token, $refreshToken){
         $cookie = Cookie::make(

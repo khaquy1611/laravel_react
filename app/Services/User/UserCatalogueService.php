@@ -1,7 +1,7 @@
 <?php   
-namespace App\Services\UserCatalogue;
+namespace App\Services\User;
 use App\Services\BaseService;
-use App\Repositories\UserCatalogue\UserCatalogueRepository;
+use App\Repositories\User\UserCatalogueRepository;
 use Illuminate\Support\Facades\DB;
 use App\Enums\Status;
 

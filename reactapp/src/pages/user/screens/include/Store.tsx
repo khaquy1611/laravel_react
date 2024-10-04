@@ -1,34 +1,54 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState, useMemo, Key } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 /* COMPONENTS */
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
-import CustomSelectBox from '@/components/CustomSelectBox'
 import CustomInput from '@/components/CustomInput'
+import CustomSelectBox from '@/components/CustomSelectBox'
 import LoadingButton from '@/components/LoadingButton'
+import { Avatar, AvatarImage } from '@/components/ui/avatar'
 /* HOOKS */
-import { useForm } from 'react-hook-form'
-import useLocationState from '@/hooks/useLocationState'
-import useUpload from '@/hooks/useUpload'
 import useFormSubmit from '@/hooks/useFormSubmit'
-import { useQuery } from 'react-query'
+import useLocationState from '@/hooks/useLocationState'
 import useSelectBox from '@/hooks/useSelectBox'
+import useUpload from '@/hooks/useUpload'
+import { FormProvider, useForm } from 'react-hook-form'
+import { useQuery } from 'react-query'
 
 /* SETTINGS */
 
 import { formField } from '@/pages/user/settings/userSettings'
 
-import { UserPayloadInput, UserType } from '@/types/User'
-import { SelectBoxItem, StoreProps } from '@/types/Base'
 import { Option } from '@/types/Base'
+import { StoreProps } from '@/types/Base'
+import { UserPayloadInput, UserType } from '@/types/User'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 
-// import { schema } from "../../validations/user"
 /* SERVICE */
-import { save, getUserById } from '@/services/UserServices'
+import { getUserById, save } from '@/services/UserServices'
 
-const UserStore = ({ id, action, refetch, closeSheet }: StoreProps) => {
+export interface SelectBoxItem {
+  title: string | undefined
+  placeholder: string | undefined
+  options: Option[]
+  value: Option | null
+  name: string
+  control: any
+  onSelectChange?: (value: string | undefined) => void
+  isLoading?: boolean
+}
+
+interface UserStoreProps extends StoreProps {
+  userCatalogueData: { value: string; label: string }[]
+}
+
+const UserStore = ({
+  id,
+  action,
+  refetch,
+  closeSheet,
+  userCatalogueData,
+}: UserStoreProps) => {
   const schema = yup.object().shape({
     name: yup
       .string()
@@ -63,16 +83,22 @@ const UserStore = ({ id, action, refetch, closeSheet }: StoreProps) => {
     image: yup.mixed().optional(),
   })
 
+  const [defaultSelectValue] = useState<Option | null>(null)
+
+  const methods = useForm<UserPayloadInput>({
+    context: { action },
+    resolver: yupResolver(schema),
+    mode: 'onSubmit',
+  })
+  
   const {
     register,
     handleSubmit,
     formState: { errors },
-    control,
     setValue,
-  } = useForm<UserPayloadInput>({
-    context: { action },
-    resolver: yupResolver(schema),
-  })
+    control,
+  } = methods
+
   const {
     provinces,
     districts,
@@ -84,10 +110,13 @@ const UserStore = ({ id, action, refetch, closeSheet }: StoreProps) => {
   } = useLocationState()
   const { images, handleImageChange } = useUpload(false)
 
-  const { onSubmitHanler, loading } = useFormSubmit(save, refetch, closeSheet, {
-    action: action,
-    id: id,
-  })
+  const { onSubmitHanler, loading } = useFormSubmit(
+    save,
+    { action: action, id: id },
+    null,
+    refetch,
+    closeSheet
+  )
 
   const { data, isLoading } = useQuery<UserType>(
     ['user', id],
@@ -113,18 +142,14 @@ const UserStore = ({ id, action, refetch, closeSheet }: StoreProps) => {
         }
       })
     }
-  }, [data])
-
-  const [userCatalogues] = useState([{ value: '1', label: 'Super Admin' }])
-
-  const [defaultSelectValue] = useState<Option | null>(null)
+  }, [action, data, isLoading, setValue])
 
   const initialSelectBoxs = useMemo<SelectBoxItem[]>(
     () => [
       {
         title: 'Nhóm User',
         placeholder: 'Chọn Nhóm Thành Viên',
-        options: userCatalogues,
+        options: userCatalogueData,
         value: defaultSelectValue,
         name: 'user_catalogue_id',
         control: control,
@@ -160,29 +185,24 @@ const UserStore = ({ id, action, refetch, closeSheet }: StoreProps) => {
         control: control,
       },
     ],
-    [
-      userCatalogues,
-      defaultSelectValue,
-      control,
-      isDistrictLoading,
-      isWardLoading,
-      setProvinceId,
-      setDistrictId,
-    ]
+    [defaultSelectValue, setProvinceId, setDistrictId, control]
   )
 
   const { selectBox, updateSelecBoxValue, updateSelectBoxOptions } =
     useSelectBox(initialSelectBoxs)
 
   useEffect(() => {
-    if (data) {
-      updateSelecBoxValue(
-        'user_catalogue_id',
-        userCatalogues,
-        String(data?.user_catalogue_id)
-      )
+    if (userCatalogueData) {
+      updateSelectBoxOptions('user_catalogue_id', userCatalogueData)
+      if (data) {
+        updateSelecBoxValue(
+          'user_catalogue_id',
+          userCatalogueData,
+          String(data?.user_catalogue_id)
+        )
+      }
     }
-  }, [userCatalogues, data, updateSelecBoxValue, updateSelectBoxOptions])
+  }, [userCatalogueData, data, updateSelecBoxValue, updateSelectBoxOptions])
 
   useEffect(() => {
     if (provinces.data && provinces.data.length) {
@@ -220,66 +240,64 @@ const UserStore = ({ id, action, refetch, closeSheet }: StoreProps) => {
   }, [wards.data, data, updateSelecBoxValue, updateSelectBoxOptions])
 
   return (
-    <form onSubmit={handleSubmit(onSubmitHanler)}>
-      <div className="grid gap-4 py-4">
-        {validationRules &&
-          validationRules.map((item: any, index: Key | null | undefined) => (
-            <CustomInput
-              key={index}
-              register={register}
-              errors={errors}
-              {...item}
-            />
-          ))}
+    <FormProvider {...methods}>
+      <form onSubmit={handleSubmit(onSubmitHanler)}>
+        <div className="grid gap-4 py-4">
+          {validationRules &&
+            validationRules.map((item, index) => (
+              <CustomInput key={index} {...item} />
+            ))}
 
-        {selectBox &&
-          selectBox.map((item: any, index) => (
-            <CustomSelectBox
-              key={index}
-              {...item}
-              register={register}
-              errors={errors}
-            />
-          ))}
-        <CustomInput
-          register={register}
-          errors={errors}
-          label="Địa chỉ"
-          name="address"
-          type="text"
-          defaultValue={data && data.address}
-        />
+          {selectBox &&
+            selectBox.map((item, index) => (
+              <CustomSelectBox
+                key={index}
+                {...item}
+                register={register}
+                errors={errors}
+              />
+            ))}
+          <CustomInput
+            label="Địa chỉ"
+            name="address"
+            type="text"
+            defaultValue={data && data.address}
+          />
 
-        <input
-          type="file"
-          accept="image/"
-          id="upload-image"
-          className="hidden"
-          {...register('image', {
-            onChange: handleImageChange,
-          })}
-        />
-        <div className="text-center">
-          <label htmlFor="upload-image">
-            <Avatar className="size-[100px] inline-block cursor-pointer shadow-md border">
-              {images.length > 0 ? (
-                <AvatarImage className="object-cover" src={images[0].preview} />
-              ) : data && data.image ? (
-                <AvatarImage className="object-cover" src={data.image} />
-              ) : (
-                <AvatarImage
-                  className="object-cover"
-                  src="https://github.com/shadcn.png"
-                />
-              )}
-            </Avatar>
-          </label>
+          <input
+            type="file"
+            accept="image/"
+            id="upload-image"
+            className="hidden"
+            {...register('image', {
+              onChange: handleImageChange,
+            })}
+          />
+          <div className="text-center">
+            <label htmlFor="upload-image">
+              <Avatar className="size-[100px] inline-block cursor-pointer shadow-md border">
+                {images.length > 0 ? (
+                  <AvatarImage
+                    className="object-cover"
+                    src={images[0].preview}
+                  />
+                ) : data && data.image ? (
+                  <AvatarImage className="object-cover" src={data.image} />
+                ) : (
+                  <AvatarImage
+                    className="object-cover"
+                    src="https://github.com/shadcn.png"
+                  />
+                )}
+              </Avatar>
+            </label>
+          </div>
         </div>
-      </div>
-      <div className="text-right">
-        <LoadingButton loading={loading} text="Lưu thông tin" />
-      </div>
-    </form>
+        <div className="text-right">
+          <LoadingButton loading={loading} text="Lưu thông tin" />
+        </div>
+      </form>
+    </FormProvider>
   )
 }
 

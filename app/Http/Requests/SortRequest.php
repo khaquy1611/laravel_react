@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UserCatalougue extends FormRequest
+class SortRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,15 +22,18 @@ class UserCatalougue extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',  
+            'id' => 'required',
+            'model' => 'required',
+            'value' => 'required'
         ];
     }
-
 
     public function messages(): array
     {
         return [
-            'name.required' => 'Bạn chưa nhập vào tên nhóm thành viên.'
+            'id.required' => 'Thiếu thông tin id',
+            'model.required' => 'Thiếu thông tin model',
+            'value.required' => 'Thiếu giá trị value'
         ];
     }
 }

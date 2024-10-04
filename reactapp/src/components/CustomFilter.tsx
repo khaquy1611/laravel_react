@@ -1,5 +1,5 @@
 /* REACT */
-import React, { useEffect } from 'react'
+import React from 'react'
 
 /* COMPONENT */
 import {
@@ -28,12 +28,8 @@ export interface CustomFilterProps {
 const CustomFilter: React.FC<CustomFilterProps> = ({ handleFilter }) => {
   const { filters } = useFilterContext()
 
-  useEffect(() => {
-    console.log(filters)
-  }, [filters])
-
   return (
-    <div>
+    <div className="flex item-center mt-[10px]">
       {filters &&
         filters.map((filter, index) => (
           <div className="mr-[10px]" key={index}>
@@ -43,13 +39,11 @@ const CustomFilter: React.FC<CustomFilterProps> = ({ handleFilter }) => {
               </SelectTrigger>
               <SelectContent>
                 {filter.options &&
-                  filter.options.map(
-                    (option: SelectOption, optionIndex: number) => (
-                      <SelectItem key={optionIndex} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    )
-                  )}
+                  filter.options.map((option, optionIndex) => (
+                    <SelectItem key={optionIndex} value={option.value}>
+                      {option.label}
+                    </SelectItem>
+                  ))}
               </SelectContent>
             </Select>
           </div>

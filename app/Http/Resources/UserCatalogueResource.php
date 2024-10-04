@@ -20,8 +20,8 @@ class UserCatalogueResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->description,
-            'user_counts' => $this->user_counts,
-            'publish' => $this->publish,
+            'users_count' => $this->users_count,
+            'publish' => $this->publish
         ];
     }
 }

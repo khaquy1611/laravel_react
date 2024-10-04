@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react'
 import { Label } from '@/components/ui/label'
 import Select from 'react-select'
 import { Controller } from 'react-hook-form'
 import { useEffect, useState } from 'react'
 import { CustomSelectBoxProps } from '@/types/Base'
-import { Option } from '@/types/Base'
 
 const CustomSelectBox = React.memo(
   ({
@@ -19,7 +18,7 @@ const CustomSelectBox = React.memo(
     errors,
     value,
   }: CustomSelectBoxProps) => {
-    const [_, setSelectedValue] = useState<Option | null>(value)
+    const [, setSelectedValue] = useState<any>(value)
 
     useEffect(() => {
       if (value) {

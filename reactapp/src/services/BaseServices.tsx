@@ -1,21 +1,20 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios'
+import axios from '@/configs/axios'
 import { handleAxiosError } from '@/helpers/axiosHelper'
 import { UpdateStatusByFieldParam } from '@/types/Base'
-import { PayloadInputType } from '@/types/User'
 
 const updateStatusByField = async ({
   id,
-  column,
   value,
+  column,
   model,
 }: UpdateStatusByFieldParam) => {
   try {
     const response = await axios.put(`/auth/${model}/${id}/status`, {
-      column,
       value,
+      column,
     })
-    console.log(response)
+    return response
   } catch (error) {
     handleAxiosError(error)
   }
@@ -36,6 +35,27 @@ const deleteAll = async (ids: string[], model: string, refetch: any) => {
   }
 }
 
+const updateFieldByParams = async (
+  action: string,
+  ids: string[],
+  model: string,
+  selectedValue: string,
+  refetch: any
+) => {
+  try {
+    const response = await axios.put('/auth/records/update/batch', {
+      ids: ids,
+      model: model,
+      field: action,
+      value: selectedValue,
+    })
+    refetch()
+    return response.data
+  } catch (error) {
+    handleAxiosError(error)
+  }
+}
+
 const getLocationData = async (
   locationType: string,
   parentId: string | undefined
@@ -48,34 +68,17 @@ const getLocationData = async (
   return response.data
 }
 
-const updateFieldByParams = async (
-  action: string,
-  selectedValue: string,
-  ids: string[],
-  model: string,
-  refetch: any
-) => {
-  try {
-    const response = await axios.put('/auth/records/update/batch', {
-      ids,
-      selectedValue,
-      model,
-      field: action,
-    })
-    refetch()
-    return response.data
-  } catch (error) {
-    handleAxiosError(error)
-  }
+export interface PayloadInput<T> {
+  [key: string]: T
 }
 
 const baseSave = async <T,>(
   apiUrl: string,
-  payload: PayloadInputType<T>,
-  updateParams: { action: string; id: string | null }
+  payload: PayloadInput<T>,
+  updateParams: { action: string; id: string | undefined }
 ) => {
   const formData = new FormData()
-  const keys = Object.keys(payload) as Array<keyof PayloadInputType<T>>
+  const keys = Object.keys(payload) as Array<keyof PayloadInput<T>>
   let hasFile = false
 
   keys.forEach(key => {
@@ -91,7 +94,6 @@ const baseSave = async <T,>(
       hasFile = true
     } else if (value instanceof File) {
       formData.append(key as string, value)
-      console.log(567)
       hasFile = true
     } else {
       formData.append(key as string, String(value))
@@ -113,9 +115,19 @@ const baseSave = async <T,>(
   })
   return response.data
 }
+
 const baseDestroy = async (id: string, model: string) => {
   const apiUrl = `${model}/${id}`
   const response = await axios.delete(apiUrl)
+  return response.data
+}
+
+const sort = async (id: string, model: string, value: string) => {
+  const response = await axios.post('/auth/sort', {
+    id,
+    model,
+    value,
+  })
   return response.data
 }
 
@@ -126,4 +138,5 @@ export {
   getLocationData,
   baseSave,
   baseDestroy,
+  sort,
 }

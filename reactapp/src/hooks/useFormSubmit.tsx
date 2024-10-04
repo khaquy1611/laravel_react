@@ -1,25 +1,36 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState } from 'react'
 import { SubmitHandler, FieldValues } from 'react-hook-form'
-import { useMutation } from 'react-query'
+import { useMutation, useQueryClient } from 'react-query'
 import { showToast } from '@/helpers/myHelper'
 
-type SubmitFunction<T extends FieldValues> = (
+type SubmitFunction<T extends FieldValues, R> = (
   data: T,
-  updateParams: { action: string; id: string | null }
-) => Promise<void>
+  updateParams: { action: string; id: string | undefined },
+  album?: string[]
+) => Promise<R>
 
-const useFormSubmit = <T extends FieldValues>(
-  submitFn: SubmitFunction<T>,
-  refetch: any,
-  closeSheet: () => void,
-  updateParams: { action: string; id: string | null }
+const useFormSubmit = <T extends FieldValues, R>(
+  submitFn: SubmitFunction<T, R>,
+  updateParams: { action: string; id: string | undefined },
+  album?: string[] | null,
+  refetch?: any | null,
+  closeSheet?: () => void | undefined
 ) => {
-  const mutation = useMutation<void, Error, T>({
+  const [isSuccess, setIsSuccess] = useState(false)
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation<R, Error, T>({
     mutationFn: payload => submitFn(payload, updateParams),
     onSuccess: () => {
-      closeSheet()
       showToast('Cập nhật dữ liệu liệu thành công', 'success')
-      refetch()
+      if (closeSheet) {
+        closeSheet()
+      }
+      if (refetch) {
+        queryClient.invalidateQueries(refetch)
+      }
+      setIsSuccess(true)
     },
     onError: (error: any) => {
       console.error('Lỗi: ', error)
@@ -28,14 +39,17 @@ const useFormSubmit = <T extends FieldValues>(
   })
 
   const onSubmitHanler: SubmitHandler<T> = async payload => {
-    mutation.mutate(payload)
+    const formPayload = { ...payload, album }
+    mutation.mutate(formPayload)
   }
 
   return {
     onSubmitHanler,
+    isSuccess,
     success: mutation.isSuccess,
     error: mutation.isError,
     loading: mutation.isLoading,
+    data: mutation.data,
   }
 }
 

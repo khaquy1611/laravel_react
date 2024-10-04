@@ -11,7 +11,6 @@ use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Requests\User\ChangePasswordUserRequest;
 use App\Enums\Status;
-
 use App\Models\User;
     
 class UserController extends Controller
@@ -26,11 +25,11 @@ class UserController extends Controller
     ){
         $this->userService = $userService;
         $this->userRepository = $userRepository;
+       
     }
    
     public function index(Request $request){
         $users = $this->userService->paginate($request);
-
         return response()->json([
             'users' => method_exists($users, 'items') ? UserResource::collection($users->items()) : $users,
             'links' => method_exists($users, 'items') ? $users->linkCollection() : null,

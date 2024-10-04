@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react'
 /* COMPONENTS */
 import PageHeading from '@/components/Heading'
@@ -5,7 +6,7 @@ import Paginate from '@/components/Paginate'
 import Filter from '@/components/Filter'
 import CustomTable from '@/components/CustomTable'
 import CustomSheet from '@/components/CustomSheet'
-import UserCataloguesStore from '@/pages/UserCatalogues/screens/include/Store'
+import UserCataloguesStore from '@/pages/user_catalogues/screens/include/Store'
 
 import {
   Card,
@@ -23,20 +24,25 @@ import { FilterProvider } from '@/contexts/FilterContext'
 import useCheckBoxState from '@/hooks/useCheckBoxState'
 import useTable from '@/hooks/useTable'
 import useSheet from '@/hooks/useSheet'
+
 /* SETTINGS */
-import { breadcrumbs, Models, buttonUserCataloguesActions } from '@/constants/index'
-import { tableColumn } from '@/pages/UserCatalogues/settings/UserCataloguesSettings'
+import { tableColumn } from '../settings/UserCataloguesSettings'
+import {
+  breadcrumbs,
+  Models,
+  buttonUserCataloguesActions,
+} from '@/constants/index'
+import { Breadcrumb } from '@/types/Base'
 import { filterItems } from '@/settings/globalSettings'
 import { SelectConfig } from '@/components/CustomFilter'
 
 /* SERVICE */
 import { pagination, destroy } from '@/services/UserCataloguesServices'
-import { Breadcrumb, FilterParamsProps } from '@/types/Base'
 import { useSearchParams } from 'react-router-dom'
 
-const UserCataloguesIndex = () => {
+const UserCatalogue = () => {
   const breadcrumbData: Breadcrumb = breadcrumbs.user_catalogues.index
-  const model = Models.user_catalogues;
+  const model = Models.user_catalogues
   const {
     isLoading,
     data,
@@ -62,18 +68,19 @@ const UserCataloguesIndex = () => {
   const somethingChecked = isAnyChecked()
 
   const [customFilter] = useState<SelectConfig[]>([])
+
   return (
     <FilterProvider customFilters={customFilter}>
       <PageHeading breadcrumb={breadcrumbData} />
 
-      <div className="container-fluid mx-[20px]">
+      <div className="container-fluid mx-6">
         <Card className="rounded-[5px] mt-[15px]">
           <CardHeader className="border-b border-solid border-[#f3f3f3] p-[20px]">
             <CardTitle className="uppercase">
-              Quản lý danh sách nhóm thành viên
+              Quản lý danh sách thành viên
             </CardTitle>
             <CardDescription className="text-xs text-[blue]">
-              Hiển thị danh sách nhóm thành viên, sử dụng các chức năng bên dưới để
+              Hiển thị danh sách thành viên, sử dụng các chức năng bên dưới để
               lọc theo mong muốn
             </CardDescription>
           </CardHeader>
@@ -83,9 +90,7 @@ const UserCataloguesIndex = () => {
               checkedState={checkedState}
               model={model}
               refetch={refetch}
-              handleQueryString={(filters: FilterParamsProps) =>
-                handleQueryString(filters)
-              }
+              handleQueryString={(filters: any) => handleQueryString(filters)}
               openSheet={openSheet}
               items={filterItems}
               buttonText="Thêm mới nhóm thành viên"
@@ -127,13 +132,12 @@ const UserCataloguesIndex = () => {
             description="Nhập đầy đủ các thông tin dưới đây. Các mục có dấu (*) là bắt buộc"
             isSheetOpen={isSheetOpen.open}
             closeSheet={closeSheet}
-            openSheet={openSheet}
             className="w-[500px] sm:w-[500px]"
           >
             <UserCataloguesStore
               refetch={refetch}
               closeSheet={closeSheet}
-              id={isSheetOpen.id}
+              id={isSheetOpen.id || undefined}
               action={isSheetOpen.action}
             />
           </CustomSheet>
@@ -142,4 +146,4 @@ const UserCataloguesIndex = () => {
     </FilterProvider>
   )
 }
-export default UserCataloguesIndex
+export default UserCatalogue

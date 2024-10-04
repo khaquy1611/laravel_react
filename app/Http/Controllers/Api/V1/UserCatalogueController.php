@@ -6,8 +6,8 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Http\Requests\UpdateByFieldRequest;
 use App\Http\Requests\UserCatalogue\StoreUserCatalogueRequest;
 use App\Http\Resources\UserCatalogueResource;
-use App\Services\UserCatalogue\UserCatalogueService;
-use App\Repositories\UserCatalogue\UserCatalogueRepository;
+use App\Services\User\UserCatalogueService;
+use App\Repositories\User\UserCatalogueRepository;
 use App\Enums\Status;
 
 
@@ -39,7 +39,7 @@ class UserCatalogueController extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function create(Request $request){
+    public function create(StoreUserCatalogueRequest $request){
 
         $data = $this->userCatalogueService->create($request);
         if($data['code'] == Status::SUCCESS){
@@ -117,7 +117,7 @@ class UserCatalogueController extends Controller
     }
 
     public function updateStatusByField(UpdateByFieldRequest $request, $id){
-        $respository = 'App\Repositories\UserCatalogue\UserCatalogueRepository';
+        $respository = 'App\Repositories\User\UserCatalogueRepository';
 
         if($this->userCatalogueService->updateByField($request, $id, $respository)){
             return response()->json([

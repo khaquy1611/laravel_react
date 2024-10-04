@@ -1,5 +1,5 @@
 /* REACT */
-import { useEffect } from 'react'
+import { useEffect, memo } from 'react'
 
 /* COMPONENT */
 import {
@@ -8,15 +8,16 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '../components/ui/select'
+} from '@/components/ui/select'
 import { FaPlus } from 'react-icons/fa6'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import CustomAlertDialog from '@/components/CustomAlertDialog'
 import CustomFilter from './CustomFilter'
+import { Link } from 'react-router-dom'
 /* SETTINGS */
 import { FilterProps } from '@/types/Base'
-import { perPages, publishs, sorts } from '@/constants/index'
+import { perpages, publishs, sort } from '@/constants/index'
 
 /* HOOKS */
 import useFilterAction from '@/hooks/useFilterAction'
@@ -31,6 +32,7 @@ const Filter = ({
   openSheet,
   items,
   buttonText,
+  ...restProps
 }: FilterProps) => {
   const { debounce } = useDebounce()
   const {
@@ -46,12 +48,14 @@ const Filter = ({
   } = useFilterAction(checkedState, model, refetch, debounce)
 
   const detectButtonAction = () => {
-    openSheet({ open: true, action: '', id: null })
+    if (openSheet) {
+      openSheet({ open: true, action: '', id: null })
+    }
   }
 
   useEffect(() => {
     handleQueryString({ ...filters, keyword: keyword })
-  }, [filters, handleQueryString, keyword])
+  }, [filters, keyword])
 
   return (
     <>
@@ -90,17 +94,17 @@ const Filter = ({
               )}
               <div className="mr-[10px]">
                 <Select
-                  onValueChange={value => handleFilter(value, 'perPage')}
+                  onValueChange={value => handleFilter(value, 'perpage')}
                   defaultValue={filters.perPage}
                 >
                   <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Chọn số bản ghi" />
                   </SelectTrigger>
                   <SelectContent>
-                    {perPages &&
-                      perPages.map((perPage, index) => (
-                        <SelectItem key={index} value={perPage}>
-                          {perPage} bản ghi
+                    {perpages &&
+                      perpages.map((perpage, index) => (
+                        <SelectItem key={index} value={perpage}>
+                          {perpage} bản ghi
                         </SelectItem>
                       ))}
                   </SelectContent>
@@ -134,8 +138,8 @@ const Filter = ({
                       <SelectValue placeholder="Sắp xếp theo" />
                     </SelectTrigger>
                     <SelectContent>
-                      {sorts &&
-                        sorts.map((item, index) => (
+                      {sort &&
+                        sort.map((item, index) => (
                           <SelectItem key={index} value={String(item.value)}>
                             {item.name}
                           </SelectItem>
@@ -155,23 +159,32 @@ const Filter = ({
                   defaultValue={keyword}
                 />
               </div>
-
-              <CustomFilter handleFilter={handleFilter} />
             </div>
           </div>
           <div>
-            <Button
-              className="p-0 bg-primary-bg text-white px-[15px] flex justify-between items-center text-[12px]"
-              onClick={() => detectButtonAction()}
-            >
-              <FaPlus className="mr-[5px]" />
-              {buttonText}
-            </Button>
+            {openSheet ? (
+              <Button
+                className="p-0 primary-bg text-white px-[15px] flex justify-between items-center text-[12px]"
+                onClick={() => detectButtonAction()}
+              >
+                <FaPlus className="mr-[5px]" />
+                {buttonText}
+              </Button>
+            ) : (
+              <Link
+                to={restProps.to}
+                className="p-0 primary-bg text-white px-[15px] flex justify-between items-center text-[13px] block p-[10px] rounded"
+              >
+                <FaPlus className="mr-[5px]" />
+                {buttonText}
+              </Link>
+            )}
           </div>
         </div>
+        <CustomFilter handleFilter={handleFilter} />
       </div>
     </>
   )
 }
 
-export default Filter
+export default memo(Filter)

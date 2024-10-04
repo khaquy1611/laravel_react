@@ -1,5 +1,5 @@
 <?php 
-namespace App\Repositories\UserCatalogue;
+namespace App\Repositories\User;
 use App\Repositories\BaseRepository;
 use App\Models\UserCatalogue;
 

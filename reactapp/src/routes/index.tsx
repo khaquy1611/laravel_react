@@ -5,7 +5,7 @@ import Login from '@/pages/Login'
 import View from '@/pages/user/screens/View'
 import Dashboard from '@/pages/Dashboard'
 import Layout from '@/components/Layout'
-import UserCataloguesIndex from '@/pages/UserCatalogues/screens/View'
+import UserCataloguesIndex from '@/pages/user_catalogues/screens/View'
 
 const router = createBrowserRouter([
   {

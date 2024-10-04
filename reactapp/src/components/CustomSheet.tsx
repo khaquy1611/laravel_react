@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Sheet,
   SheetContent,
@@ -5,7 +6,15 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { SheetProps } from '@/types/Base'
+
+interface CustomSheetProps {
+  title: string | undefined
+  description: string | undefined
+  isSheetOpen: boolean
+  closeSheet: () => void
+  children: any
+  className: string | undefined
+}
 
 const CustomSheet = ({
   children,
@@ -14,7 +23,7 @@ const CustomSheet = ({
   title,
   className,
   description,
-}: SheetProps) => {
+}: CustomSheetProps) => {
   return (
     <Sheet open={isSheetOpen} onOpenChange={closeSheet}>
       <SheetContent className={`${className ?? ''} overflow-y-scroll `}>

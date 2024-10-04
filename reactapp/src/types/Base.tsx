@@ -3,7 +3,7 @@ export interface UpdateStatusByFieldParam {
   id: string | number
   column: string
   value: string | number | boolean
-  model: string | null
+  model: string
 }
 
 export interface tableColumnProps<T> {
@@ -11,12 +11,13 @@ export interface tableColumnProps<T> {
   render: (item: T) => JSX.Element
 }
 export interface CheckStateInterface {
-  checkedState: { [key: number]: boolean }
+  checkedState: Record<number, boolean>
 }
 
 export type CheckState = {
   [key: number]: boolean
 }
+
 export interface FilterProps extends CheckStateInterface, SheetProps {
   isAnyChecked: boolean
   model: string
@@ -24,12 +25,13 @@ export interface FilterProps extends CheckStateInterface, SheetProps {
   handleQueryString: any
   items: BaseFilterItem[]
   buttonText: string
+  [key: string]: any
 }
 
 export interface SheetProps {
   isSheetOpen?: boolean
   closeSheet?: () => void
-  openSheet: ({ action, id }: Sheet) => void
+  openSheet?: ({ action, id }: Sheet) => void
   children?: any
   title?: string | undefined | any
   className?: string | undefined | any
@@ -82,7 +84,7 @@ export interface CustomSelectBoxProps {
   defaultValue?: Option
   onSelectChange?: (value: string | undefined) => void
   isLoading?: boolean
-  value: Option | null
+  value: any
 
   rules?: object
   name: string
@@ -102,12 +104,14 @@ export interface Inputs {
 }
 
 export interface CustomInputProps {
-  register: any
-  errors: any
   label: string
   name: string
   type: string | undefined
   defaultValue?: string | null | undefined
+  className?: string
+  register?: any
+  errors?: any
+  [key: string]: any
 }
 export interface Sheet {
   open: boolean
@@ -128,7 +132,7 @@ export interface SelectBoxItem {
 export interface StoreProps {
   refetch: any
   closeSheet: () => void
-  id: string | null
+  id: string | undefined
   action: string
 }
 

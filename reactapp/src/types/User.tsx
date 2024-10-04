@@ -46,17 +46,17 @@ export interface FilterParams {
 }
 
 export type UserPayloadInput = {
-  name: string
-  email: string
-  phone: string
-  password?: string | undefined
-  confirmPassword?: string | undefined
-  user_catalogue_id: string
+  name: string,
+  email: string,
+  phone: string,
+  password?: string | undefined,
+  confirmPassword?: string | undefined,
+  user_catalogue_id: string,
   // image?:  FileList | string | undefined,
-  image?: any
-  province_id: string
-  district_id: string
-  ward_id: string
+  image?:  any,
+  province_id: string,
+  district_id: string,
+  ward_id: string,
   address?: string
 }
 

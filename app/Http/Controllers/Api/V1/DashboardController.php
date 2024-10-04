@@ -6,19 +6,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Http\Resources\LocationResource;
+use App\Http\Requests\SortRequest;
+use App\Services\DashboardService;
+use App\Enums\Status;
+
 
 class DashboardController extends Controller
 {
 
+    protected $dashboardService;
 
-    
-  
     public function __construct(
-        
+        DashboardService $dashboardService
     ){
-       
-        
-
+       $this->dashboardService = $dashboardService;
     }
    
     
@@ -36,7 +37,7 @@ class DashboardController extends Controller
                 ], Response::HTTP_BAD_REQUEST);
             }
 
-            $repository = app($this->callRepository($model));
+            $repository = app(loadClass($model, 'Repository'));
 
             $deletedCount = $repository->deleteBatch($ids);
 
@@ -54,22 +55,21 @@ class DashboardController extends Controller
 
 
     public function updateBatch(Request $request){
+      
         DB::beginTransaction();
         try {
-            $ids = $request->input('ids');
-            $model = $request->input('model');
-            $field = $request->input('field');
-            $value = $request->input('value');
-
+            $ids =   $request->input('ids');
+            $model = trim($request->input('model'));
+            $field = trim($request->input('field'));
+            $value = trim($request->input('value'));
+            
             if(!is_array($ids) || count($ids) == 0 ){
                 return response()->json([
                     'error' => 'Danh sách id không hợp lệ'
                 ], Response::HTTP_BAD_REQUEST);
             }
-
-            $repository = app($this->callRepository($model));
-
-
+            $repository = app(loadClass($model, 'Repository'));
+        
             $whereIn = [
                 'whereInField' => 'id',
                 'whereInValue' => $ids
@@ -84,8 +84,9 @@ class DashboardController extends Controller
             ], Response::HTTP_OK);
             
         } catch (\Exception $e) {
+            
             DB::rollBack();
-            return response()->json(['error' => 'Có vấn đề xảy ra'], Response::HTTP_INTERNAL_SERVER_ERROR );
+            return response()->json(['error' => "Có vấn đề xảy ra" . " " . $e], Response::HTTP_INTERNAL_SERVER_ERROR );
         }
     }
 
@@ -132,6 +133,22 @@ class DashboardController extends Controller
                 'message' => $e->getMessage(),
             ], Response::HTTP_BAD_REQUEST);
         }
+    }
+
+    public function sort(SortRequest $request){
+        $sort = $this->dashboardService->sort($request);
+
+        if($sort['code'] === Status::SUCCESS){
+            return response()->json([
+                'message' => 'Sắp xếp thành công!',
+            ], Response::HTTP_OK);
+        }
+
+        return response()->json([
+            'code' => Status::ERROR,
+            'message' => 'Error!',
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+
     }
 
 }
