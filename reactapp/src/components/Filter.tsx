@@ -17,7 +17,7 @@ import CustomFilter from './CustomFilter'
 import { Link } from 'react-router-dom'
 /* SETTINGS */
 import { FilterProps } from '@/types/Base'
-import { perpages, publishs, sort } from '@/constants/index'
+import { perpages, publishs, sort } from '@/constants/general'
 
 /* HOOKS */
 import useFilterAction from '@/hooks/useFilterAction'
@@ -30,6 +30,7 @@ const Filter = ({
   refetch,
   handleQueryString,
   openSheet,
+  isSheetOpen,
   items,
   buttonText,
   ...restProps
@@ -55,6 +56,7 @@ const Filter = ({
 
   useEffect(() => {
     handleQueryString({ ...filters, keyword: keyword })
+    console.log(openSheet)
   }, [filters, keyword])
 
   return (
@@ -162,7 +164,7 @@ const Filter = ({
             </div>
           </div>
           <div>
-            {openSheet ? (
+            {isSheetOpen ? (
               <Button
                 className="p-0 primary-bg text-white px-[15px] flex justify-between items-center text-[12px]"
                 onClick={() => detectButtonAction()}
@@ -175,8 +177,10 @@ const Filter = ({
                 to={restProps.to}
                 className="p-0 primary-bg text-white px-[15px] flex justify-between items-center text-[13px] block p-[10px] rounded"
               >
-                <FaPlus className="mr-[5px]" />
-                {buttonText}
+                <Button className="p-0 primary-bg text-white px-[15px] flex justify-between items-center text-[12px]">
+                  <FaPlus className="mr-[5px]" />
+                  {buttonText}
+                </Button>
               </Link>
             )}
           </div>

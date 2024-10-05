@@ -5,6 +5,7 @@ import { RiDeleteBin5Line } from 'react-icons/ri'
 import { MdLockReset } from 'react-icons/md'
 import Recovery from '@/pages/user/screens/include/Recovery'
 import { ActionParam, ButtonAction, OpenSheetFunction } from '@/types/Base'
+import { BsFileEarmarkPost } from 'react-icons/bs'
 import { UserType } from '@/types/User'
 
 export const MenuConfig = [
@@ -32,6 +33,15 @@ export const MenuConfig = [
         links: [
           { title: 'Quản lí nhóm thành viên', to: '/user/catalogue/index' },
           { title: 'Quản lí thành viên', to: '/user/index' },
+        ],
+      },
+      {
+        icon: <BsFileEarmarkPost className="text-sm mr-2" />,
+        active: ['post'],
+        label: 'QL Bài Viết',
+        links: [
+          { title: 'QL Nhóm Bài Viết', to: '/post/catalogue/index' },
+          { title: 'QL Bài viết', to: '/post/index' },
         ],
       },
     ],
@@ -63,16 +73,28 @@ export const breadcrumbs = {
       title: 'Cập nhật nhóm thông tin',
     },
   },
+  post_catalogues: {
+    index: {
+      title: 'Quản lý nhóm bài viết',
+      route: '/post/catalogue/index',
+    },
+    create: {
+      title: 'Thêm mới nhóm bài viết',
+    },
+    update: {
+      title: 'Cập nhật nhóm bài viết',
+    },
+  },
 }
 
 export const Models = {
   users: `users`,
   user_catalogues: `user_catalogues`,
+  post_catalogues: `post_catalogues`,
 }
 
 export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
   {
-    path: '/user/update',
     icon: <FaRegEdit className="text-white" />,
     className: 'flex mr-[5px]',
     method: 'update',
@@ -82,7 +104,6 @@ export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
     },
   },
   {
-    path: '/user/delete',
     icon: <RiDeleteBin5Line className="text-white" />,
     className: 'bg-[#ec4758] mr-[5px]',
     method: 'delete',
@@ -92,7 +113,6 @@ export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
     },
   },
   {
-    path: '/user/recovery',
     icon: <MdLockReset className="text-white" />,
     className: 'bg-[#f8ac59]',
     method: 'reset',
@@ -109,9 +129,8 @@ export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
   },
 ]
 
-export const buttonUserCataloguesActions: ButtonAction<ActionParam[]>[] = [
+export const buttonUserCatalogueActions: ButtonAction<ActionParam[]>[] = [
   {
-    path: '/user/update',
     icon: <FaRegEdit className="text-white" />,
     className: 'flex mr-[5px]',
     method: 'update',
@@ -121,7 +140,6 @@ export const buttonUserCataloguesActions: ButtonAction<ActionParam[]>[] = [
     },
   },
   {
-    path: '/user/delete',
     icon: <RiDeleteBin5Line className="text-white" />,
     className: 'bg-[#ec4758] mr-[5px]',
     method: 'delete',
@@ -131,7 +149,28 @@ export const buttonUserCataloguesActions: ButtonAction<ActionParam[]>[] = [
     },
   },
 ]
-
+export const buttonPostCatalogueActions: ButtonAction<ActionParam[]>[] = [
+  {
+    path: '/post/catalogue/update',
+    icon: <FaRegEdit className="text-white" />,
+    className: 'flex mr-[5px]',
+    method: 'update',
+    params: ['id', 'name', 'openSheet:f'],
+    onClick: (id: string, name: string, openSheet: OpenSheetFunction) => {
+      openSheet({ open: true, action: 'update', id: id })
+    },
+  },
+  {
+    path: '/post/catalogue/delete',
+    icon: <RiDeleteBin5Line className="text-white" />,
+    className: 'bg-[#ec4758] mr-[5px]',
+    method: 'delete',
+    params: ['id', 'handleAlertDialog:f', 'destroy:f'],
+    onClick: (id: string, handleAlertDialog: any, destroy: any) => {
+      handleAlertDialog(id, destroy)
+    },
+  },
+]
 export const formField = (action: string, data?: UserType | undefined) => {
   const showPasswordField = action !== 'update'
   const baseField = [
@@ -172,41 +211,6 @@ export const formField = (action: string, data?: UserType | undefined) => {
 
   return showPasswordField ? [...baseField, ...passwordFields] : baseField
 }
-export const perpages = ['10', '20', '50', '100', '200', '400', '600']
-
-export const publishs = [
-  {
-    id: 0,
-    name: 'Tất cả',
-  },
-  {
-    id: 1,
-    name: 'Không xuất bản',
-  },
-  {
-    id: 2,
-    name: 'Xuất bản',
-  },
-]
-
-export const sort = [
-  {
-    value: 'id,desc',
-    name: 'Sắp xếp bản ghi mới - cũ',
-  },
-  {
-    value: 'id,asc',
-    name: 'Sắp xếp bản ghi cũ - mới',
-  },
-  {
-    value: 'name,asc',
-    name: 'Sắp xếp Tên A - Z',
-  },
-  {
-    value: 'name,desc',
-    name: 'Sắp xếp Tên Z - A',
-  },
-]
 
 export const selectBox = [
   {

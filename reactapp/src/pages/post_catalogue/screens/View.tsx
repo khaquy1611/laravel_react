@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useMemo, useEffect, useCallback } from 'react'
+import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 /* COMPONENTS */
 import PageHeading from '@/components/Heading'
 import Paginate from '@/components/Paginate'
 import Filter from '@/components/Filter'
 import CustomTable from '@/components/CustomTable'
-import CustomSheet from '@/components/CustomSheet'
-import UserStore from '@/pages/user/screens/include/Store'
-
+// import Store from '@/pages/post_catalogue/screens/Store'
 import {
   Card,
   CardContent,
@@ -24,25 +23,29 @@ import { FilterProvider } from '@/contexts/FilterContext'
 import useCheckBoxState from '@/hooks/useCheckBoxState'
 import useTable from '@/hooks/useTable'
 import useSheet from '@/hooks/useSheet'
-import { useQuery } from 'react-query'
 
 /* SETTINGS */
-import { breadcrumbs, Models, buttonUserActions } from '@/constants/index'
-import { tableColumn } from '@/pages/user/settings/userSettings'
+import { tableColumn } from '../settings/PostCatalogueSettings'
+import {
+  breadcrumbs,
+  Models,
+  buttonPostCatalogueActions,
+} from '@/constants/index'
 
 import { Breadcrumb } from '@/types/Base'
 import { filterItems } from '@/settings/globalSettings'
 import { SelectConfig } from '@/components/CustomFilter'
-import { UserCataloguesType } from '@/types/UserCatalogues'
 
 /* SERVICE */
-import { pagination, destroy, changePassword } from '@/services/UserServices'
-import { pagination as userCataloguePagination } from '@/services/UserCataloguesServices'
-import { useSearchParams } from 'react-router-dom'
+import { pagination, destroy } from '@/services/PostCatalogueService'
 
-const User = () => {
-  const breadcrumbData: Breadcrumb = breadcrumbs.users.index
-  const model = Models.users
+import 'ckeditor5/ckeditor5.css'
+import 'ckeditor5/ckeditor5-content.css'
+// import CustomSheet from '@/components/CustomSheet'
+
+const PostCatalogue = () => {
+  const breadcrumbData: Breadcrumb = breadcrumbs.post_catalogues.index
+  const model = Models.post_catalogues
   const {
     isLoading,
     data,
@@ -51,6 +54,7 @@ const User = () => {
     handlePageChange,
     handleQueryString,
   } = useTable({ model, pagination })
+  const { isSheetOpen, openSheet } = useSheet()
   const {
     checkedState,
     checkedAllState,
@@ -58,7 +62,7 @@ const User = () => {
     handleCheckedAllChange,
     isAnyChecked,
   } = useCheckBoxState(data, model, isLoading)
-  const { isSheetOpen, openSheet, closeSheet } = useSheet()
+
   const [searchParams] = useSearchParams()
   const perPage = searchParams.get('perPage')
     ? parseInt(searchParams.get('perPage')!)
@@ -67,53 +71,7 @@ const User = () => {
   const totalPages = Math.ceil(totalItems / perPage)
   const somethingChecked = isAnyChecked()
 
-  const { data: dataUserCatalogues, isLoading: isUserCatalogueLoading } =
-    useQuery(['user_catalogues'], () =>
-      userCataloguePagination('?sort=name,asc')
-    )
-
-  const userCatalogues = useMemo(() => {
-    if (!isUserCatalogueLoading && dataUserCatalogues) {
-      return dataUserCatalogues['user_catalogues'].map(
-        (userCatalogueItem: UserCataloguesType) => ({
-          value: String(userCatalogueItem.id),
-          label: String(userCatalogueItem.name),
-        })
-      )
-    }
-
-    return []
-  }, [dataUserCatalogues, isUserCatalogueLoading])
-
-  const [customFilter, setCustomFilter] = useState<SelectConfig[]>([
-    {
-      name: 'user_catalogue_id',
-      placeholder: 'Chọn Nhóm Thành Viên',
-      options: [],
-    },
-  ])
-
-  const setCustomFilterCallback = useCallback(
-    (prevState: SelectConfig[]) =>
-      prevState.map(item =>
-        item.name === 'user_catalogue_id'
-          ? {
-              ...item,
-              options: [
-                { value: '0', label: 'Tất cả các nhóm' },
-                ...userCatalogues,
-              ],
-            }
-          : item
-      ),
-    [userCatalogues]
-  )
-
-  useEffect(() => {
-    if (userCatalogues.length) {
-      setCustomFilter(prevState => setCustomFilterCallback(prevState))
-    }
-  }, [userCatalogues, setCustomFilterCallback])
+  const [customFilter] = useState<SelectConfig[]>([])
 
   return (
     <FilterProvider customFilters={customFilter}>
@@ -123,11 +81,11 @@ const User = () => {
         <Card className="rounded-[5px] mt-[15px]">
           <CardHeader className="border-b border-solid border-[#f3f3f3] p-[20px]">
             <CardTitle className="uppercase">
-              Quản lý danh sách thành viên
+              Quản lý danh sách nhóm bài viết
             </CardTitle>
             <CardDescription className="text-xs text-[blue]">
-              Hiển thị danh sách thành viên, sử dụng các chức năng bên dưới để
-              lọc theo mong muốn
+              Hiển thị danh sách nhóm bài viết, sử dụng các chức năng bên dưới
+              để lọc theo mong muốn
             </CardDescription>
           </CardHeader>
           <CardContent className="p-[15px]">
@@ -137,8 +95,11 @@ const User = () => {
               model={model}
               refetch={refetch}
               handleQueryString={(filters: any) => handleQueryString(filters)}
+              openSheet={openSheet}
+              isSheetOpen={isSheetOpen.open}
               items={filterItems}
-              buttonText="Thêm mới thành viên"
+              buttonText="Thêm mới nhóm nhóm bài viết"
+              to="/post/catalogue/create"
             />
 
             <CustomTable
@@ -152,11 +113,9 @@ const User = () => {
               handleCheckedChange={handleCheckedChange}
               handleCheckedAllChange={handleCheckedAllChange}
               openSheet={openSheet}
-              isSheetOpen={isSheetOpen.open}
               destroy={destroy}
               refetch={refetch}
-              buttonActions={buttonUserActions}
-              changePassword={changePassword}
+              buttonActions={buttonPostCatalogueActions}
             />
           </CardContent>
           <CardFooter>
@@ -169,29 +128,28 @@ const User = () => {
             ) : null}
           </CardFooter>
         </Card>
-        {isSheetOpen && (
+        {/* {isSheetOpen && (
           <CustomSheet
             title={
               isSheetOpen.action === 'update'
-                ? breadcrumbs.users.update.title
-                : breadcrumbs.users.create.title
+                ? breadcrumbs.post_catalogues.update.title
+                : breadcrumbs.post_catalogues.create.title
             }
             description="Nhập đầy đủ các thông tin dưới đây. Các mục có dấu (*) là bắt buộc"
             isSheetOpen={isSheetOpen.open}
             closeSheet={closeSheet}
-            className="w-[500px] sm:w-[500px]"
+            className="w-[1280px] sm:w-[1280px] bg-[#f3f3f4]"
           >
-            <UserStore
+            <Store
               refetch={refetch}
               closeSheet={closeSheet}
-              id={isSheetOpen.id || undefined}
+              id={isSheetOpen.id}
               action={isSheetOpen.action}
-              userCatalogueData={userCatalogues}
             />
           </CustomSheet>
-        )}
+        )} */}
       </div>
     </FilterProvider>
   )
 }
-export default User
+export default PostCatalogue

@@ -6,6 +6,8 @@ import View from '@/pages/user/screens/View'
 import Dashboard from '@/pages/Dashboard'
 import Layout from '@/components/Layout'
 import UserCataloguesIndex from '@/pages/user_catalogues/screens/View'
+import PostCataloguesIndex from '@/pages/post_catalogue/screens/View'
+import PostCatalogueStore from '@/pages/post_catalogue/screens/Store'
 
 const router = createBrowserRouter([
   {
@@ -36,6 +38,12 @@ const router = createBrowserRouter([
         path: '/user/catalogue/index',
         element: <UserCataloguesIndex />,
       },
+      {
+        path: '/post/catalogue/index',
+        element: <PostCataloguesIndex />,
+      },
+      { path: '/post/catalogue/create', element: <PostCatalogueStore /> },
+      { path: '/post/catalogue/update/:id', element: <PostCatalogueStore /> },
     ],
   },
 ])

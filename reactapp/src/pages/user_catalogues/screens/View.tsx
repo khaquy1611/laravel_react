@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 /* COMPONENTS */
 import PageHeading from '@/components/Heading'
 import Paginate from '@/components/Paginate'
@@ -30,7 +31,7 @@ import { tableColumn } from '../settings/UserCataloguesSettings'
 import {
   breadcrumbs,
   Models,
-  buttonUserCataloguesActions,
+  buttonUserCatalogueActions,
 } from '@/constants/index'
 import { Breadcrumb } from '@/types/Base'
 import { filterItems } from '@/settings/globalSettings'
@@ -38,7 +39,7 @@ import { SelectConfig } from '@/components/CustomFilter'
 
 /* SERVICE */
 import { pagination, destroy } from '@/services/UserCataloguesServices'
-import { useSearchParams } from 'react-router-dom'
+
 
 const UserCatalogue = () => {
   const breadcrumbData: Breadcrumb = breadcrumbs.user_catalogues.index
@@ -91,7 +92,6 @@ const UserCatalogue = () => {
               model={model}
               refetch={refetch}
               handleQueryString={(filters: any) => handleQueryString(filters)}
-              openSheet={openSheet}
               items={filterItems}
               buttonText="Thêm mới nhóm thành viên"
             />
@@ -107,9 +107,10 @@ const UserCatalogue = () => {
               handleCheckedChange={handleCheckedChange}
               handleCheckedAllChange={handleCheckedAllChange}
               openSheet={openSheet}
+              isSheetOpen={isSheetOpen.open}
               destroy={destroy}
               refetch={refetch}
-              buttonActions={buttonUserCataloguesActions}
+              buttonActions={buttonUserCatalogueActions}
             />
           </CardContent>
           <CardFooter>

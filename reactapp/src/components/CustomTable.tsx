@@ -17,6 +17,7 @@ import { Switch } from '@/components/ui/switch'
 import { LoadingSpinner } from '@/components/ui/loading'
 import CustomAlertDialog from '@/components/CustomAlertDialog'
 import CustomDialog from '@/components/CustomDialog'
+import { Link } from 'react-router-dom'
 
 /* HOOKS */
 import useColumnState from '@/hooks/useColumnState'
@@ -91,7 +92,7 @@ const CustomTable = ({
               />
             </TableHead>
             {tableColumn &&
-              tableColumn.map((column, index) => (
+              tableColumn.map((column: any, index: number) => (
                 <TableHead key={index}>{column.name}</TableHead>
               ))}
 
@@ -131,7 +132,7 @@ const CustomTable = ({
                   />
                 </TableCell>
                 {tableColumn &&
-                  tableColumn.map((column, index) => (
+                  tableColumn.map((column: any, index: number) => (
                     <TableCell key={index}>{column.render(row)}</TableCell>
                   ))}
                 <TableCell className="text-center">
@@ -143,46 +144,61 @@ const CustomTable = ({
                     }
                   />
                 </TableCell>
-                <TableCell className="flex justify-center">
+                <TableCell className="flex items-center justify-center text-center">
                   {buttonActions &&
-                    buttonActions.map((action, index) => (
-                      <Button
-                        key={index}
-                        className={`${action.className} p-[15px]`}
-                        onClick={
-                          action.onClick && action.params
-                            ? (e: React.MouseEvent<HTMLButtonElement>) => {
-                                e.preventDefault()
-                                const args = action.params?.map(param => {
-                                  if (
-                                    typeof param === 'string' &&
-                                    (param.endsWith(':f') ||
-                                      param.endsWith(':pf') ||
-                                      param.endsWith(':c'))
-                                  ) {
-                                    if (param.endsWith(':f')) {
-                                      return eval(param.slice(0, -2))
-                                    } else if (param.endsWith(':pf')) {
-                                      const functionName = param.slice(0, -3)
-                                      return restProps[functionName]
-                                    } else if (param.endsWith(':c')) {
-                                      return action.component
+                    buttonActions.map((action: any, index: number) =>
+                      action.path ? (
+                        <Link
+                          key={index}
+                          to={`${action.path}/${row.id}`}
+                          
+                        >
+                          <Button className={`p-0 py-[11px] primary-bg text-white rounded ${action.className} p-[15px]`}>{action.icon}</Button>
+                          
+                        </Link>
+                      ) : (
+                        <Button
+                          key={index}
+                          className={`${action.className} p-[15px]`}
+                          onClick={
+                            action.onClick && action.params
+                              ? (e: React.MouseEvent<HTMLButtonElement>) => {
+                                  const args = action.params?.map(
+                                    (param: any) => {
+                                      if (
+                                        typeof param === 'string' &&
+                                        (param.endsWith(':f') ||
+                                          param.endsWith(':pf') ||
+                                          param.endsWith(':c'))
+                                      ) {
+                                        if (param.endsWith(':f')) {
+                                          return eval(param.slice(0, -2))
+                                        } else if (param.endsWith(':pf')) {
+                                          const functionName = param.slice(
+                                            0,
+                                            -3
+                                          )
+                                          return restProps[functionName]
+                                        } else if (param.endsWith(':c')) {
+                                          return action.component
+                                        }
+                                      } else {
+                                        return row[param as keyof Row]
+                                      }
                                     }
-                                  } else {
-                                    return row[param as keyof Row]
-                                  }
-                                }) as ParamsToTuple<typeof action.params>
+                                  ) as ParamsToTuple<typeof action.params>
 
-                                if (action.onClick) {
-                                  action.onClick(...args)
+                                  if (action.onClick) {
+                                    action.onClick(...args)
+                                  }
                                 }
-                              }
-                            : undefined
-                        }
-                      >
-                        {action.icon}
-                      </Button>
-                    ))}
+                              : undefined
+                          }
+                        >
+                          {action.icon}
+                        </Button>
+                      )
+                    )}
                 </TableCell>
               </TableRow>
             ))

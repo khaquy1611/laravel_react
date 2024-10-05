@@ -6,7 +6,7 @@ const LoadingButton = ({ loading, text }: LoadingButtonProps) => {
   return (
     <Button
       disabled={loading}
-      className="text-xs w-full bg-blue-500 text-white hover:bg-blue-700 hover:text-white py-2 shadow-button rounded-md"
+      className="text-xs  bg-blue-500 text-white hover:bg-blue-700 hover:text-white py-2 shadow-button rounded-md"
       variant="outline"
     >
       {loading ? <ReloadIcon className="mr-2 h-4 w-4 animate-spin" /> : null}
