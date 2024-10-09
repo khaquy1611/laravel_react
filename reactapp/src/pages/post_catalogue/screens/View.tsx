@@ -54,7 +54,7 @@ const PostCatalogue = () => {
     handlePageChange,
     handleQueryString,
   } = useTable({ model, pagination })
-  const { isSheetOpen, openSheet } = useSheet()
+  const { openSheet } = useSheet()
   const {
     checkedState,
     checkedAllState,
@@ -95,8 +95,6 @@ const PostCatalogue = () => {
               model={model}
               refetch={refetch}
               handleQueryString={(filters: any) => handleQueryString(filters)}
-              openSheet={openSheet}
-              isSheetOpen={isSheetOpen.open}
               items={filterItems}
               buttonText="Thêm mới nhóm nhóm bài viết"
               to="/post/catalogue/create"

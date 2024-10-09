@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
 /* COMPONENTS */
 import PageHeading from '@/components/Heading'
 import Paginate from '@/components/Paginate'
 import Filter from '@/components/Filter'
 import CustomTable from '@/components/CustomTable'
 import CustomSheet from '@/components/CustomSheet'
-import UserCataloguesStore from '@/pages/user_catalogues/screens/include/Store'
+import Store from '@/pages/tag/screens/include/store'
 
 import {
   Card,
@@ -27,23 +26,19 @@ import useTable from '@/hooks/useTable'
 import useSheet from '@/hooks/useSheet'
 
 /* SETTINGS */
-import { tableColumn } from '../settings/UserCataloguesSettings'
-import {
-  breadcrumbs,
-  Models,
-  buttonUserCatalogueActions,
-} from '@/constants/index'
+import { tableColumn } from '../setting'
+import { breadcrumbs, Models, buttonTagsActions } from '@/constants/index'
 import { Breadcrumb } from '@/types/Base'
 import { filterItems } from '@/settings/globalSettings'
 import { SelectConfig } from '@/components/CustomFilter'
 
 /* SERVICE */
-import { pagination, destroy } from '@/services/UserCataloguesServices'
+import { pagination, destroy } from '@/services/TagService'
+import { useSearchParams } from 'react-router-dom'
 
-
-const UserCatalogue = () => {
-  const breadcrumbData: Breadcrumb = breadcrumbs.user_catalogues.index
-  const model = Models.user_catalogues
+const Tag = () => {
+  const breadcrumbData: Breadcrumb = breadcrumbs.tags.index
+  const model = Models.tags
   const {
     isLoading,
     data,
@@ -77,12 +72,10 @@ const UserCatalogue = () => {
       <div className="container-fluid mx-6">
         <Card className="rounded-[5px] mt-[15px]">
           <CardHeader className="border-b border-solid border-[#f3f3f3] p-[20px]">
-            <CardTitle className="uppercase">
-              Quản lý danh sách thành viên
-            </CardTitle>
+            <CardTitle className="uppercase">Quản lý danh sách tag</CardTitle>
             <CardDescription className="text-xs text-[blue]">
-              Hiển thị danh sách thành viên, sử dụng các chức năng bên dưới để
-              lọc theo mong muốn
+              Hiển thị danh sách tag, sử dụng các chức năng bên dưới để lọc theo
+              mong muốn
             </CardDescription>
           </CardHeader>
           <CardContent className="p-[15px]">
@@ -91,10 +84,10 @@ const UserCatalogue = () => {
               checkedState={checkedState}
               model={model}
               refetch={refetch}
-              openSheet={openSheet}
               handleQueryString={(filters: any) => handleQueryString(filters)}
+              openSheet={openSheet}
               items={filterItems}
-              buttonText="Thêm mới nhóm thành viên"
+              buttonText="Thêm mới tag"
             />
 
             <CustomTable
@@ -108,10 +101,9 @@ const UserCatalogue = () => {
               handleCheckedChange={handleCheckedChange}
               handleCheckedAllChange={handleCheckedAllChange}
               openSheet={openSheet}
-              isSheetOpen={isSheetOpen.open}
               destroy={destroy}
               refetch={refetch}
-              buttonActions={buttonUserCatalogueActions}
+              buttonActions={buttonTagsActions}
             />
           </CardContent>
           <CardFooter>
@@ -128,15 +120,15 @@ const UserCatalogue = () => {
           <CustomSheet
             title={
               isSheetOpen.action === 'update'
-                ? breadcrumbs.user_catalogues.update.title
-                : breadcrumbs.user_catalogues.create.title
+                ? breadcrumbs.tags.update.title
+                : breadcrumbs.tags.create.title
             }
             description="Nhập đầy đủ các thông tin dưới đây. Các mục có dấu (*) là bắt buộc"
             isSheetOpen={isSheetOpen.open}
             closeSheet={closeSheet}
             className="w-[500px] sm:w-[500px]"
           >
-            <UserCataloguesStore
+            <Store
               refetch={refetch}
               closeSheet={closeSheet}
               id={isSheetOpen.id || undefined}
@@ -148,4 +140,4 @@ const UserCatalogue = () => {
     </FilterProvider>
   )
 }
-export default UserCatalogue
+export default Tag

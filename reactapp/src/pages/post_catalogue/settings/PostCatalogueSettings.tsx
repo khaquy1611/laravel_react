@@ -16,23 +16,10 @@ import { sort } from '@/services/BaseServices'
 /* HOOKS */
 // import { Sheet } from "@/hooks/useSheet";
 import useDebounce from '@/hooks/useDebounce'
+import { Models } from '@/constants'
 
-export const model = 'post_catalogues'
+export const model = Models.post_catalogues
 export const redirectIfSuccess = '/post/catalogue/index'
-
-export const breadcrumb = {
-  index: {
-    title: 'Quản lý nhóm bài viết',
-    route: '/post/catalogue/index',
-  },
-  create: {
-    title: 'Thêm mới nhóm bài viết',
-    route: '/post/catalogue/create',
-  },
-  update: {
-    title: 'Cập nhật thông tin',
-  },
-}
 
 interface tableColumn {
   name: string

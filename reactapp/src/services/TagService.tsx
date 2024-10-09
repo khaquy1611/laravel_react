@@ -1,11 +1,13 @@
 import axios from '@/configs/axios'
 import { baseSave, baseDestroy } from './BaseServices'
-import {
-  PostCatalogue,
-  PostCataloguePayloadInput,
-} from '@/types/PostCatalogues'
 
-const endpoint = '/auth/post_catalogues'
+export interface ITag {
+  name: string
+  canonical: string
+  [key: string]: string | undefined
+}
+
+const endpoint = '/auth/tags'
 
 const pagination = async (queryString: string) => {
   const response = await axios.get(`${endpoint}?${queryString}`)
@@ -13,7 +15,7 @@ const pagination = async (queryString: string) => {
 }
 
 const save = async (
-  payload: PostCataloguePayloadInput,
+  payload: ITag,
   updateParams: { action: string; id: string | undefined }
 ) => {
   return baseSave(endpoint, payload, updateParams)
@@ -23,11 +25,13 @@ const destroy = async (id: string) => {
   return baseDestroy(id, endpoint)
 }
 
-const getPostCatalogueById = async (
-  id: string | undefined
-): Promise<PostCatalogue> => {
+// const update = async (payload: ITag) => {
+//   const formData = new FormData()
+// }
+
+const getTagById = async (id: string | undefined): Promise<ITag> => {
   const response = await axios.get(`${endpoint}/${id}`)
   return response.data
 }
 
-export { pagination, save, destroy, getPostCatalogueById }
+export { pagination, save, destroy, getTagById }

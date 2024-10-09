@@ -20,12 +20,8 @@ import useFormSubmit from '@/hooks/useFormSubmit'
 import { useQuery } from 'react-query'
 
 /* SETTINGS */
-import {
-  breadcrumb,
-  redirectIfSuccess,
-} from '../settings/PostCatalogueSettings'
+import { redirectIfSuccess } from '../settings/PostCatalogueSettings'
 import { Breadcrumb } from '@/types/Base'
-import { model } from '../settings/PostCatalogueSettings'
 
 import { PostCataloguePayloadInput } from '@/types/PostCatalogues'
 
@@ -40,6 +36,7 @@ import { pagination } from '@/services/PostCatalogueService'
 /* SCSS */
 import '@/assets/scss/Editor.scss'
 import BackButton from '@/components/BackButton'
+import { breadcrumbs, Models } from '@/constants'
 
 /* IMAGE */
 
@@ -89,8 +86,11 @@ const Store = () => {
   const navigate = useNavigate()
   const { id } = useParams()
   const currentAction = useMemo(() => (id ? 'update' : ''), [id])
-  const breadcrumbData: Breadcrumb = useMemo(() => breadcrumb.index, [])
-
+  const breadcrumbData: Breadcrumb = useMemo(
+    () => breadcrumbs.post_catalogues.index,
+    []
+  )
+  const model = Models.post_catalogues
   // const {} = useForm
 
   const methods = useForm<PostCataloguePayloadInput>({
@@ -112,18 +112,20 @@ const Store = () => {
     setAlbum(images)
   }, [])
 
-  const {
-    data: dropdown,
-    isLoading: isDropdownLoading,
-  } = useQuery([model], () => pagination(''))
-  const {
-    data: postCatalogue,
-  } = useQuery([model, id], () => getPostCatalogueById(id), {
-    enabled: !!id,
-    onSuccess: data => {
-      reset(data)
-    },
-  })
+  const { data: dropdown, isLoading: isDropdownLoading } = useQuery(
+    [model],
+    () => pagination('')
+  )
+  const { data: postCatalogue } = useQuery(
+    [model, id],
+    () => getPostCatalogueById(id),
+    {
+      enabled: !!id,
+      onSuccess: data => {
+        reset(data)
+      },
+    }
+  )
 
   const postCatalogues = useMemo(() => {
     if (!isDropdownLoading && dropdown) {
@@ -145,13 +147,11 @@ const Store = () => {
   return (
     <FormProvider {...methods}>
       <div className="page-container">
-       
         <PageHeading breadcrumb={breadcrumbData} />
         <div className="p-[15px]">
           <form onSubmit={handleSubmit(onSubmitHanler)}>
-          <BackButton link="/post/catalogue/index" />
+            <BackButton link="/post/catalogue/index" />
             <div className="grid grid-cols-12 gap-4">
-           
               <div className="col-span-9">
                 <General />
 

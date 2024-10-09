@@ -136,6 +136,7 @@ const User = () => {
               checkedState={checkedState}
               model={model}
               refetch={refetch}
+              openSheet={openSheet}
               handleQueryString={(filters: any) => handleQueryString(filters)}
               items={filterItems}
               buttonText="Thêm mới thành viên"

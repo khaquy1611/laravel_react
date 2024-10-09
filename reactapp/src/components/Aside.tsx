@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/accordion'
 import Logo from './Logo'
 import { Link } from 'react-router-dom'
-import { MenuConfig } from '@/constants'
+import { MenuConfig } from '@/constants/sidebar'
 import '@/assets/scss/Accordion.scss'
 import '@/assets/scss/Aside.scss'
 

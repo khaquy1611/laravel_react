@@ -1,13 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useMemo } from 'react'
 /* COMPONENTS */
+import CustomTable from '@/components/CustomTable'
+import Filter from '@/components/Filter'
 import PageHeading from '@/components/Heading'
 import Paginate from '@/components/Paginate'
-import Filter from '@/components/Filter'
-import CustomTable from '@/components/CustomTable'
-import CustomSheet from '@/components/CustomSheet'
-import UserCataloguesStore from '@/pages/user_catalogues/screens/include/Store'
 
 import {
   Card,
@@ -24,26 +21,24 @@ import { FilterProvider } from '@/contexts/FilterContext'
 /* HOOKS */
 import useCheckBoxState from '@/hooks/useCheckBoxState'
 import useTable from '@/hooks/useTable'
-import useSheet from '@/hooks/useSheet'
+import { useQuery } from 'react-query'
 
 /* SETTINGS */
-import { tableColumn } from '../settings/UserCataloguesSettings'
-import {
-  breadcrumbs,
-  Models,
-  buttonUserCatalogueActions,
-} from '@/constants/index'
-import { Breadcrumb } from '@/types/Base'
+import { tableColumn } from '../settings'
+import { breadcrumbs, Models, buttonPostsActions } from '@/constants/index'
+import { queryKey } from '@/constants/query'
 import { filterItems } from '@/settings/globalSettings'
-import { SelectConfig } from '@/components/CustomFilter'
 
 /* SERVICE */
-import { pagination, destroy } from '@/services/UserCataloguesServices'
+import { useCustomFilter } from '@/hooks/useCustomFilter'
+import { pagination as postCataloguePagination } from '@/services/PostCatalogueService'
+import { destroy, pagination } from '@/services/PostService'
+import { Breadcrumb } from '@/types/Base'
+import { useSearchParams } from 'react-router-dom'
 
-
-const UserCatalogue = () => {
-  const breadcrumbData: Breadcrumb = breadcrumbs.user_catalogues.index
-  const model = Models.user_catalogues
+const Post = () => {
+  const breadcrumbData: Breadcrumb = breadcrumbs.posts.index
+  const model = Models.posts
   const {
     isLoading,
     data,
@@ -59,7 +54,6 @@ const UserCatalogue = () => {
     handleCheckedAllChange,
     isAnyChecked,
   } = useCheckBoxState(data, model, isLoading)
-  const { isSheetOpen, openSheet, closeSheet } = useSheet()
   const [searchParams] = useSearchParams()
   const perPage = searchParams.get('perPage')
     ? parseInt(searchParams.get('perPage')!)
@@ -68,21 +62,40 @@ const UserCatalogue = () => {
   const totalPages = Math.ceil(totalItems / perPage)
   const somethingChecked = isAnyChecked()
 
-  const [customFilter] = useState<SelectConfig[]>([])
+  const { data: postCatalogues, isLoading: isPostCatalogueLoading } = useQuery(
+    [queryKey.postCatalogues],
+    () => postCataloguePagination('')
+  )
+
+  const filterInitial = useMemo(
+    () => [
+      {
+        name: 'post_catalogue_id',
+        placeholder: 'Chọn nhóm bài viết',
+        data: postCatalogues?.['post_catalogues'],
+        isLoading: isPostCatalogueLoading,
+        isNested: true,
+        valueKey: 'id',
+        labelKey: 'name',
+      },
+    ],
+    [postCatalogues]
+  )
+
+  const customFilter = useCustomFilter(filterInitial)
 
   return (
     <FilterProvider customFilters={customFilter}>
       <PageHeading breadcrumb={breadcrumbData} />
-
       <div className="container-fluid mx-6">
         <Card className="rounded-[5px] mt-[15px]">
           <CardHeader className="border-b border-solid border-[#f3f3f3] p-[20px]">
             <CardTitle className="uppercase">
-              Quản lý danh sách thành viên
+              Quản lý danh sách bài viết
             </CardTitle>
             <CardDescription className="text-xs text-[blue]">
-              Hiển thị danh sách thành viên, sử dụng các chức năng bên dưới để
-              lọc theo mong muốn
+              Hiển thị danh sách bài viết, sử dụng các chức năng bên dưới để lọc
+              theo mong muốn
             </CardDescription>
           </CardHeader>
           <CardContent className="p-[15px]">
@@ -91,12 +104,11 @@ const UserCatalogue = () => {
               checkedState={checkedState}
               model={model}
               refetch={refetch}
-              openSheet={openSheet}
               handleQueryString={(filters: any) => handleQueryString(filters)}
               items={filterItems}
-              buttonText="Thêm mới nhóm thành viên"
+              buttonText="Thêm mới bài viết"
+              to="/post/create"
             />
-
             <CustomTable
               isLoading={isLoading}
               data={data}
@@ -107,11 +119,9 @@ const UserCatalogue = () => {
               checkedAllState={checkedAllState}
               handleCheckedChange={handleCheckedChange}
               handleCheckedAllChange={handleCheckedAllChange}
-              openSheet={openSheet}
-              isSheetOpen={isSheetOpen.open}
               destroy={destroy}
               refetch={refetch}
-              buttonActions={buttonUserCatalogueActions}
+              buttonActions={buttonPostsActions}
             />
           </CardContent>
           <CardFooter>
@@ -124,28 +134,8 @@ const UserCatalogue = () => {
             ) : null}
           </CardFooter>
         </Card>
-        {isSheetOpen && (
-          <CustomSheet
-            title={
-              isSheetOpen.action === 'update'
-                ? breadcrumbs.user_catalogues.update.title
-                : breadcrumbs.user_catalogues.create.title
-            }
-            description="Nhập đầy đủ các thông tin dưới đây. Các mục có dấu (*) là bắt buộc"
-            isSheetOpen={isSheetOpen.open}
-            closeSheet={closeSheet}
-            className="w-[500px] sm:w-[500px]"
-          >
-            <UserCataloguesStore
-              refetch={refetch}
-              closeSheet={closeSheet}
-              id={isSheetOpen.id || undefined}
-              action={isSheetOpen.action}
-            />
-          </CustomSheet>
-        )}
       </div>
     </FilterProvider>
   )
 }
-export default UserCatalogue
+export default Post

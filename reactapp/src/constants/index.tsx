@@ -1,52 +1,11 @@
 /* eslint-disable @typescript-eslint/ban-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FaHome, FaRegEdit, FaUser } from 'react-icons/fa'
+import { FaRegEdit } from 'react-icons/fa'
 import { RiDeleteBin5Line } from 'react-icons/ri'
 import { MdLockReset } from 'react-icons/md'
 import Recovery from '@/pages/user/screens/include/Recovery'
 import { ActionParam, ButtonAction, OpenSheetFunction } from '@/types/Base'
-import { BsFileEarmarkPost } from 'react-icons/bs'
 import { UserType } from '@/types/User'
-
-export const MenuConfig = [
-  {
-    label: 'MAIN',
-    items: [
-      {
-        icon: <FaHome className="text-sm mr-2" />,
-        label: 'Dashboard',
-        active: ['dashboard'],
-        links: [
-          { title: 'Thống kê chung', to: '/dashboard' },
-          { title: 'Thống kê đơn hàng', to: '/dashboard/order' },
-        ],
-      },
-    ],
-  },
-  {
-    label: 'FUNCTION',
-    items: [
-      {
-        icon: <FaUser className="text-sm mr-2" />,
-        label: 'Quản lí thành viên',
-        active: ['user'],
-        links: [
-          { title: 'Quản lí nhóm thành viên', to: '/user/catalogue/index' },
-          { title: 'Quản lí thành viên', to: '/user/index' },
-        ],
-      },
-      {
-        icon: <BsFileEarmarkPost className="text-sm mr-2" />,
-        active: ['post'],
-        label: 'QL Bài Viết',
-        links: [
-          { title: 'QL Nhóm Bài Viết', to: '/post/catalogue/index' },
-          { title: 'QL Bài viết', to: '/post/index' },
-        ],
-      },
-    ],
-  },
-]
 
 export const breadcrumbs = {
   users: {
@@ -85,12 +44,38 @@ export const breadcrumbs = {
       title: 'Cập nhật nhóm bài viết',
     },
   },
+  posts: {
+    index: {
+      title: 'Quản lý bài viết',
+      route: '/post/index',
+    },
+    create: {
+      title: 'Thêm mới bài viết',
+    },
+    update: {
+      title: 'Cập nhật bài viết',
+    },
+  },
+  tags: {
+    index: {
+      title: 'Quản lý Tag',
+      route: '/tag/index',
+    },
+    create: {
+      title: 'Thêm mới Tag',
+    },
+    update: {
+      title: 'Cập nhật thông tin',
+    },
+  },
 }
 
 export const Models = {
   users: `users`,
   user_catalogues: `user_catalogues`,
   post_catalogues: `post_catalogues`,
+  posts: `posts`,
+  tags: `tags`,
 }
 
 export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
@@ -171,6 +156,50 @@ export const buttonPostCatalogueActions: ButtonAction<ActionParam[]>[] = [
     },
   },
 ]
+export const buttonPostsActions: ButtonAction<ActionParam[]>[] = [
+  {
+    path: '/post/update',
+    icon: <FaRegEdit className="text-white" />,
+    className: 'flex mr-[5px]',
+    method: 'update',
+    params: ['id', 'name', 'openSheet:f'],
+    onClick: (id: string, name: string, openSheet: OpenSheetFunction) => {
+      openSheet({ open: true, action: 'update', id: id })
+    },
+  },
+  {
+    path: '/post/delete',
+    icon: <RiDeleteBin5Line className="text-white" />,
+    className: 'bg-[#ec4758] mr-[5px]',
+    method: 'delete',
+    params: ['id', 'handleAlertDialog:f', 'destroy:f'],
+    onClick: (id: string, handleAlertDialog: any, destroy: any) => {
+      handleAlertDialog(id, destroy)
+    },
+  },
+]
+
+export const buttonTagsActions: ButtonAction<ActionParam[]>[] = [
+  {
+    icon: <FaRegEdit className="text-white" />,
+    className: 'flex mr-[5px]',
+    method: 'update',
+    params: ['id', 'name', 'openSheet:f'],
+    onClick: (id: string, name: string, openSheet: OpenSheetFunction) => {
+      openSheet({ open: true, action: 'update', id: id })
+    },
+  },
+  {
+    icon: <RiDeleteBin5Line className="text-white" />,
+    className: 'bg-[#ec4758] mr-[5px]',
+    method: 'delete',
+    params: ['id', 'handleAlertDialog:f', 'destroy:f'],
+    onClick: (id: string, handleAlertDialog: any, destroy: any) => {
+      handleAlertDialog(id, destroy)
+    },
+  },
+]
+
 export const formField = (action: string, data?: UserType | undefined) => {
   const showPasswordField = action !== 'update'
   const baseField = [

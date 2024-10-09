@@ -30,7 +30,6 @@ const Filter = ({
   refetch,
   handleQueryString,
   openSheet,
-  isSheetOpen,
   items,
   buttonText,
   ...restProps
@@ -56,7 +55,6 @@ const Filter = ({
 
   useEffect(() => {
     handleQueryString({ ...filters, keyword: keyword })
-    console.log(openSheet)
   }, [filters, keyword])
 
   return (
@@ -164,7 +162,7 @@ const Filter = ({
             </div>
           </div>
           <div>
-            {isSheetOpen ? (
+            {openSheet ? (
               <Button
                 className="p-0 primary-bg text-white px-[15px] flex justify-between items-center text-[12px]"
                 onClick={() => detectButtonAction()}
