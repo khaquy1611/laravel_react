@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\V1\Post\PostController;
 use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\UploadController;
 use App\Http\Controllers\Api\V1\TagController;
+use App\Http\Controllers\Api\V1\RealEstate\RealEstateTypeController;
 
 
 
@@ -61,6 +62,17 @@ Route::group([
    Route::post('tags', [TagController::class, 'create']);
    Route::put('tags/{id}', [TagController::class, 'update']);
    /* -------------------------- END TAGS ROUTE ----------------------------------------*/
+
+   /* REAL ESTATE TYPE */
+   Route::get('real_estate_types', [RealEstateTypeController::class, 'index']);
+   Route::get('real_estate_types/{id}', [RealEstateTypeController::class, 'show']);
+   Route::delete('real_estate_types/{id}', [RealEstateTypeController::class, 'destroy']);
+   Route::post('real_estate_types', [RealEstateTypeController::class, 'create']);
+   Route::put('real_estate_types/{id}', [RealEstateTypeController::class, 'update']);
+
+
+   Route::put('real_estate_types/{id}/status', [RealEstateTypeController::class, 'updateStatusByField']);
+    /* -------------------------- END REAL ESTATE TYPE ROUTE ----------------------------------------*/
 
   /* Dashboard */
   Route::delete('records/delete/batch', [DashboardController::class, 'deleteBatch']);

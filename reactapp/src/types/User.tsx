@@ -7,7 +7,8 @@ export interface UserType {
   phone: string | null
   address: string | null
   created_at: string | null
-  user_catalogue_id: string
+  user_catalogue_name?: string
+  user_catalogue_id?:string
   province_id: string | null
   district_id: string | null
   ward_id: string | null

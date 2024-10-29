@@ -6,7 +6,7 @@ import Paginate from '@/components/Paginate'
 import Filter from '@/components/Filter'
 import CustomTable from '@/components/CustomTable'
 import CustomSheet from '@/components/CustomSheet'
-import Store from '@/pages/tag/screens/include/store'
+import Store from '@/pages/real_estate_type/screens/include/store'
 
 import {
   Card,
@@ -27,18 +27,19 @@ import useSheet from '@/hooks/useSheet'
 
 /* SETTINGS */
 import { tableColumn } from '../setting'
-import { breadcrumbs, buttonActions, Models } from '@/constants/index'
+
 import { Breadcrumb } from '@/types/Base'
 import { filterItems } from '@/settings/globalSettings'
 import { SelectConfig } from '@/components/CustomFilter'
 
 /* SERVICE */
-import { pagination, destroy } from '@/services/TagService'
+import { pagination, destroy } from '@/services/RealEstateTypeService'
 import { useSearchParams } from 'react-router-dom'
+import { breadcrumbs, buttonActions, Models } from '@/constants'
 
-const Tag = () => {
-  const breadcrumbData: Breadcrumb = breadcrumbs.tags.index
-  const model = Models.tags
+const RealEstateType = () => {
+  const breadcrumbData: Breadcrumb = breadcrumbs.real_estate_types.index
+  const model = Models.real_estate_types
   const {
     isLoading,
     data,
@@ -61,6 +62,7 @@ const Tag = () => {
     : 10
   const totalItems = data ? data.total : 0
   const totalPages = Math.ceil(totalItems / perPage)
+
   const somethingChecked = isAnyChecked()
 
   const [customFilter] = useState<SelectConfig[]>([])
@@ -72,10 +74,12 @@ const Tag = () => {
       <div className="container-fluid mx-6">
         <Card className="rounded-[5px] mt-[15px]">
           <CardHeader className="border-b border-solid border-[#f3f3f3] p-[20px]">
-            <CardTitle className="uppercase">Quản lý danh sách tag</CardTitle>
+            <CardTitle className="uppercase">
+              Quản lý danh sách loại tin
+            </CardTitle>
             <CardDescription className="text-xs text-[blue]">
-              Hiển thị danh sách tag, sử dụng các chức năng bên dưới để lọc theo
-              mong muốn
+              Hiển thị danh sách loại tin, sử dụng các chức năng bên dưới để lọc
+              theo mong muốn
             </CardDescription>
           </CardHeader>
           <CardContent className="p-[15px]">
@@ -87,7 +91,7 @@ const Tag = () => {
               handleQueryString={(filters: any) => handleQueryString(filters)}
               openSheet={openSheet}
               items={filterItems}
-              buttonText="Thêm mới tag"
+              buttonText="Thêm mới loại tin"
             />
 
             <CustomTable
@@ -109,9 +113,9 @@ const Tag = () => {
           <CardFooter>
             {!isLoading && data[model] && data.links ? (
               <Paginate
-                totalPages={totalPages}
                 links={data.links}
                 pageChange={handlePageChange}
+                totalPages={totalPages}
               />
             ) : null}
           </CardFooter>
@@ -120,8 +124,8 @@ const Tag = () => {
           <CustomSheet
             title={
               isSheetOpen.action === 'update'
-                ? breadcrumbs.tags.update.title
-                : breadcrumbs.tags.create.title
+                ? breadcrumbs.real_estate_types.update.title
+                : breadcrumbs.real_estate_types.create.title
             }
             description="Nhập đầy đủ các thông tin dưới đây. Các mục có dấu (*) là bắt buộc"
             isSheetOpen={isSheetOpen.open}
@@ -140,4 +144,4 @@ const Tag = () => {
     </FilterProvider>
   )
 }
-export default Tag
+export default RealEstateType

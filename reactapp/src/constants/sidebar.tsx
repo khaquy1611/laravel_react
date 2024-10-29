@@ -1,5 +1,5 @@
 import { BsFileEarmarkPost } from 'react-icons/bs'
-import { FaHome, FaUser } from 'react-icons/fa'
+import { FaHome, FaRegBuilding, FaUser } from 'react-icons/fa'
 import { CiShoppingTag } from 'react-icons/ci'
 
 export const MenuConfig = [
@@ -48,6 +48,18 @@ export const MenuConfig = [
           // { title: 'QL Bài viết', to: '/post/index' },
         ],
       },
+      {
+        icon: <FaRegBuilding className="text-sm mr-2" />,
+        active: ['real_estate', 'project'],
+        label: 'Bất động sản',
+        links: [
+            { title: 'QL Loại BĐS', to: '/real_estate/catalogue/index' },
+            { title: 'QL Tin đăng', to: '/real_estate/index' },
+            { title: 'QL loại tin BĐS', to: '/real_estate/type/index' },
+            { title: 'QL loại dự án', to: '/project/catalogue/index' },
+            { title: 'QL dự án', to: '/project/index' },
+        ]
+    },
     ],
   },
 ]

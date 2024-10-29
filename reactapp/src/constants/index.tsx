@@ -68,6 +68,18 @@ export const breadcrumbs = {
       title: 'Cập nhật thông tin',
     },
   },
+  real_estate_types: {
+    index: {
+      title: 'Quản lý loại tin bất động sản',
+      route: '/real_estate/type/index',
+    },
+    create: {
+      title: 'Thêm mới loại tin bất động sản',
+    },
+    update: {
+      title: 'Cập nhật thông tin',
+    },
+  },
 }
 
 export const Models = {
@@ -76,6 +88,7 @@ export const Models = {
   post_catalogues: `post_catalogues`,
   posts: `posts`,
   tags: `tags`,
+  real_estate_types: 'real_estate_types',
 }
 
 export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
@@ -179,7 +192,7 @@ export const buttonPostsActions: ButtonAction<ActionParam[]>[] = [
   },
 ]
 
-export const buttonTagsActions: ButtonAction<ActionParam[]>[] = [
+export const buttonActions: ButtonAction<ActionParam[]>[] = [
   {
     icon: <FaRegEdit className="text-white" />,
     className: 'flex mr-[5px]',

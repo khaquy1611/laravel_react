@@ -11,6 +11,7 @@ import PostCatalogueStore from '@/pages/post_catalogue/screens/Store'
 import PostIndex from '@/pages/post/screens/View'
 import PostStore from '@/pages/post/screens/Store'
 import TagIndex from '@/pages/tag/screens/View'
+import RealEstateTypeIndex from '@/pages/real_estate_type/screens/View'
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,7 @@ const router = createBrowserRouter([
       { path: '/post/create', element: <PostStore /> },
       { path: '/post/update/:id', element: <PostStore /> },
       { path: '/tag/index', element: <TagIndex /> },
+      { path: '/real_estate/type/index', element: <RealEstateTypeIndex /> },
     ],
   },
 ])
