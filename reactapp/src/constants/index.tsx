@@ -80,6 +80,19 @@ export const breadcrumbs = {
       title: 'Cập nhật thông tin',
     },
   },
+  real_estate_catalogues : {
+    index: {
+      title: 'Quản lý loại bất động sản',
+      route: '/real_estate/catalogue/index',
+    },
+    create: {
+      title: 'Thêm mới loại bất động sản',
+      route: '/real_estate/catalogue/create',
+    },
+    update: {
+      title: 'Cập nhật thông tin',
+    },
+  }
 }
 
 export const Models = {
@@ -89,6 +102,7 @@ export const Models = {
   posts: `posts`,
   tags: `tags`,
   real_estate_types: 'real_estate_types',
+  real_estate_catalogues : 'real_estate_catalogues'
 }
 
 export const buttonUserActions: ButtonAction<ActionParam[]>[] = [

@@ -12,6 +12,8 @@ import PostIndex from '@/pages/post/screens/View'
 import PostStore from '@/pages/post/screens/Store'
 import TagIndex from '@/pages/tag/screens/View'
 import RealEstateTypeIndex from '@/pages/real_estate_type/screens/View'
+import RealEstateCatalogueIndex from '@/pages/real_estate_catalogue/screens/View'
+import RealEstateCatalogueStore from '@/pages/real_estate_catalogue/screens/store'
 
 const router = createBrowserRouter([
   {
@@ -53,6 +55,9 @@ const router = createBrowserRouter([
       { path: '/post/update/:id', element: <PostStore /> },
       { path: '/tag/index', element: <TagIndex /> },
       { path: '/real_estate/type/index', element: <RealEstateTypeIndex /> },
+      { path: '/real_estate/catalogue/index', element: <RealEstateCatalogueIndex /> },
+      { path: '/real_estate/catalogue/create', element: <RealEstateCatalogueStore /> },
+      { path: '/real_estate/catalogue/update/:id', element: <RealEstateCatalogueStore /> },
     ],
   },
 ])

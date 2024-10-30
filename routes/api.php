@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\V1\DashboardController;
 use App\Http\Controllers\Api\V1\UploadController;
 use App\Http\Controllers\Api\V1\TagController;
 use App\Http\Controllers\Api\V1\RealEstate\RealEstateTypeController;
+use App\Http\Controllers\Api\V1\RealEstate\RealEstateCatalogueController;
 
 
 
@@ -73,7 +74,15 @@ Route::group([
 
    Route::put('real_estate_types/{id}/status', [RealEstateTypeController::class, 'updateStatusByField']);
     /* -------------------------- END REAL ESTATE TYPE ROUTE ----------------------------------------*/
+   /* REAL ESTATE CATALOGUE */
+   Route::get('real_estate_catalogues', [RealEstateCatalogueController::class, 'index']);
+   Route::get('real_estate_catalogues/{id}', [RealEstateCatalogueController::class, 'show']);
+   Route::delete('real_estate_catalogues/{id}', [RealEstateCatalogueController::class, 'destroy']);
+   Route::post('real_estate_catalogues', [RealEstateCatalogueController::class, 'create']);
+   Route::put('real_estate_catalogues/{id}', [RealEstateCatalogueController::class, 'update']);
+   Route::put('real_estate_catalogues/{id}/status', [RealEstateCatalogueController::class, 'updateStatusByField']);
 
+   /* ------------------------ END REAL ESTATE CATALOGUE -----------------------------------------------  */
   /* Dashboard */
   Route::delete('records/delete/batch', [DashboardController::class, 'deleteBatch']);
   Route::put('records/update/batch', [DashboardController::class, 'updateBatch']);
@@ -86,6 +95,8 @@ Route::group([
   
   /* Location */
   Route::get('location', [DashboardController::class, 'location']);
+  /* COMMON REQUEST */
+  Route::post('sort', [DashboardController::class, 'sort']);
 });
 Route::get('v1/auth/pass', [AuthController::class, 'abc']);
 Route::post('v1/auth/login', [AuthController::class, 'login']);

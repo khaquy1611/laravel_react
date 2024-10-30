@@ -136,6 +136,7 @@ class DashboardController extends Controller
     }
 
     public function sort(SortRequest $request){
+        
         $sort = $this->dashboardService->sort($request);
 
         if($sort['code'] === Status::SUCCESS){

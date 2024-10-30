@@ -29,7 +29,7 @@ class RealEstateCatalogueService extends BaseService{
 
     private function paginateAgrument($request){
         return [
-            'perpage' => $request->input('perpage') ?? 10,
+            'perPage' => $request->input('perPage') ?? 10,
             'keyword' => [
                 'search' => $request->input('keyword') ?? '',
                 'field' => ['name', 'description', 'content']
