@@ -14,6 +14,13 @@ import TagIndex from '@/pages/tag/screens/View'
 import RealEstateTypeIndex from '@/pages/real_estate_type/screens/View'
 import RealEstateCatalogueIndex from '@/pages/real_estate_catalogue/screens/View'
 import RealEstateCatalogueStore from '@/pages/real_estate_catalogue/screens/store'
+import RealEstateIndex from '@/pages/real_estate/screens/View'
+import RealEstateStore from '@/pages/real_estate/screens/store'
+import ProjectCatalogueIndex from '@/pages/project_catalogue/screens/View'
+import ProjectCatalogueStore from '@/pages/project_catalogue/screens/store'
+
+import ProjectIndex from '@/pages/project/screens/index'
+import ProjectStore from '@/pages/project/screens/store'
 
 const router = createBrowserRouter([
   {
@@ -55,9 +62,31 @@ const router = createBrowserRouter([
       { path: '/post/update/:id', element: <PostStore /> },
       { path: '/tag/index', element: <TagIndex /> },
       { path: '/real_estate/type/index', element: <RealEstateTypeIndex /> },
-      { path: '/real_estate/catalogue/index', element: <RealEstateCatalogueIndex /> },
-      { path: '/real_estate/catalogue/create', element: <RealEstateCatalogueStore /> },
-      { path: '/real_estate/catalogue/update/:id', element: <RealEstateCatalogueStore /> },
+      {
+        path: '/real_estate/catalogue/index',
+        element: <RealEstateCatalogueIndex />,
+      },
+      {
+        path: '/real_estate/catalogue/create',
+        element: <RealEstateCatalogueStore />,
+      },
+      {
+        path: '/real_estate/catalogue/update/:id',
+        element: <RealEstateCatalogueStore />,
+      },
+      { path: '/project/catalogue/index', element: <ProjectCatalogueIndex /> },
+      { path: '/project/catalogue/create', element: <ProjectCatalogueStore /> },
+      {
+        path: '/project/catalogue/update/:id',
+        element: <ProjectCatalogueStore />,
+      },
+      { path: '/project/index', element: <ProjectIndex /> },
+      { path: '/project/create', element: <ProjectStore /> },
+      { path: '/project/update/:id', element: <ProjectStore /> },
+
+      { path: '/real_estate/index', element: <RealEstateIndex /> },
+      { path: '/real_estate/create', element: <RealEstateStore /> },
+      { path: '/real_estate/update/:id', element: <RealEstateStore /> },
     ],
   },
 ])

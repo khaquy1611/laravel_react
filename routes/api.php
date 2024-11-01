@@ -12,7 +12,9 @@ use App\Http\Controllers\Api\V1\UploadController;
 use App\Http\Controllers\Api\V1\TagController;
 use App\Http\Controllers\Api\V1\RealEstate\RealEstateTypeController;
 use App\Http\Controllers\Api\V1\RealEstate\RealEstateCatalogueController;
-
+use App\Http\Controllers\Api\V1\Project\ProjectCatalogueController;
+use App\Http\Controllers\Api\V1\Project\ProjectController;
+use App\Http\Controllers\Api\V1\ConfigController;
 
 
 Route::group([
@@ -83,6 +85,23 @@ Route::group([
    Route::put('real_estate_catalogues/{id}/status', [RealEstateCatalogueController::class, 'updateStatusByField']);
 
    /* ------------------------ END REAL ESTATE CATALOGUE -----------------------------------------------  */
+   /* PROJECT CATALOGUE */
+   Route::get('project_catalogues', [ProjectCatalogueController::class, 'index']);
+   Route::get('project_catalogues/{id}', [ProjectCatalogueController::class, 'show']);
+   Route::delete('project_catalogues/{id}', [ProjectCatalogueController::class, 'destroy']);
+   Route::post('project_catalogues', [ProjectCatalogueController::class, 'create']);
+   Route::put('project_catalogues/{id}', [ProjectCatalogueController::class, 'update']);
+   Route::put('project_catalogues/{id}/status', [ProjectCatalogueController::class, 'updateStatusByField']);
+  /* ------------------------ END PROJECT CATALOGUE -----------------------------------------------  */
+   /* PROJECT  */
+   Route::get('projects', [ProjectController::class, 'index']);
+   Route::get('projects/{id}', [ProjectController::class, 'show']);
+   Route::delete('projects/{id}', [ProjectController::class, 'destroy']);
+   Route::post('projects', [ProjectController::class, 'create']);
+   Route::put('projects/{id}', [ProjectController::class, 'update']);
+  /* ------------------------ END PROJECT -----------------------------------------------  */
+     
+  /* --------------------------------------------------------------------------  */
   /* Dashboard */
   Route::delete('records/delete/batch', [DashboardController::class, 'deleteBatch']);
   Route::put('records/update/batch', [DashboardController::class, 'updateBatch']);
@@ -97,6 +116,8 @@ Route::group([
   Route::get('location', [DashboardController::class, 'location']);
   /* COMMON REQUEST */
   Route::post('sort', [DashboardController::class, 'sort']);
+  /* CONFIG */
+  Route::get('configs', ConfigController::class);
 });
 Route::get('v1/auth/pass', [AuthController::class, 'abc']);
 Route::post('v1/auth/login', [AuthController::class, 'login']);

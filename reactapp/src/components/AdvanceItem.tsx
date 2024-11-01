@@ -10,6 +10,8 @@ type OptionItem = {
 interface IAdvanceItem {
     options: OptionItem[],
     name: string
+    placeholder?: string
+    root?: number
 }
 
 const AdvanceItem = ({

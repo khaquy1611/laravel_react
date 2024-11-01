@@ -80,7 +80,7 @@ export const breadcrumbs = {
       title: 'Cập nhật thông tin',
     },
   },
-  real_estate_catalogues : {
+  real_estate_catalogues: {
     index: {
       title: 'Quản lý loại bất động sản',
       route: '/real_estate/catalogue/index',
@@ -92,7 +92,33 @@ export const breadcrumbs = {
     update: {
       title: 'Cập nhật thông tin',
     },
-  }
+  },
+  projects: {
+    index: {
+      title: 'Quản lý dự án',
+      route: '/project/index',
+    },
+    create: {
+      title: 'Thêm mới dự án',
+      route: '/project/create',
+    },
+    update: {
+      title: 'Cập nhật thông tin',
+    },
+  },
+  project_catalogues: {
+    index: {
+      title: 'Quản lý nhóm dự án',
+      route: '/project/catalogue/index',
+    },
+    create: {
+      title: 'Thêm mới nhóm dự án',
+      route: '/project/catalogue/create',
+    },
+    update: {
+      title: 'Cập nhật thông tin',
+    },
+  },
 }
 
 export const Models = {
@@ -102,7 +128,9 @@ export const Models = {
   posts: `posts`,
   tags: `tags`,
   real_estate_types: 'real_estate_types',
-  real_estate_catalogues : 'real_estate_catalogues'
+  real_estate_catalogues: 'real_estate_catalogues',
+  projects: `projects`,
+  project_catalogues: `project_catalogues`,
 }
 
 export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
