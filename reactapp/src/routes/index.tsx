@@ -22,6 +22,10 @@ import ProjectCatalogueStore from '@/pages/project_catalogue/screens/store'
 import ProjectIndex from '@/pages/project/screens/index'
 import ProjectStore from '@/pages/project/screens/store'
 
+import AttributeCatalogueIndex from '@/pages/attribute_catalogue/screens/index'
+import Attribute from '@/pages/attribute/screens'
+
+
 const router = createBrowserRouter([
   {
     path: '/admin',
@@ -77,6 +81,11 @@ const router = createBrowserRouter([
       { path: '/project/catalogue/index', element: <ProjectCatalogueIndex /> },
       { path: '/project/catalogue/create', element: <ProjectCatalogueStore /> },
       {
+        path: '/attribute/catalogue/index',
+        element: <AttributeCatalogueIndex />,
+      },
+      { path: '/attribute/index', element: <Attribute /> },
+      {
         path: '/project/catalogue/update/:id',
         element: <ProjectCatalogueStore />,
       },
@@ -87,6 +96,7 @@ const router = createBrowserRouter([
       { path: '/real_estate/index', element: <RealEstateIndex /> },
       { path: '/real_estate/create', element: <RealEstateStore /> },
       { path: '/real_estate/update/:id', element: <RealEstateStore /> },
+      
     ],
   },
 ])

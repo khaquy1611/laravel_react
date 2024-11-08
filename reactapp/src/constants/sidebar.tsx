@@ -1,6 +1,7 @@
 import { BsFileEarmarkPost } from 'react-icons/bs'
 import { FaHome, FaRegBuilding, FaUser } from 'react-icons/fa'
 import { CiShoppingTag } from 'react-icons/ci'
+import { GoArchive } from 'react-icons/go'
 
 export const MenuConfig = [
   {
@@ -53,13 +54,22 @@ export const MenuConfig = [
         active: ['real_estate', 'project'],
         label: 'Bất động sản',
         links: [
-            { title: 'QL Loại BĐS', to: '/real_estate/catalogue/index' },
-            { title: 'QL Tin đăng', to: '/real_estate/index' },
-            { title: 'QL loại tin BĐS', to: '/real_estate/type/index' },
-            { title: 'QL loại dự án', to: '/project/catalogue/index' },
-            { title: 'QL dự án', to: '/project/index' },
-        ]
-    },
+          { title: 'QL Loại BĐS', to: '/real_estate/catalogue/index' },
+          { title: 'QL Tin đăng', to: '/real_estate/index' },
+          { title: 'QL loại tin BĐS', to: '/real_estate/type/index' },
+          { title: 'QL loại dự án', to: '/project/catalogue/index' },
+          { title: 'QL dự án', to: '/project/index' },
+        ],
+      },
+      {
+        icon: <GoArchive className="text-sm mr-2" />,
+        active: ['attribute'],
+        label: 'QL Thuộc Tính',
+        links: [
+          { title: 'QL Nhóm Thuộc Tính', to: '/attribute/catalogue/index' },
+          { title: 'QL Thuộc Tính', to: '/attribute/index' },
+        ],
+      },
     ],
   },
 ]

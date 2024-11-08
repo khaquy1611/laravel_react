@@ -15,7 +15,8 @@ use App\Http\Controllers\Api\V1\RealEstate\RealEstateCatalogueController;
 use App\Http\Controllers\Api\V1\Project\ProjectCatalogueController;
 use App\Http\Controllers\Api\V1\Project\ProjectController;
 use App\Http\Controllers\Api\V1\ConfigController;
-
+use App\Http\Controllers\Api\V1\Attribute\AttributeCatalogueController;
+use App\Http\Controllers\Api\V1\Attribute\AttributeController;
 
 Route::group([
     'middleware' => 'jwt',
@@ -100,7 +101,7 @@ Route::group([
    Route::post('projects', [ProjectController::class, 'create']);
    Route::put('projects/{id}', [ProjectController::class, 'update']);
   /* ------------------------ END PROJECT -----------------------------------------------  */
-     
+    
   /* --------------------------------------------------------------------------  */
   /* Dashboard */
   Route::delete('records/delete/batch', [DashboardController::class, 'deleteBatch']);
@@ -111,7 +112,25 @@ Route::group([
   Route::post('upload/ckeditor', [UploadController::class, 'uploadCkeditor']);
   Route::post('delete/ckeditor', [UploadController::class, 'deleteCkeditor']);
   /* -------------------------- END UPLOAD ----------------------------------------*/
-  
+  /* Attribute CATALOGUE */
+  Route::get('attribute_catalogues', [AttributeCatalogueController::class, 'index']);
+  Route::get('attribute_catalogues/{id}', [AttributeCatalogueController::class, 'show']);
+  Route::delete('attribute_catalogues/{id}', [AttributeCatalogueController::class, 'destroy']);
+  Route::post('attribute_catalogues', [AttributeCatalogueController::class, 'create']);
+  Route::put('attribute_catalogues/{id}', [AttributeCatalogueController::class, 'update']);
+  Route::put('attribute_catalogues/{id}/status', [AttributeCatalogueController::class, 'updateStatusByField']);
+
+  /* ------------------------------- END -------------------------------------------  */
+
+   /* Attribute  */
+   Route::get('attributes', [AttributeController::class, 'index']);
+   Route::get('attributes/{id}', [AttributeController::class, 'show']);
+   Route::delete('attributes/{id}', [AttributeController::class, 'destroy']);
+   Route::post('attributes', [AttributeController::class, 'create']);
+   Route::put('attributes/{id}', [AttributeController::class, 'update']);
+   Route::put('attributes/{id}/status', [AttributeController::class, 'updateStatusByField']);
+
+   /* ------------------------------- END -------------------------------------------  */
   /* Location */
   Route::get('location', [DashboardController::class, 'location']);
   /* COMMON REQUEST */

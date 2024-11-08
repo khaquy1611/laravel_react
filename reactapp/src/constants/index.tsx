@@ -119,6 +119,30 @@ export const breadcrumbs = {
       title: 'Cập nhật thông tin',
     },
   },
+  attribute: {
+    index: {
+      title: 'Quản lý thuộc tính',
+      route: '/attribute/index',
+    },
+    create: {
+      title: 'Thêm mới thuộc tính',
+    },
+    update: {
+      title: 'Cập nhật thông tin',
+    },
+  },
+  attribute_catalogues: {
+    index: {
+      title: 'Quản lý nhóm thuộc tính',
+      route: '/attribute/catalogue/index',
+    },
+    create: {
+      title: 'Thêm mới nhóm thuộc tính',
+    },
+    update: {
+      title: 'Cập nhật thông tin',
+    },
+  }
 }
 
 export const Models = {
@@ -131,6 +155,8 @@ export const Models = {
   real_estate_catalogues: 'real_estate_catalogues',
   projects: `projects`,
   project_catalogues: `project_catalogues`,
+  attributes: `attributes`,
+  attribute_catalogues: `attribute_catalogues`
 }
 
 export const buttonUserActions: ButtonAction<ActionParam[]>[] = [
